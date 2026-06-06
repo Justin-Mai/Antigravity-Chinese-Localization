@@ -57,3 +57,13 @@
   - 引入 Unicode 空格清洗正则，自动清除分词翻译可能残留在中文字词之间的多余英文空格（如将 `历史 对话` 自动洗练为 `历史对话`）。
   - 精准修复了智能体工作日志汉化失效的 Bug。
 - 📋 **部署控制台增量比对渲染**：引入 JSON 日志比对哈希。无新内容产生时彻底锁定 DOM，解决滚动条滑块频繁销毁重绘导致的无端抖动闪烁，仅在有新打包进度时按需对焦滚动。
+
+## Star History
+
+<a href="https://www.star-history.com/?repos=liominsb%2FAntigravity-Chinese-Localization&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=liominsb/Antigravity-Chinese-Localization&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=liominsb/Antigravity-Chinese-Localization&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=liominsb/Antigravity-Chinese-Localization&type=date&legend=top-left" />
+ </picture>
+</a>
