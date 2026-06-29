@@ -418,7 +418,209 @@ const DOM_TRANSLATOR_INJECTION = `
     "Update available": "发现新版本",
     "Downloading...": "正在下载...",
     "Update downloaded": "更新已下载完成",
-    "Error checking for updates": "检查更新失败"
+    "Error checking for updates": "检查更新失败",
+
+    // ===== 2.2.1 新增 UI 文本补充 =====
+    // 窗口与原生 UI
+    "Window": "窗口",
+    "Install IDE": "安装 IDE",
+    "App": "应用",
+
+    // 偏好设置区
+    "Inherits from": "继承自",
+    "Rules": "规则",
+    "Skills": "技能",
+    "Plugin": "插件",
+    "Plugins": "插件",
+    "Customize": "自定义",
+    "Setup": "设置",
+
+    // 账号区
+    "Google AI Pro": "Google AI Pro",
+    "Upgrade": "升级",
+    "Sign Out": "退出登录",
+    "By using this app, you agree to its": "使用本应用即表示您同意其",
+    "Terms of Service": "服务条款",
+    "Google Drive integration not available": "Google 云端硬盘集成不可用",
+
+    // 外观与编辑器
+    "Select light, dark, or inherit system settings.": "选择浅色、深色，或继承系统设置。",
+    "Configure editor-specific behaviors and shortcuts.": "配置编辑器专属行为与快捷键。",
+    "Tab": "制表符",
+    "Configure tab completion, suggestions, and navigation behavior.": "配置 Tab 补全、建议以及导航行为。",
+
+    // 编辑器与市场
+    "Marketplace": "扩展市场",
+    "Marketplace Item URL": "扩展市场项目 URL",
+    "Marketplace Gallery URL": "扩展市场图库 URL",
+    "Changes the base URL on each extension page. You must restart Antigravity to use the new marketplace after changing this value.": "更改每个扩展页面的基础 URL。更改此值后，必须重启 Antigravity 才能使用新的扩展市场。",
+    "Changes the base URL for marketplace search results. You must restart Antigravity to use the new marketplace after changing this value.": "更改扩展市场搜索结果的基础 URL。更改此值后，必须重启 Antigravity 才能使用新的扩展市场。",
+    "To modify editor settings, open Settings within the editor window.": "如需修改编辑器设置，请在编辑器窗口中打开“设置”。",
+    "Editor": "编辑器",
+    "Editor Settings": "编辑器设置",
+    "Open Editor Settings": "打开编辑器设置",
+
+    // 浏览器子智能体
+    "Configure the browser subagent.": "配置浏览器子智能体。",
+    "It requires": "它需要",
+    "Google Chrome to be installed.": "安装 Google Chrome。",
+    "The browser subagent can be invoked by typing": "可以通过输入",
+    "/browser": "/browser",
+    "in the conversation input box.": "在对话输入框中调用浏览器子智能体。",
+
+    // 对话区
+    "Conversation Width": "对话宽度",
+    "Configure the maximum width of the conversation panel.": "配置对话面板的最大宽度。",
+    "New Conversation in Project": "项目内新建对话",
+    "Show": "显示",
+    "all": "全部",
+
+    // 分解统计
+    "breakdown": "明细",
+    "breakdowns": "明细",
+
+    // Google Chat / Jetski
+    "Configure a chat bot so you can use Jetski directly from Google Chat.": "配置一个聊天机器人，以便您可以直接在 Google Chat 中使用 Jetski。",
+    "Jetski Chat": "Jetski 聊天",
+    "Setup Jetski Chat": "设置 Jetski 聊天",
+    "Bot Name": "机器人名称",
+    "Avatar URL": "头像 URL",
+    "Enter bot name (optional)": "输入机器人名称（可选）",
+    "Enter avatar URL (optional)": "输入头像 URL（可选）",
+    "Chat Space": "聊天空间",
+    "Continue to help, visit": "如需继续获取帮助，请访问",
+
+    // 反馈区
+    "Please describe the issue in detail. The more actionable your feedback, the quicker our team can address your request. Some helpful information includes:": "请详细描述您遇到的问题。反馈越具可操作性，我们的团队就能越快处理您的请求。以下是一些有用的信息：",
+    "Steps to reproduce the issue": "问题复现步骤",
+    "Expected behavior": "预期行为",
+    "Actual behavior": "实际行为",
+    "Any relevant information": "任何相关信息",
+    "Any error messages": "任何错误消息",
+    "Steps to Reproduce": "复现步骤",
+    "Submit": "提交",
+    "Describe the bug you encountered...": "请描述您遇到的 Bug...",
+    "Please list the steps to reproduce the issue": "请列出复现该问题的步骤",
+
+    // 通知与其他
+    "Manage your notification preferences.": "管理您的通知偏好。",
+    "Manage application settings.": "管理应用设置。",
+    "Refresh quota and credits data": "刷新配额与额度数据",
+
+    // 权限与提示
+    "Local permissions have higher priority.": "项目专属权限具有更高的优先级。",
+    "No conversations yet": "暂无对话",
+    "No conversation yet": "暂无对话",
+    "of the customization budget is available.": "的自定义额度可用。",
+
+    // MCP 相关
+    "Add MCP": "添加 MCP",
+    "Add an MCP Server": "添加 MCP 服务器",
+
+    // 单词补充(2.2.1 新出现的)
+    "width": "宽度",
+    "priority": "优先级",
+    "quota": "配额",
+    "credits": "额度",
+    "preference": "偏好",
+    "preferences": "偏好",
+    "application": "应用",
+    "subagent": "子智能体",
+    "notification": "通知",
+    "notifications": "通知",
+    "bot": "机器人",
+    "space": "空间",
+    "visit": "访问",
+    "editor": "编辑器",
+    "marketplace": "扩展市场",
+    "avatar": "头像",
+    "name": "名称",
+    "messages": "消息",
+    "message": "消息",
+
+    // ===== 第2轮验证新增 (2.2.1 配额/限额/aria-label) =====
+    "Weekly Limit": "每周限额",
+    "Five Hour Limit": "五小时限额",
+    "Hourly Limit": "每小时限额",
+    "Daily Limit": "每日限额",
+    "Monthly Limit": "每月限额",
+    "limit": "限额",
+    "limits": "限额",
+    "weekly": "每周",
+    "hourly": "每小时",
+    "customization": "自定义",
+    "budget": "额度",
+    "available": "可用",
+
+    // 浏览器设置残片补全
+    "to be installed.": "需要安装。",
+    "to be installed": "需要安装",
+    "or join the": "或加入",
+
+    // aria-label 无障碍标签 (这些会影响屏幕阅读器与提示)
+    "Sidebar": "侧边栏",
+    "Display Options": "显示选项",
+    "Message input": "消息输入框",
+    "Record voice memo": "录制语音备忘",
+    "Typeahead menu": "预输入菜单",
+    "voice memo": "语音备忘",
+    "memo": "备忘",
+    "typeahead": "预输入",
+
+    // ===== 第3轮验证补充 =====
+    "current": "当前",
+    "Choose a model": "选择模型",
+    "Select model": "选择模型",
+    "current model": "当前模型",
+
+    // ===== 第4轮验证补充 (显示选项下拉菜单) =====
+    "Group By": "分组方式",
+    "Last Updated": "最后更新",
+    "Alphabetical (A-Z)": "字母顺序 (A-Z)",
+    "Date Added": "添加日期",
+    "Subtitles": "副标题",
+    "No Subtitle": "无副标题",
+    "Filter": "筛选",
+    "Scheduled": "已计划",
+    "Environment": "环境",
+    "None": "无",
+    "Fast": "快速",
+
+    // 第5轮: 单数形式补全 (分组选项)
+    "Project": "项目",
+    "project": "项目",
+    "projects": "项目",
+    "Conversation": "对话",
+    "conversation": "对话",
+    "Workspace": "工作区",
+    "workspace": "工作区",
+
+    // ===== 第6轮彻底验证补充 =====
+    // 窗口控制
+    "Minimize": "最小化",
+    "Maximize": "最大化",
+    "Back": "返回",
+    // 计划任务
+    "No scheduled tasks configured.": "暂无已配置的计划任务。",
+    // 配额提示 (含动态时间,用部分匹配)
+    "You have used some of your weekly limit": "您已使用部分每周限额",
+    "You have used some of your 5-hour limit": "您已使用部分 5 小时限额",
+    "it will fully refresh in": "它将在以下时间后完全刷新：",
+    "hours": "小时",
+    "minutes": "分钟",
+    "days": "天",
+    // 文件夹与权限
+    "Folders": "文件夹",
+    "folders": "文件夹",
+    "including": "包括",
+    "Allow/deny agent read access to specific files or directories.": "允许/拒绝智能体读取特定文件或目录。",
+    "Allow/deny agent write access to specific files or directories.": "允许/拒绝智能体写入特定文件或目录。",
+    "Allow/deny": "允许/拒绝",
+    "read access": "读取权限",
+    "write access": "写入权限",
+    "specific files or directories": "特定文件或目录",
+    // 浏览器子智能体说明(完整句)
+    "The browser subagent can be invoked by typing /browser in the conversation input box.": "可以在对话输入框中输入 /browser 来调用浏览器子智能体。"
   };
 
   const coreWords = {
@@ -484,6 +686,26 @@ const DOM_TRANSLATOR_INJECTION = `
     }
     if (/^Canceled taskkill/.test(trimmed)) {
       dynamicMatch = dynamicMatch.replace(/^Canceled (.*)/, '已取消 $1');
+      isDynamic = true;
+    }
+
+    // 配额提示句 (含动态天数/小时/分钟)
+    if (/^You have used some of your (weekly|5-hour|hourly|daily) limit/.test(trimmed)) {
+      dynamicMatch = dynamicMatch
+        .replace(/^You have used some of your weekly limit/, '您已使用了部分每周限额')
+        .replace(/^You have used some of your 5-hour limit/, '您已使用了部分 5 小时限额')
+        .replace(/^You have used some of your hourly limit/, '您已使用了部分每小时限额')
+        .replace(/^You have used some of your daily limit/, '您已使用了部分每日限额')
+        .replace(/it will fully refresh in/, '它将在以下时间后完全刷新：')
+        .replace(/(\d+)\s*days?/g, '$1 天 ')
+        .replace(/(\d+)\s*hours?/g, '$1 小时 ')
+        .replace(/(\d+)\s*minutes?\.?$/g, '$1 分钟')
+        .replace(/[,.]/g, '');
+      isDynamic = true;
+    }
+    // 模型分组配额说明长句
+    if (/^Within each group, models share/.test(trimmed)) {
+      dynamicMatch = '在每个分组中，模型共享每周限额和 5 小时限额。配额按 token 成本比例消耗。因此，较短的任务或使用更具性价比的模型时，限额可持续更长时间。5 小时限额用于平滑总需求，以便在所有用户间公平分配全球容量，而每周限额则与您的个人等级直接挂钩。';
       isDynamic = true;
     }
 
@@ -820,15 +1042,29 @@ function replaceInFile(filePath, target, replacement) {
 function applyTranslations() {
   log('开始对解压的文件进行汉化替换和代码注入...');
 
+  // 幂等注入:若目标文件已包含注入标记则跳过，防止重复注入导致语法错误。
+  // 用唯一的稳定标记判断是否已注入（DOM_TRANSLATOR_INJECTION 与 menuInjectCode 各自的特征片段）。
+  function appendOnce(filePath, content, marker, desc) {
+    let already = false;
+    if (fs.existsSync(filePath)) {
+      const existing = fs.readFileSync(filePath, 'utf-8');
+      already = existing.includes(marker);
+    }
+    if (already) {
+      log(`${desc}已存在注入，跳过（避免重复）。`);
+      return;
+    }
+    fs.appendFileSync(filePath, content, 'utf-8');
+    log(`已向 ${path.basename(filePath)} 注入${desc}。`);
+  }
+
   // 1. Inject DOM Localization in dist/preload.js
   const preloadPath = path.join(EXTRACT_DIR, 'dist', 'preload.js');
-  fs.appendFileSync(preloadPath, DOM_TRANSLATOR_INJECTION, 'utf-8');
-  log('已向 preload.js 注入 Web UI 实时汉化引擎。');
+  appendOnce(preloadPath, DOM_TRANSLATOR_INJECTION, 'Antigravity 2.0 Chinese Localization Engine', 'Web UI 实时汉化引擎');
 
   // 2. Inject DOM Localization in dist/ideInstall/wizardPreload.js
   const wizardPreloadPath = path.join(EXTRACT_DIR, 'dist', 'ideInstall', 'wizardPreload.js');
-  fs.appendFileSync(wizardPreloadPath, DOM_TRANSLATOR_INJECTION, 'utf-8');
-  log('已向 wizardPreload.js 注入新版向导 Web UI 汉化引擎。');
+  appendOnce(wizardPreloadPath, DOM_TRANSLATOR_INJECTION, 'Antigravity 2.0 Chinese Localization Engine', '新版向导 Web UI 汉化引擎');
 
   // 3. Localize dist/menu.js (Native Application Menu)
   const menuPath = path.join(EXTRACT_DIR, 'dist', 'menu.js');
@@ -877,8 +1113,7 @@ function translateMenu(menuItem) {
 }
 `;
   // Append definitions at the end of the file
-  fs.appendFileSync(menuPath, menuInjectCode, 'utf-8');
-  log('已向 menu.js 追加翻译映射。');
+  appendOnce(menuPath, menuInjectCode, 'const menuTranslationMap = {', '原生菜单翻译映射');
 
   // Replace menu application step safely
   replaceInFile(
@@ -954,6 +1189,9 @@ async function runLocalizationWorkflow(appDir) {
   }
 
   // 4. Unpack app.asar
+  //    注意：必须解包当前 app.asar（而非 .bak 备份），因为 Electron 的
+  //    app.asar.unpacked 配套目录不会被备份，从 .bak 解包会因缺失 unpacked
+  //    文件而失败。重复注入问题由 applyTranslations() 内的幂等检查解决。
   log('正在解包 app.asar...');
   try {
     execSync(`${getAsarCmd()} extract "${asarPath}" "${EXTRACT_DIR}"`, { cwd: WORKSPACE_DIR });
