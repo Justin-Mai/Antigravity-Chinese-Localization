@@ -1044,18 +1044,19 @@ function applyTranslations() {
 
   // 幂等注入:若目标文件已包含注入标记则跳过，防止重复注入导致语法错误。
   // 用唯一的稳定标记判断是否已注入（DOM_TRANSLATOR_INJECTION 与 menuInjectCode 各自的特征片段）。
+  // 与 replaceInFile() 保持一致：文件不存在直接抛错，fail-fast，避免路径错误时
+  // appendFileSync 静默创建新文件而产生“注入成功”的假象。
   function appendOnce(filePath, content, marker, desc) {
-    let already = false;
-    if (fs.existsSync(filePath)) {
-      const existing = fs.readFileSync(filePath, 'utf-8');
-      already = existing.includes(marker);
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`找不到要修改的文件: ${filePath}`);
     }
-    if (already) {
-      log(`${desc}已存在注入，跳过（避免重复）。`);
+    const existing = fs.readFileSync(filePath, 'utf-8');
+    if (existing.includes(marker)) {
+      log(`${desc} 已存在注入，跳过（避免重复）。`);
       return;
     }
     fs.appendFileSync(filePath, content, 'utf-8');
-    log(`已向 ${path.basename(filePath)} 注入${desc}。`);
+    log(`已向 ${path.basename(filePath)} 注入 ${desc}。`);
   }
 
   // 1. Inject DOM Localization in dist/preload.js
