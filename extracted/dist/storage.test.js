@@ -55,6 +55,7 @@ vitest_1.vi.mock('electron');
             (0, vitest_1.expect)(items).toEqual({
                 runInBackground: String(process.platform !== 'win32'),
                 keepComputerAwake: 'false',
+                autoCheckForUpdates: 'true',
             });
             (0, vitest_1.expect)(fs_1.existsSync).toHaveBeenCalledWith(mockPath);
         });
@@ -65,6 +66,7 @@ vitest_1.vi.mock('electron');
             (0, vitest_1.expect)(items).toEqual({
                 runInBackground: String(process.platform !== 'win32'),
                 keepComputerAwake: 'false',
+                autoCheckForUpdates: 'true',
             });
         });
         (0, vitest_1.it)('should return parsed JSON object merged with defaults if file contains valid JSON', async () => {
@@ -75,6 +77,7 @@ vitest_1.vi.mock('electron');
                 key1: 'value1',
                 runInBackground: String(process.platform !== 'win32'),
                 keepComputerAwake: 'false',
+                autoCheckForUpdates: 'true',
             });
         });
         (0, vitest_1.it)('should handle JSON parse error and return defaults', async () => {
@@ -84,6 +87,7 @@ vitest_1.vi.mock('electron');
             (0, vitest_1.expect)(items).toEqual({
                 runInBackground: String(process.platform !== 'win32'),
                 keepComputerAwake: 'false',
+                autoCheckForUpdates: 'true',
             });
         });
     });

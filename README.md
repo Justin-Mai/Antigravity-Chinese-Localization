@@ -5,7 +5,7 @@
 ## ✨ 特性
 
 - **全自动解包与重打包**：自动备份原始的 `app.asar` 文件，解压后注入汉化代码，再重新打包替换，全程无需手动干预。
-- **全平台自适应支持**：完美支持 Windows 与 Ubuntu/Linux 操作系统，自动识别进程名、路径配置与程序类型。
+- **全平台自适应支持**：完美支持 Windows、macOS 与 Ubuntu/Linux 操作系统，自动识别进程名、路径配置与程序类型。
 - **动态 DOM 拦截汉化**：利用高级的 `MutationObserver` 与 Shadow DOM 穿透技术，实时拦截并翻译 Web 界面中的英文文本和属性（如 `placeholder`、`title`、`aria-label` 等）。
 - **原生 UI 汉化**：支持对 Electron 原生菜单栏（Menu）和系统托盘（Tray）进行深度翻译。
 - **超大且精准的词库**：内置数百个针对 IDE、智能体（Agent）配置、权限设置、快捷键以及工作区的精准翻译短语，避免机器翻译产生的“中英夹杂”现象。
@@ -28,6 +28,16 @@
 2. 脚本会自动启动服务并在默认浏览器中打开可视化的控制中心。
 3. 在控制面板中点击“一键开始汉化”即可。
 
+### macOS 用户
+
+1. 打开终端，进入脚本所在目录后运行 **`运行汉化.sh`** 脚本（需先赋予执行权限）：
+   ```bash
+   chmod +x 运行汉化.sh
+   ./运行汉化.sh
+   ```
+2. 脚本会自动启动服务并在默认浏览器中打开可视化的控制中心。
+3. 在控制面板中点击“一键开始汉化”即可。默认会定位到 `/Applications/Antigravity.app`。
+
 ## 🛠️ 技术细节
 
 本工具通过 `node` 脚本和 `asar`/`@electron/asar` 库实现解包，向 `dist/preload.js`、`dist/ideInstall/wizardPreload.js` 等核心预加载文件中注入一段特制的 `DOM_TRANSLATOR_INJECTION` 引擎。
@@ -40,6 +50,11 @@
 - 如果遇到界面异常或想要升级 Antigravity，可以通过图形化面板，或手动恢复备份：
   - *Windows*: 将 `%APPDATA%\Local\Programs\antigravity\resources\app.asar.bak` 恢复为 `app.asar`
   - *Linux*: 将 `~/Antigravity/Antigravity-x64/resources/app.asar.bak` 恢复为 `app.asar`
+  - *macOS*: 将 `/Applications/Antigravity.app/Contents/Resources/app.asar.bak` 恢复为 `app.asar`
+- **macOS 代码签名提示**：在 macOS 上修改 `.app` 包内部内容会破坏代码签名，Gatekeeper 可能弹出“应用已损坏，无法打开”的警告。这属于 Electron 汉化的固有特性（Windows 改 asar 同样破坏签名，只是 Windows 不拦截）。若遇到此提示，在终端执行以下命令清除隔离属性即可正常启动：
+  ```bash
+  xattr -cr /Applications/Antigravity.app
+  ```
 
 ## 🎁 2.0 汉化控制中心更新说明
 

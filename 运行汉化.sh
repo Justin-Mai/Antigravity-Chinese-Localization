@@ -10,7 +10,9 @@ echo "Opening dashboard in your default browser..."
 echo ""
 
 # Open dashboard in browser
-if which xdg-open > /dev/null 2>&1; then
+if [ "$(uname)" = "Darwin" ]; then
+  open "http://localhost:3388" &
+elif which xdg-open > /dev/null 2>&1; then
   xdg-open "http://localhost:3388" &
 elif which gnome-open > /dev/null 2>&1; then
   gnome-open "http://localhost:3388" &

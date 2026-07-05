@@ -41,9 +41,20 @@ function setupApplicationMenu(url) {
             await electron_1.shell.openExternal('https://antigravity.google/docs');
         },
     }));
-    addItemToSubmenu(menu, 'Help', 1, new electron_1.MenuItem({
-        role: 'toggleDevTools',
-    }));
+    const hideDevTools = (menuInstance) => {
+        menuInstance.items?.forEach((item) => {
+            // Typing specifies this as 'toggleDevTools', but observing this
+            // having the value 'toggledevtools'.
+            if (item.role?.toLocaleLowerCase() === 'toggledevtools') {
+                item.visible = false;
+            }
+            // Recursively search submenus (like 'View').
+            if (item.submenu) {
+                hideDevTools(item.submenu);
+            }
+        });
+    };
+    hideDevTools(menu);
     // Re-apply the menu so the change takes effect.
     if (typeof translateMenu === 'function') { menu.items.forEach(translateMenu); } electron_1.Menu.setApplicationMenu(menu);
 }

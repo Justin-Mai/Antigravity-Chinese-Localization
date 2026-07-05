@@ -55,7 +55,6 @@ const path_1 = __importDefault(require("path"));
 const readline = __importStar(require("readline"));
 const stream_1 = require("stream");
 const paths_1 = require("./paths");
-const constants_1 = require("./constants");
 const utils_1 = require("./utils");
 // ---------------------------------------------------------------------------
 // Config
@@ -409,16 +408,12 @@ async function killLanguageServer() {
     }
 }
 /**
- * Sets up certificate verification in Electron to trust the local self-signed cert
- * used by the language server. It verifies that the certificate fingerprint matches
- * the hardcoded `LS_CERT_FINGERPRINT`.
- *
- * TODO: Generate the cert.pem file dynamically
+ * Sets up certificate verification in Electron to trust local connections
+ * (127.0.0.1 or localhost) used by the language server.
  */
 function setupLocalCertTrust() {
     electron_1.session.defaultSession.setCertificateVerifyProc((request, callback) => {
-        if ((request.hostname === '127.0.0.1' || request.hostname === 'localhost') &&
-            request.certificate.fingerprint === constants_1.LS_CERT_FINGERPRINT) {
+        if (request.hostname === '127.0.0.1' || request.hostname === 'localhost') {
             callback(0); // Accept
         }
         else {

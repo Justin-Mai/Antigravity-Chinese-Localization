@@ -103,6 +103,14 @@ function handleDeepLink(url) {
         pendingDeepLink = url;
     }
 }
+const PROTOCOL = electron_1.app
+    .getName()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+if (!electron_1.app.isDefaultProtocolClient(PROTOCOL)) {
+    electron_1.app.setAsDefaultProtocolClient(PROTOCOL);
+}
 electron_1.app.on('second-instance', (event, commandLine) => {
     const wins = electron_1.BrowserWindow.getAllWindows();
     if (wins.length > 0) {
@@ -113,17 +121,12 @@ electron_1.app.on('second-instance', (event, commandLine) => {
         wins[0].focus();
         electron_1.app.focus({ steal: true });
     }
-    const url = commandLine.find((arg) => arg.startsWith('antigravity://'));
+    const url = commandLine.find((arg) => arg.startsWith(`${PROTOCOL}://`));
     if (url) {
         handleDeepLink(url);
     }
 });
 (0, customScheme_1.registerCustomSchemes)();
-// Register as default protocol client for deep linking
-const PROTOCOL = 'antigravity';
-if (!electron_1.app.isDefaultProtocolClient(PROTOCOL)) {
-    electron_1.app.setAsDefaultProtocolClient(PROTOCOL);
-}
 electron_1.app.on('open-url', (event, url) => {
     event.preventDefault();
     handleDeepLink(url);
@@ -143,7 +146,7 @@ electron_1.app
     storageManager = new storage_1.StorageManager(storagePath, settingsService_1.DEFAULTS);
     settingsService = new settingsService_1.SettingsService(storageManager);
     // Handle deep link URL from command line arguments (All platforms)
-    const deepLinkFromArg = process.argv.find((arg) => arg.startsWith('antigravity://'));
+    const deepLinkFromArg = process.argv.find((arg) => arg.startsWith(`${PROTOCOL}://`));
     if (deepLinkFromArg) {
         console.log('Launched with deep link:', deepLinkFromArg);
         pendingDeepLink = deepLinkFromArg;
@@ -160,7 +163,6 @@ electron_1.app
     // Set About panel options with LS CL
     const cl = await (0, languageServer_1.getLsCL)();
     electron_1.app.setAboutPanelOptions({
-        applicationName: 'Antigravity',
         applicationVersion: electron_1.app.getVersion(),
         version: cl || undefined,
     });
@@ -275,7 +277,7 @@ electron_1.app
         ]);
     }
     // Start checking for app updates.
-    (0, updater_1.initAutoUpdater)(HEADLESS);
+    (0, updater_1.initAutoUpdater)(HEADLESS, settingsService);
     hasStartedMainApplication = true;
 })
     .catch(() => {

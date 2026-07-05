@@ -62,4 +62,42 @@ vitest_1.vi.mock('../utils');
         await new Promise(process.nextTick);
         (0, vitest_1.expect)(mockSleepBlocker.shouldKeepComputerAwake).toHaveBeenCalledWith(true);
     });
+    (0, vitest_1.it)('should trigger onSettingChanged when watched key changes', () => {
+        let changeListener;
+        mockStorageManager.onDidChange.mockImplementation((listener) => {
+            changeListener = listener;
+            return { dispose: vitest_1.vi.fn() };
+        });
+        settingsService = new settingsService_1.SettingsService(mockStorageManager);
+        const callback = vitest_1.vi.fn();
+        settingsService.onSettingChanged(settingsService_1.SettingKey.AUTO_CHECK_FOR_UPDATES, callback);
+        changeListener({ [settingsService_1.SettingKey.AUTO_CHECK_FOR_UPDATES]: 'false' });
+        (0, vitest_1.expect)(callback).toHaveBeenCalledWith(false);
+        changeListener({ [settingsService_1.SettingKey.AUTO_CHECK_FOR_UPDATES]: 'true' });
+        (0, vitest_1.expect)(callback).toHaveBeenCalledWith(true);
+    });
+    (0, vitest_1.it)('should not trigger onSettingChanged when different key changes', () => {
+        let changeListener;
+        mockStorageManager.onDidChange.mockImplementation((listener) => {
+            changeListener = listener;
+            return { dispose: vitest_1.vi.fn() };
+        });
+        settingsService = new settingsService_1.SettingsService(mockStorageManager);
+        const callback = vitest_1.vi.fn();
+        settingsService.onSettingChanged(settingsService_1.SettingKey.AUTO_CHECK_FOR_UPDATES, callback);
+        changeListener({ [settingsService_1.SettingKey.KEEP_COMPUTER_AWAKE]: 'true' });
+        (0, vitest_1.expect)(callback).not.toHaveBeenCalled();
+    });
+    (0, vitest_1.it)('should trigger onSettingChanged with default value when key is deleted', () => {
+        let changeListener;
+        mockStorageManager.onDidChange.mockImplementation((listener) => {
+            changeListener = listener;
+            return { dispose: vitest_1.vi.fn() };
+        });
+        settingsService = new settingsService_1.SettingsService(mockStorageManager);
+        const callback = vitest_1.vi.fn();
+        settingsService.onSettingChanged(settingsService_1.SettingKey.AUTO_CHECK_FOR_UPDATES, callback);
+        changeListener({ [settingsService_1.SettingKey.AUTO_CHECK_FOR_UPDATES]: null });
+        (0, vitest_1.expect)(callback).toHaveBeenCalledWith(true); // Default is true
+    });
 });

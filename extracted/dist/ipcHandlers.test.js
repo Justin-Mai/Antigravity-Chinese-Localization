@@ -102,17 +102,7 @@ const ipcHandlers_1 = require("./ipcHandlers");
             (0, vitest_1.expect)(result).toBe(true);
             (0, vitest_1.expect)(promises_1.stat).toHaveBeenCalledWith(vitest_1.expect.stringContaining('Antigravity IDE'));
         });
-        (0, vitest_1.it)('should return true if the installation path is missing but the user settings directory exists', async () => {
-            const handler = handlers.get('ide:is-installed');
-            // First stat call throws (missing install path), second stat call succeeds (has settings folder)
-            vitest_1.vi.mocked(promises_1.stat)
-                .mockRejectedValueOnce(new Error('ENOENT'))
-                .mockResolvedValueOnce({});
-            const result = await handler({});
-            (0, vitest_1.expect)(result).toBe(true);
-            (0, vitest_1.expect)(promises_1.stat).toHaveBeenCalledWith(vitest_1.expect.stringContaining('antigravity-ide'));
-        });
-        (0, vitest_1.it)('should return false if both stat calls throw errors', async () => {
+        (0, vitest_1.it)('should return false if the stat call throws an error', async () => {
             const handler = handlers.get('ide:is-installed');
             vitest_1.vi.mocked(promises_1.stat).mockRejectedValue(new Error('ENOENT'));
             const result = await handler({});

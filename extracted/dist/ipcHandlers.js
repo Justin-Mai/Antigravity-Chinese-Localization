@@ -45,7 +45,6 @@ const fs = __importStar(require("fs/promises"));
 const customScheme_1 = require("./customScheme");
 const tray_1 = require("./tray");
 const constants_1 = require("./ideInstall/constants");
-const paths_1 = require("./paths");
 /**
  * Registers all IPC handlers for the main process.
  */
@@ -71,6 +70,9 @@ function registerIpcHandlers(storageManager) {
             return;
         }
         electron_updater_1.autoUpdater.quitAndInstall();
+    });
+    electron_1.ipcMain.handle('updater:get-state', () => {
+        return (0, updater_1.getLastState)();
     });
     // Notifications
     electron_1.ipcMain.handle('notification:send', (_, options) => {
@@ -212,19 +214,12 @@ function registerIpcHandlers(storageManager) {
     // IDE installation check
     electron_1.ipcMain.handle('ide:is-installed', async () => {
         try {
-            // 1. Check standard installation path (works even if never launched)
+            // Check standard installation path (works even if the app has never been launched).
             await fs.stat((0, constants_1.getIdeInstallPath)());
             return true;
         }
         catch {
-            try {
-                // 2. Fallback: check if a manual installation was launched from a custom path
-                await fs.stat(paths_1.IDE_NEW_DATA_DIR);
-                return true;
-            }
-            catch {
-                return false;
-            }
+            return false;
         }
     });
 }

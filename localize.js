@@ -36,7 +36,7 @@ function isAppRunning() {
       const output = execSync('tasklist', { encoding: 'utf-8' });
       return output.toLowerCase().includes('antigravity.exe');
     } else {
-      const output = execSync('pgrep -fl antigravity', { encoding: 'utf-8' });
+      const output = execSync('pgrep -fl [Aa]ntigravity', { encoding: 'utf-8' });
       return output.toLowerCase().includes('antigravity');
     }
   } catch (e) {
@@ -51,7 +51,7 @@ function killApp() {
     if (process.platform === 'win32') {
       execSync('taskkill /F /IM Antigravity.exe', { stdio: 'ignore' });
     } else {
-      execSync('pkill -f antigravity', { stdio: 'ignore' });
+      execSync('pkill -f [Aa]ntigravity', { stdio: 'ignore' });
     }
     log('已成功强制关闭 Antigravity 进程！');
   } catch (e) {
@@ -65,10 +65,16 @@ function getAppDir(username, useDefault, customPath) {
     return customPath.trim();
   }
   const isWin = process.platform === 'win32';
+  const isMac = process.platform === 'darwin';
   const defaultUser = getHostUsername();
   const user = username ? username.trim() : defaultUser;
   if (isWin) {
     return `C:\\Users\\${user}\\AppData\\Local\\Programs\\antigravity`;
+  } else if (isMac) {
+    // macOS: /Applications/Antigravity.app/Contents/Resources/app.asar
+    // appDir 指向 Contents，下游 path.join(appDir, 'resources', 'app.asar') 命中。
+    // 默认 APFS 大小写不敏感，小写 resources 可匹配 Resources 目录。
+    return `/Applications/Antigravity.app/Contents`;
   } else {
     return `/home/${user}/Antigravity/Antigravity-x64`;
   }
@@ -620,7 +626,17 @@ const DOM_TRANSLATOR_INJECTION = `
     "write access": "写入权限",
     "specific files or directories": "特定文件或目录",
     // 浏览器子智能体说明(完整句)
-    "The browser subagent can be invoked by typing /browser in the conversation input box.": "可以在对话输入框中输入 /browser 来调用浏览器子智能体。"
+    "The browser subagent can be invoked by typing /browser in the conversation input box.": "可以在对话输入框中输入 /browser 来调用浏览器子智能体。",
+
+    // ===== 第7轮验证补充 (项目/文件夹状态提示) =====
+    "Missing": "缺失",
+    "Missing folder": "缺失文件夹",
+    "Missing Folder": "缺失文件夹",
+    "does not exist": "不存在",
+    "not found": "未找到",
+    "Not Found": "未找到",
+    "No longer available": "已不可用",
+    "Path": "路径"
   };
 
   const coreWords = {
@@ -706,6 +722,17 @@ const DOM_TRANSLATOR_INJECTION = `
     // 模型分组配额说明长句
     if (/^Within each group, models share/.test(trimmed)) {
       dynamicMatch = '在每个分组中，模型共享每周限额和 5 小时限额。配额按 token 成本比例消耗。因此，较短的任务或使用更具性价比的模型时，限额可持续更长时间。5 小时限额用于平滑总需求，以便在所有用户间公平分配全球容量，而每周限额则与您的个人等级直接挂钩。';
+      isDynamic = true;
+    }
+
+    // 项目/路径不存在的动态提示 (项目名 + " does not exist"，超3词无法走分词)
+    if (/^.+ does not exist\.?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(.+) does not exist\.?$/i, '$1 不存在');
+      isDynamic = true;
+    }
+    // "xxx was not found" 动态提示
+    if (/^.+ was not found\.?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(.+) was not found\.?$/i, '$1 未找到');
       isDynamic = true;
     }
 

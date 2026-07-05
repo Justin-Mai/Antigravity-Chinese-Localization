@@ -38,10 +38,18 @@ const helpers_1 = require("./test/helpers");
 const constants_1 = require("./constants");
 // Use the shared auto-mocks from __mocks__/
 vitest_1.vi.mock('electron');
-vitest_1.vi.mock('fs', () => ({
-    existsSync: vitest_1.vi.fn(),
-    readFileSync: vitest_1.vi.fn(),
-}));
+vitest_1.vi.mock('fs', async (importOriginal) => {
+    const realFs = await importOriginal();
+    return {
+        existsSync: vitest_1.vi.fn(),
+        readFileSync: vitest_1.vi.fn().mockImplementation((filePath) => {
+            if (filePath.endsWith('package.json')) {
+                return realFs.readFileSync('package.json', 'utf8');
+            }
+            return undefined;
+        }),
+    };
+});
 vitest_1.vi.mock('crypto', () => ({
     randomUUID: vitest_1.vi.fn().mockReturnValue('mock-uuid'),
 }));

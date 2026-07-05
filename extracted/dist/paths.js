@@ -15,7 +15,10 @@ const path_1 = __importDefault(require("path"));
 const os_1 = __importDefault(require("os"));
 const constants_1 = require("./constants");
 function getAppDataDirName() {
-    return `antigravity${electron_1.app.isPackaged ? '' : '-dev'}`;
+    if (!electron_1.app.isPackaged) {
+        return 'antigravity-dev';
+    }
+    return electron_1.app.getName().toLowerCase().replace(/\s+/g, '');
 }
 function getAppDataDir() {
     return path_1.default.join(os_1.default.homedir(), '.gemini', getAppDataDirName());

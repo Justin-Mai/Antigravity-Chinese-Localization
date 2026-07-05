@@ -110,6 +110,8 @@ function createWindow(url) {
     const win = new electron_1.BrowserWindow({
         width: 1400,
         height: 900,
+        minWidth: 500,
+        minHeight: 400,
         title: electron_1.app.getName(),
         icon: path_1.default.join(__dirname, '..', 'icon.png'),
         titleBarStyle: 'hidden',
@@ -126,7 +128,16 @@ function createWindow(url) {
             nodeIntegration: false,
             contextIsolation: true,
             preload: path_1.default.join(__dirname, 'preload.js'),
+            devTools: !electron_1.app.isPackaged,
         },
+    });
+    // Prevent the menu dropdown from being very wide due to long page titles
+    win.on('page-title-updated', (event, title) => {
+        const maxLength = 25;
+        if (title.length > maxLength) {
+            event.preventDefault();
+            win.setTitle(title.substring(0, maxLength) + '...');
+        }
     });
     win.webContents.setWindowOpenHandler((details) => {
         void electron_1.shell.openExternal(details.url);
