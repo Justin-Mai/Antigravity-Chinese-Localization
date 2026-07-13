@@ -75,10 +75,10 @@
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=liominsb%2FAntigravity-Chinese-Localization&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=liominsb/Antigravity-Chinese-Localization&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=liominsb/Antigravity-Chinese-Localization&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=liominsb/Antigravity-Chinese-Localization&type=date&legend=top-left" />
- </picture>
+<a href="https://star-history.com/#liominsb/Antigravity-Chinese-Localization&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=liominsb/Antigravity-Chinese-Localization&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=liominsb/Antigravity-Chinese-Localization&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=liominsb/Antigravity-Chinese-Localization&type=Date" />
+  </picture>
 </a>
