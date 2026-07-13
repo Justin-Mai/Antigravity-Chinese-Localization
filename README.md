@@ -73,12 +73,3 @@
   - 精准修复了智能体工作日志汉化失效的 Bug。
 - 📋 **部署控制台增量比对渲染**：引入 JSON 日志比对哈希。无新内容产生时彻底锁定 DOM，解决滚动条滑块频繁销毁重绘导致的无端抖动闪烁，仅在有新打包进度时按需对焦滚动。
 
-## Star History
-
-<a href="https://star-history.com/#liominsb/Antigravity-Chinese-Localization&Date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=liominsb/Antigravity-Chinese-Localization&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=liominsb/Antigravity-Chinese-Localization&type=Date" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=liominsb/Antigravity-Chinese-Localization&type=Date" />
-  </picture>
-</a>
