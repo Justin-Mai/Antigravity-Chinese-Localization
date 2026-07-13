@@ -35,9 +35,14 @@ function isAppRunning() {
     if (process.platform === 'win32') {
       const output = execSync('tasklist', { encoding: 'utf-8' });
       return output.toLowerCase().includes('antigravity.exe');
+    } else if (process.platform === 'darwin') {
+      // macOS BSD pgrep: -x 精确匹配进程名, -i 忽略大小写
+      execSync('pgrep -xi antigravity', { stdio: 'ignore' });
+      return true;
     } else {
-      const output = execSync('pgrep -fl [Aa]ntigravity', { encoding: 'utf-8' });
-      return output.toLowerCase().includes('antigravity');
+      // Linux: 不使用 -i（旧版 procps 不支持），Linux 二进制名为小写 antigravity
+      execSync('pgrep -x antigravity', { stdio: 'ignore' });
+      return true;
     }
   } catch (e) {
     return false;
@@ -50,8 +55,10 @@ function killApp() {
   try {
     if (process.platform === 'win32') {
       execSync('taskkill /F /IM Antigravity.exe', { stdio: 'ignore' });
+    } else if (process.platform === 'darwin') {
+      execSync('pkill -xi antigravity', { stdio: 'ignore' });
     } else {
-      execSync('pkill -f [Aa]ntigravity', { stdio: 'ignore' });
+      execSync('pkill -x antigravity', { stdio: 'ignore' });
     }
     log('已成功强制关闭 Antigravity 进程！');
   } catch (e) {
@@ -61,21 +68,33 @@ function killApp() {
 
 // Compute standard app directory based on dynamic username or custom path input
 function getAppDir(username, useDefault, customPath) {
+  let dir = '';
   if ((useDefault === false || useDefault === 'false') && customPath) {
-    return customPath.trim();
-  }
-  const isWin = process.platform === 'win32';
-  const isMac = process.platform === 'darwin';
-  const defaultUser = getHostUsername();
-  const user = username ? username.trim() : defaultUser;
-  if (isWin) {
-    return `C:\\Users\\${user}\\AppData\\Local\\Programs\\antigravity`;
-  } else if (isMac) {
-    // macOS: /Applications/Antigravity.app/Contents/Resources/app.asar
-    return `/Applications/Antigravity.app/Contents`;
+    dir = customPath.trim();
   } else {
-    return `/home/${user}/Antigravity/Antigravity-x64`;
+    const isWin = process.platform === 'win32';
+    const isMac = process.platform === 'darwin';
+    const defaultUser = getHostUsername();
+    const user = username ? username.trim() : defaultUser;
+    if (isWin) {
+      dir = `C:\\Users\\${user}\\AppData\\Local\\Programs\\antigravity`;
+    } else if (isMac) {
+      // macOS: /Applications/Antigravity.app/Contents/Resources/app.asar
+      dir = `/Applications/Antigravity.app/Contents`;
+    } else {
+      dir = `/home/${user}/Antigravity/Antigravity-x64`;
+    }
   }
+
+  // macOS 特殊处理：如果路径指向 .app，自动补全 /Contents
+  if (process.platform === 'darwin') {
+    if (dir.endsWith('.app')) {
+      dir = path.join(dir, 'Contents');
+    } else if (dir.endsWith('.app/')) {
+      dir = path.join(dir.slice(0, -1), 'Contents');
+    }
+  }
+  return dir;
 }
 
 // 智能检测 Resources 目录大小写（macOS .app 包使用大写 Resources，Windows/Linux 使用小写 resources）
@@ -1382,7 +1401,9 @@ const server = http.createServer((req, res) => {
 
         if (process.platform === 'darwin') {
           // macOS: 使用 open 命令启动 .app 包
-          const appBundlePath = appDir.replace(/\/Contents$/, '');
+          // 提取以 .app 结尾的完整应用路径
+          const match = appDir.match(/^.*\.app/);
+          const appBundlePath = match ? match[0] : appDir;
           log(`正在尝试启动 Antigravity 2.0 (macOS: open -a ${appBundlePath})...`);
           spawn('open', ['-a', appBundlePath], { detached: true, stdio: 'ignore' }).unref();
           log('Antigravity 2.0 启动指令已发送。');
