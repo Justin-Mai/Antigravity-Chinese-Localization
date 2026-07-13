@@ -72,12 +72,20 @@ function getAppDir(username, useDefault, customPath) {
     return `C:\\Users\\${user}\\AppData\\Local\\Programs\\antigravity`;
   } else if (isMac) {
     // macOS: /Applications/Antigravity.app/Contents/Resources/app.asar
-    // appDir 指向 Contents，下游 path.join(appDir, 'resources', 'app.asar') 命中。
-    // 默认 APFS 大小写不敏感，小写 resources 可匹配 Resources 目录。
     return `/Applications/Antigravity.app/Contents`;
   } else {
     return `/home/${user}/Antigravity/Antigravity-x64`;
   }
+}
+
+// 智能检测 Resources 目录大小写（macOS .app 包使用大写 Resources，Windows/Linux 使用小写 resources）
+function getResourcesDir(appDir) {
+  const upperPath = path.join(appDir, 'Resources');
+  const lowerPath = path.join(appDir, 'resources');
+  if (fs.existsSync(upperPath)) return upperPath;
+  if (fs.existsSync(lowerPath)) return lowerPath;
+  // 默认值：macOS 用大写，其他用小写
+  return process.platform === 'darwin' ? upperPath : lowerPath;
 }
 
 // Web UI DOM Localization engine injection payload
@@ -1182,8 +1190,9 @@ function translateMenu(menuItem) {
 
 // Full workflow runner
 async function runLocalizationWorkflow(appDir) {
-  const asarPath = path.join(appDir, 'resources', 'app.asar');
-  const backupPath = path.join(appDir, 'resources', 'app.asar.bak');
+  const resourcesDir = getResourcesDir(appDir);
+  const asarPath = path.join(resourcesDir, 'app.asar');
+  const backupPath = path.join(resourcesDir, 'app.asar.bak');
 
   logs = [];
   log('=================== 开始汉化流程 ===================');
@@ -1261,8 +1270,9 @@ async function runLocalizationWorkflow(appDir) {
 
 // Restore workflow
 function runRestoreWorkflow(appDir) {
-  const asarPath = path.join(appDir, 'resources', 'app.asar');
-  const backupPath = path.join(appDir, 'resources', 'app.asar.bak');
+  const resourcesDir = getResourcesDir(appDir);
+  const asarPath = path.join(resourcesDir, 'app.asar');
+  const backupPath = path.join(resourcesDir, 'app.asar.bak');
 
   logs = [];
   log('=================== 开始还原流程 ===================');
@@ -1303,8 +1313,9 @@ const server = http.createServer((req, res) => {
     const customPath = urlObj.searchParams.get('customPath') || '';
 
     const appDir = getAppDir(username, useDefault, customPath);
-    const asarPath = path.join(appDir, 'resources', 'app.asar');
-    const backupPath = path.join(appDir, 'resources', 'app.asar.bak');
+    const resourcesDir = getResourcesDir(appDir);
+    const asarPath = path.join(resourcesDir, 'app.asar');
+    const backupPath = path.join(resourcesDir, 'app.asar.bak');
 
     const isInstalled = fs.existsSync(asarPath);
     const hasBackup = fs.existsSync(backupPath);
@@ -1368,17 +1379,28 @@ const server = http.createServer((req, res) => {
       try {
         const params = body ? JSON.parse(body) : {};
         const appDir = getAppDir(params.username, params.useDefault, params.customPath);
-        const exeName = process.platform === 'win32' ? 'Antigravity.exe' : 'antigravity';
-        const appPath = path.join(appDir, exeName);
-        log(`正在尝试启动 Antigravity 2.0 (路径: ${appPath})...`);
-        if (fs.existsSync(appPath)) {
-          spawn(appPath, [], { detached: true, stdio: 'ignore' }).unref();
+
+        if (process.platform === 'darwin') {
+          // macOS: 使用 open 命令启动 .app 包
+          const appBundlePath = appDir.replace(/\/Contents$/, '');
+          log(`正在尝试启动 Antigravity 2.0 (macOS: open -a ${appBundlePath})...`);
+          spawn('open', ['-a', appBundlePath], { detached: true, stdio: 'ignore' }).unref();
           log('Antigravity 2.0 启动指令已发送。');
           res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
           res.end(JSON.stringify({ success: true, logs }));
         } else {
-          res.writeHead(404, { 'Content-Type': 'application/json; charset=utf-8' });
-          res.end(JSON.stringify({ success: false, error: '未找到可执行程序: ' + appPath, logs }));
+          const exeName = process.platform === 'win32' ? 'Antigravity.exe' : 'antigravity';
+          const appPath = path.join(appDir, exeName);
+          log(`正在尝试启动 Antigravity 2.0 (路径: ${appPath})...`);
+          if (fs.existsSync(appPath)) {
+            spawn(appPath, [], { detached: true, stdio: 'ignore' }).unref();
+            log('Antigravity 2.0 启动指令已发送。');
+            res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+            res.end(JSON.stringify({ success: true, logs }));
+          } else {
+            res.writeHead(404, { 'Content-Type': 'application/json; charset=utf-8' });
+            res.end(JSON.stringify({ success: false, error: '未找到可执行程序: ' + appPath, logs }));
+          }
         }
       } catch (e) {
         res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });

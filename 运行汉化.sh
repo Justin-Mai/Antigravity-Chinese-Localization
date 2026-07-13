@@ -1,5 +1,5 @@
 #!/bin/bash
-# Antigravity 2.0 Chinese Localizer Service Startup Script for Linux
+# Antigravity 2.0 Chinese Localizer Service Startup Script for Linux/macOS
 
 echo "======================================================="
 echo "  Antigravity 2.0 Chinese Localizer Service"
