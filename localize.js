@@ -758,7 +758,7 @@ const DOM_TRANSLATOR_INJECTION = `
       // 1. 如果是文本节点，先检查文本自身特征
       if (node.nodeType === Node.TEXT_NODE) {
         const val = node.nodeValue ? node.nodeValue.trim() : '';
-        // 如果文本节点本身包含路径特征（如斜杠且带有文件扩展名），直接跳过
+        // 如果文本节点本身包含路径特征（如包含路径斜杠或常见文件扩展名），直接跳过
         if (val && (/[\\/\\\\]/.test(val) || /\\.(md|js|ts|json|py|yaml|yml|html|css|bat|sh|png|jpg|svg)$/i.test(val))) {
           return true;
         }
@@ -868,7 +868,8 @@ const DOM_TRANSLATOR_INJECTION = `
         cur = cur.parentElement;
       }
     } catch (e) {
-      return false;
+      // 异常时采取防御性策略，直接跳过翻译，避免在未知结构中误翻译正文
+      return true;
     }
 
     return false;

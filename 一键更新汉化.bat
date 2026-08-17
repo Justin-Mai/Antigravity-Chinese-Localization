@@ -1,4 +1,5 @@
 @echo off
+chcp 936 >nul
 title Antigravity 2.0 一键最新汉化部署
 echo =======================================================
 echo    Antigravity 2.0 一键最新汉化部署工具

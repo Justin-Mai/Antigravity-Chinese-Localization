@@ -1,9 +1,35 @@
 const fs = require('fs');
 const path = require('path');
-const asar = require(path.join(process.env.LOCALAPPDATA, 'npm-cache/_npx/4b0e2640fe917ac8/node_modules/@electron/asar'));
 
-const asarPath = path.join(process.env.LOCALAPPDATA, 'Programs/antigravity/resources/app.asar');
-const bakPath = path.join(process.env.LOCALAPPDATA, 'Programs/antigravity/resources/app.asar.bak');
+function getAsarModule() {
+  try {
+    return require('@electron/asar');
+  } catch (e) {
+    // 尝试在全局 npm / npx 缓存中寻找可用 asar
+    const npxCache = path.join(process.env.LOCALAPPDATA || '', 'npm-cache', '_npx');
+    if (fs.existsSync(npxCache)) {
+      const dirs = fs.readdirSync(npxCache);
+      for (const dir of dirs) {
+        const candidate = path.join(npxCache, dir, 'node_modules', '@electron', 'asar');
+        if (fs.existsSync(candidate)) {
+          try {
+            return require(candidate);
+          } catch (_) {}
+        }
+      }
+    }
+    return null;
+  }
+}
+
+const asar = getAsarModule();
+const asarPath = path.join(process.env.LOCALAPPDATA || '', 'Programs/antigravity/resources/app.asar');
+const bakPath = path.join(process.env.LOCALAPPDATA || '', 'Programs/antigravity/resources/app.asar.bak');
+
+if (!asar) {
+  console.log('未检测到 @electron/asar 模块，自动跳过 asar 模块级别检查 (建议运行 npm i -g @electron/asar)。');
+  process.exit(0);
+}
 
 console.log('--- 检查 app.asar ---');
 if (fs.existsSync(asarPath)) {

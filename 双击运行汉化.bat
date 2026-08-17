@@ -1,4 +1,5 @@
 @echo off
+chcp 936 >nul
 title Antigravity 2.0 汉化管理服务
 echo =======================================================
 echo  Antigravity 2.0 汉化管理面板
