@@ -161,6 +161,65 @@ const testCases = [
       return span;
     },
     expected: true
+  },
+  // [Case 7: 面包屑路径节点隔离，跳过，返回 true]
+  {
+    name: 'Case 7 (面包屑导航): <span class="breadcrumb">Project</span> -> shouldSkipNode 应返回 true',
+    buildNode: () => {
+      const span = new MockElement('span', { className: 'breadcrumb' });
+      const text = new MockTextNode('Project', span);
+      span.appendChild(text);
+      return span;
+    },
+    expected: true
+  },
+  // [Case 8: 工作区下拉列表项隔离，跳过，返回 true]
+  {
+    name: 'Case 8 (工作区下拉列表项): <div class="workspace-dropdown-item">Project</div> -> shouldSkipNode 应返回 true',
+    buildNode: () => {
+      const div = new MockElement('div', { className: 'workspace-dropdown-item' });
+      const text = new MockTextNode('Project', div);
+      div.appendChild(text);
+      return div;
+    },
+    expected: true
+  },
+  // [Case 9: 文件夹列表项隔离，跳过，返回 true]
+  {
+    name: 'Case 9 (文件夹列表项): <div class="folder-item">Project</div> -> shouldSkipNode 应返回 true',
+    buildNode: () => {
+      const div = new MockElement('div', { className: 'folder-item' });
+      const text = new MockTextNode('Project', div);
+      div.appendChild(text);
+      return div;
+    },
+    expected: true
+  },
+  // [Case 10: 聊天消息视图容器隔离，跳过，返回 true]
+  {
+    name: 'Case 10 (聊天消息视图): <div class="chat-message-view"><span>Models</span></div> 中的 span 节点 -> shouldSkipNode 应返回 true',
+    buildNode: () => {
+      const container = new MockElement('div', { className: 'chat-message-view' });
+      const span = new MockElement('span', { parentElement: container });
+      container.appendChild(span);
+      const text = new MockTextNode('Models', span);
+      span.appendChild(text);
+      return span;
+    },
+    expected: true
+  },
+  // [Case 11: Markdown 流式正文容器隔离，跳过，返回 true]
+  {
+    name: 'Case 11 (Markdown 流式正文): <div class="stream-markdown-body"><span>Settings</span></div> 中的 span 节点 -> shouldSkipNode 应返回 true',
+    buildNode: () => {
+      const container = new MockElement('div', { className: 'stream-markdown-body' });
+      const span = new MockElement('span', { parentElement: container });
+      container.appendChild(span);
+      const text = new MockTextNode('Settings', span);
+      span.appendChild(text);
+      return span;
+    },
+    expected: true
   }
 ];
 

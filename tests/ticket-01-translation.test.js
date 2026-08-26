@@ -40,8 +40,9 @@ function getTranslateStringFunction() {
 
 const translateString = getTranslateStringFunction();
 
-// 3. T1 阶段测试用例集
+// 3. 测试用例集
 const testCases = [
+  // --- 基础防护用例 ---
   // [Case 1: 文件名中包含 remove 单词，必须保持英文原样，绝不能翻译为 01-移除-...]
   {
     name: '文件名中的 remove 不能被误分词为 移除',
@@ -89,12 +90,140 @@ const testCases = [
     name: 'UI 菜单 Settings 正常汉化为 设置',
     input: 'Settings',
     expected: '设置'
+  },
+
+  // --- Ticket 01: 单词级字典收紧与用户文件夹保护 ---
+  {
+    name: '单字 "Project" 必须保持英文原样（不能翻译为 "项目"）',
+    input: 'Project',
+    expected: 'Project'
+  },
+  {
+    name: '单字 "project" 必须保持英文原样（不能翻译为 "项目"）',
+    input: 'project',
+    expected: 'project'
+  },
+  {
+    name: '菜单项复数 "Projects" 正常汉化为 "项目"',
+    input: 'Projects',
+    expected: '项目'
+  },
+  {
+    name: '复合短语 "Select Project" 汉化为 "选择项目"',
+    input: 'Select Project',
+    expected: '选择项目'
+  },
+  {
+    name: '复合短语 "New Project" 汉化为 "新建项目"',
+    input: 'New Project',
+    expected: '新建项目'
+  },
+  {
+    name: '复合短语 "Quick Start" 汉化为 "快速开始"',
+    input: 'Quick Start',
+    expected: '快速开始'
+  },
+  {
+    name: '复合短语 "No Project" 汉化为 "不在项目中"',
+    input: 'No Project',
+    expected: '不在项目中'
+  },
+
+  // --- Ticket 03: 2.10.0 Models & Usage 页面汉化 ---
+  {
+    name: 'Models & Usage 标题汉化',
+    input: 'Models & Usage',
+    expected: '模型与用量'
+  },
+  {
+    name: 'Models & Usage 副标题汉化',
+    input: 'Manage your model quota and credits.',
+    expected: '管理您的模型配额与额度。'
+  },
+  {
+    name: 'Plan 汉化为 计划',
+    input: 'Plan',
+    expected: '计划'
+  },
+  {
+    name: 'Google AI Ultra 升级文案汉化',
+    input: 'You can upgrade to a Google AI Ultra plan to receive higher rate limits.',
+    expected: '您可以升级到 Google AI Ultra 计划以获得更高额的使用速率限制。'
+  },
+  {
+    name: 'Gemini Models 汉化为 Gemini 模型',
+    input: 'Gemini Models',
+    expected: 'Gemini 模型'
+  },
+  {
+    name: 'Weekly Limit Remaining 汉化为 每周剩余限额',
+    input: 'Weekly Limit Remaining',
+    expected: '每周剩余限额'
+  },
+  {
+    name: 'Five Hour Limit Remaining 汉化为 5 小时剩余限额',
+    input: 'Five Hour Limit Remaining',
+    expected: '5 小时剩余限额'
+  },
+  {
+    name: 'Claude and GPT models 汉化为 Claude 与 GPT 模型',
+    input: 'Claude and GPT models',
+    expected: 'Claude 与 GPT 模型'
+  },
+  {
+    name: '导航栏 Models 汉化为 模型',
+    input: 'Models',
+    expected: '模型'
+  },
+
+  // --- Ticket 03: 动态时间格式汉化 ---
+  {
+    name: '动态刷新时间句子汉化（天/小时）',
+    input: 'You have used some of your weekly limit it will fully refresh in: 2 days 19 hours',
+    expected: '您已使用了部分每周限额 它将在以下时间后完全刷新： 2 天 19 小时'
+  },
+
+  // --- Ticket 03: 2.10.0 应用设置与远程控制 (Remote Control) ---
+  {
+    name: 'Manage Antigravity app settings. 汉化',
+    input: 'Manage Antigravity app settings.',
+    expected: '管理 Antigravity 应用设置。'
+  },
+  {
+    name: '后台常驻描述文案汉化',
+    input: 'Keep the app accessible from the menu bar and running in the background when all windows are closed.',
+    expected: '在关闭所有窗口后，保持应用在菜单栏中可访问并在后台运行。'
+  },
+  {
+    name: 'Remote Control 汉化为 远程控制',
+    input: 'Remote Control',
+    expected: '远程控制'
+  },
+  {
+    name: 'Enable Remote Control 汉化为 启用远程控制',
+    input: 'Enable Remote Control',
+    expected: '启用远程控制'
+  },
+  {
+    name: 'Work with local agents from another device. 汉化',
+    input: 'Work with local agents from another device.',
+    expected: '在其他设备上与本地智能体协同工作。'
+  },
+  {
+    name: 'Device Name 汉化为 设备名称',
+    input: 'Device Name',
+    expected: '设备名称'
+  },
+  {
+    name: 'Scan the code to open this device in Remote Control, or copy link. 汉化',
+    input: 'Scan the code to open this device in Remote Control, or copy link.',
+    expected: '扫描二维码以在远程控制中打开此设备，或复制链接。'
   }
 ];
 
 let failedCount = 0;
 let passedCount = 0;
-console.log('=== 开始执行 Ticket 01 TDD 单元测试 ===\n');
+console.log('=== 开始执行 Ticket 01 & Ticket 03 TDD 单元测试 ===\n');
 
 for (const tc of testCases) {
   const actual = translateString(tc.input);
