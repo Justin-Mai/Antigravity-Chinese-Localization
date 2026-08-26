@@ -654,6 +654,23 @@ const DOM_TRANSLATOR_INJECTION = `
     "copy link": "复制链接",
     "copy link.": "复制链接。",
 
+    // 2.10.0 通用设置页 (Execution & Queued Messages)
+    "Configure agent execution, queued message delivery, and permissions.": "配置智能体执行、队列消息发送以及权限。",
+    "Execution": "执行",
+    "Queued Messages": "队列消息",
+    "Configure when follow-up messages are sent.": "配置后续消息的发送时机。",
+    "Queue": "排队",
+    "Send Immediately": "立即发送",
+    "Keyboard shortcuts": "键盘快捷键",
+    "Turbo Mode": "Turbo 极速模式",
+    "Turbo mode": "Turbo 极速模式",
+    "Learn more about Turbo mode": "了解关于 Turbo 模式的更多信息",
+
+    // 浏览器设置分段补充
+    "Configure the browser subagent. It requires": "配置浏览器子智能体。这需要",
+    "to be installed.": "需要安装。",
+    "to be installed": "需要安装",
+
     // ===== 第6轮彻底验证补充 =====
     // 窗口控制
     "Minimize": "最小化",

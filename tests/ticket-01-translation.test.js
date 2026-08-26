@@ -218,6 +218,65 @@ const testCases = [
     name: 'Scan the code to open this device in Remote Control, or copy link. 汉化',
     input: 'Scan the code to open this device in Remote Control, or copy link.',
     expected: '扫描二维码以在远程控制中打开此设备，或复制链接。'
+  },
+
+  // --- 2.10.0 通用设置页 (Execution & Queued Messages) ---
+  {
+    name: 'Configure agent execution, queued message delivery, and permissions. 汉化',
+    input: 'Configure agent execution, queued message delivery, and permissions.',
+    expected: '配置智能体执行、队列消息发送以及权限。'
+  },
+  {
+    name: 'Execution 汉化为 执行',
+    input: 'Execution',
+    expected: '执行'
+  },
+  {
+    name: 'Queued Messages 汉化为 队列消息',
+    input: 'Queued Messages',
+    expected: '队列消息'
+  },
+  {
+    name: 'Configure when follow-up messages are sent. 汉化',
+    input: 'Configure when follow-up messages are sent.',
+    expected: '配置后续消息的发送时机。'
+  },
+  {
+    name: 'Queue 汉化为 排队',
+    input: 'Queue',
+    expected: '排队'
+  },
+  {
+    name: 'Send Immediately 汉化为 立即发送',
+    input: 'Send Immediately',
+    expected: '立即发送'
+  },
+  {
+    name: 'Keyboard shortcuts 汉化为 键盘快捷键',
+    input: 'Keyboard shortcuts',
+    expected: '键盘快捷键'
+  },
+  {
+    name: 'Turbo Mode 汉化为 Turbo 极速模式',
+    input: 'Turbo Mode',
+    expected: 'Turbo 极速模式'
+  },
+  {
+    name: 'Learn more about Turbo mode 汉化',
+    input: 'Learn more about Turbo mode',
+    expected: '了解关于 Turbo 模式的更多信息'
+  },
+
+  // --- 浏览器设置分段文本补全 ---
+  {
+    name: 'Configure the browser subagent. It requires 汉化',
+    input: 'Configure the browser subagent. It requires',
+    expected: '配置浏览器子智能体。这需要'
+  },
+  {
+    name: 'to be installed. 汉化',
+    input: 'to be installed.',
+    expected: '需要安装。'
   }
 ];
 
