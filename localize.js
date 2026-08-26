@@ -620,13 +620,39 @@ const DOM_TRANSLATOR_INJECTION = `
     "Fast": "快速",
 
     // 第5轮: 单数形式补全 (分组选项)
-    "Project": "项目",
-    "project": "项目",
     "projects": "项目",
     "Conversation": "对话",
     "conversation": "对话",
     "Workspace": "工作区",
     "workspace": "工作区",
+
+    // 复合短语与单字防护
+    "Select Project": "选择项目",
+    "New Project": "新建项目",
+    "Quick Start": "快速开始",
+    "No Project": "不在项目中",
+
+    // 2.10.0 Models & Usage
+    "Models": "模型",
+    "Models & Usage": "模型与用量",
+    "Manage your model quota and credits.": "管理您的模型配额与额度。",
+    "Plan": "计划",
+    "You can upgrade to a Google AI Ultra plan to receive higher rate limits.": "您可以升级到 Google AI Ultra 计划以获得更高额的使用速率限制。",
+    "Gemini Models": "Gemini 模型",
+    "Weekly Limit Remaining": "每周剩余限额",
+    "Five Hour Limit Remaining": "5 小时剩余限额",
+    "Claude and GPT models": "Claude 与 GPT 模型",
+
+    // 2.10.0 应用设置与远程控制 (Remote Control)
+    "Manage Antigravity app settings.": "管理 Antigravity 应用设置。",
+    "Keep the app accessible from the menu bar and running in the background when all windows are closed.": "在关闭所有窗口后，保持应用在菜单栏中可访问并在后台运行。",
+    "Remote Control": "远程控制",
+    "Enable Remote Control": "启用远程控制",
+    "Work with local agents from another device.": "在其他设备上与本地智能体协同工作。",
+    "Device Name": "设备名称",
+    "Scan the code to open this device in Remote Control, or copy link.": "扫描二维码以在远程控制中打开此设备，或复制链接。",
+    "copy link": "复制链接",
+    "copy link.": "复制链接。",
 
     // ===== 第6轮彻底验证补充 =====
     // 窗口控制
@@ -672,17 +698,17 @@ const DOM_TRANSLATOR_INJECTION = `
     if (!trimmed) return text;
 
     // 配额提示句 (含动态天数/小时/分钟)
-    if (/^You have used some of your (weekly|5-hour|hourly|daily) limit/.test(trimmed)) {
+    if (/^You have used some of your (weekly|5-hour|hourly|daily) limit/i.test(trimmed)) {
       let dynamicMatch = trimmed
-        .replace(/^You have used some of your weekly limit/, '您已使用了部分每周限额')
-        .replace(/^You have used some of your 5-hour limit/, '您已使用了部分 5 小时限额')
-        .replace(/^You have used some of your hourly limit/, '您已使用了部分每小时限额')
-        .replace(/^You have used some of your daily limit/, '您已使用了部分每日限额')
-        .replace(/it will fully refresh in/, '它将在以下时间后完全刷新：')
-        .replace(/(\d+)\s*days?/g, '$1 天 ')
-        .replace(/(\d+)\s*hours?/g, '$1 小时 ')
-        .replace(/(\d+)\s*minutes?\.?$/g, '$1 分钟')
-        .replace(/[,.]/g, '');
+        .replace(/^You have used some of your weekly limit/i, '您已使用了部分每周限额')
+        .replace(/^You have used some of your 5-hour limit/i, '您已使用了部分 5 小时限额')
+        .replace(/^You have used some of your hourly limit/i, '您已使用了部分每小时限额')
+        .replace(/^You have used some of your daily limit/i, '您已使用了部分每日限额')
+        .replace(/it will fully refresh in:?\\s*/i, '它将在以下时间后完全刷新： ')
+        .replace(/(\\d+)\\s*days?/gi, '$1 天')
+        .replace(/(\\d+)\\s*hours?/gi, '$1 小时')
+        .replace(/(\\d+)\\s*minutes?/gi, '$1 分钟')
+        .trim();
       return text.replace(trimmed, dynamicMatch);
     }
     // 模型分组配额说明长句
@@ -854,6 +880,11 @@ const DOM_TRANSLATOR_INJECTION = `
             lowerClass.includes('code-line') ||
             lowerClass.includes('select-contain') ||
             lowerClass.includes('font-mono') ||
+            lowerClass.includes('workspace-dropdown') ||
+            lowerClass.includes('workspace-item') ||
+            lowerClass.includes('folder-item') ||
+            lowerClass.includes('project-item') ||
+            lowerClass.includes('breadcrumb') ||
             codeClassPattern.test(cur.className)
           ) {
             return true;
