@@ -11,10 +11,11 @@ var SettingKey;
 })(SettingKey || (exports.SettingKey = SettingKey = {}));
 // Default values
 exports.DEFAULTS = new Map([
-    // The following setting is off by default for windows because the app
-    // icon is not as discoverable in the bottom right corner menu bar as
-    // it is on macOS and linux.
-    [SettingKey.RUN_IN_BACKGROUND, process.platform !== 'win32'],
+    // The following setting is only on by default for macOS because closing
+    // all windows without quitting is standard macOS behavior. On Linux and
+    // Windows, tray icons are less discoverable or unsupported by default,
+    // and closing all windows is expected to quit the application.
+    [SettingKey.RUN_IN_BACKGROUND, process.platform === 'darwin'],
     [SettingKey.KEEP_COMPUTER_AWAKE, false],
     [SettingKey.AUTO_CHECK_FOR_UPDATES, true],
 ]);

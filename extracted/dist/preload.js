@@ -24,6 +24,7 @@ const updaterAPI = {
 };
 const dialogAPI = {
     showOpenDialog: () => electron_1.ipcRenderer.invoke('dialog:open-workspace'),
+    showOpenMultipleFolderDialog: () => electron_1.ipcRenderer.invoke('dialog:open-workspaces'),
 };
 const notificationAPI = {
     send: (options) => electron_1.ipcRenderer.invoke('notification:send', options),
@@ -82,17 +83,16 @@ const electronNativeAPI = {
     close: () => electron_1.ipcRenderer.invoke('window:close'),
     toggleDevTools: () => electron_1.ipcRenderer.invoke('window:toggle-devtools'),
     zoomIn: () => {
-        const current = electron_1.webFrame.getZoomLevel();
-        electron_1.webFrame.setZoomLevel(current + 0.5);
+        void electron_1.ipcRenderer.invoke('window:zoom-in');
     },
     zoomOut: () => {
-        const current = electron_1.webFrame.getZoomLevel();
-        electron_1.webFrame.setZoomLevel(current - 0.5);
+        void electron_1.ipcRenderer.invoke('window:zoom-out');
     },
     resetZoom: () => {
-        electron_1.webFrame.setZoomLevel(0);
+        void electron_1.ipcRenderer.invoke('window:reset-zoom');
     },
     openExternal: (url) => electron_1.ipcRenderer.invoke('shell:open-external', url),
+    revealInFilePicker: (path) => electron_1.ipcRenderer.invoke('shell:reveal-in-file-picker', path),
 };
 const ideAPI = {
     isInstalled: () => electron_1.ipcRenderer.invoke('ide:is-installed'),

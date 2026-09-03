@@ -87,6 +87,15 @@ vitest_1.vi.mock('./updater', async (importOriginal) => {
 vitest_1.vi.mock('./ipcHandlers', () => ({
     registerIpcHandlers: vitest_1.vi.fn(),
 }));
+vitest_1.vi.mock('./hostBridgeServer', () => ({
+    startHostBridgeServer: vitest_1.vi.fn().mockResolvedValue({
+        url: 'http://127.0.0.1:54321',
+        token: 'mock-host-updater-token',
+        port: 54321,
+        server: {},
+        close: vitest_1.vi.fn().mockResolvedValue(undefined),
+    }),
+}));
 vitest_1.vi.mock('./tray', () => ({
     createTray: vitest_1.vi.fn(),
 }));
@@ -131,6 +140,29 @@ vitest_1.vi.mock('./ideInstall', () => ({
             version: '12345',
         }));
     });
+    (0, vitest_1.it)('should start the host bridge server and pass it to the LS', async () => {
+        const { existsSync } = await Promise.resolve().then(() => __importStar(require('fs')));
+        const { startAndMonitorLanguageServer } = await Promise.resolve().then(() => __importStar(require('./languageServer')));
+        const { startHostBridgeServer } = await Promise.resolve().then(() => __importStar(require('./hostBridgeServer')));
+        const { app } = await Promise.resolve().then(() => __importStar(require('electron')));
+        vitest_1.vi.mocked(existsSync).mockReturnValue(true);
+        vitest_1.vi.mocked(startAndMonitorLanguageServer).mockResolvedValue({
+            port: 49152,
+            process: { pid: 1234 },
+            exitPromise: new Promise(() => { }),
+        });
+        await Promise.resolve().then(() => __importStar(require('./main')));
+        const whenReadyCall = vitest_1.vi.mocked(app.whenReady).mock.results[0].value;
+        await whenReadyCall.cb();
+        (0, vitest_1.expect)(startHostBridgeServer).toHaveBeenCalledWith({
+            getUpdateStatus: vitest_1.expect.any(Function),
+            applyUpdate: vitest_1.expect.any(Function),
+        });
+        (0, vitest_1.expect)(startAndMonitorLanguageServer).toHaveBeenCalledWith(constants_1.DYNAMIC_PORT, 'mock-uuid', vitest_1.expect.objectContaining({
+            hostBridgeUrl: 'http://127.0.0.1:54321',
+            hostBridgeToken: 'mock-host-updater-token',
+        }));
+    });
     (0, vitest_1.it)('should quit if language server binary is missing', async () => {
         const { existsSync } = await Promise.resolve().then(() => __importStar(require('fs')));
         const { app, dialog } = await Promise.resolve().then(() => __importStar(require('electron')));
@@ -160,7 +192,7 @@ vitest_1.vi.mock('./ideInstall', () => ({
         // Verify port 0 (DYNAMIC_PORT) is passed — the OS picks the real port
         (0, vitest_1.expect)(startAndMonitorLanguageServer).toHaveBeenCalledWith(constants_1.DYNAMIC_PORT, 'mock-uuid', vitest_1.expect.objectContaining({ headless: false }));
         // Window should load the OS-assigned port, not a hardcoded one
-        (0, vitest_1.expect)(createWindow).toHaveBeenCalledWith(`https://127.0.0.1:${OS_ASSIGNED_PORT}/`);
+        (0, vitest_1.expect)(createWindow).toHaveBeenCalledWith(`https://127.0.0.1:${OS_ASSIGNED_PORT}/`, vitest_1.expect.anything());
     });
     (0, vitest_1.it)('should quit on language server startup failure', async () => {
         const { existsSync } = await Promise.resolve().then(() => __importStar(require('fs')));

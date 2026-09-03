@@ -152,4 +152,80 @@ vitest_1.vi.mock('./services/settingsService', () => {
         const win = electron_1.BrowserWindow.getAllWindows()[0];
         (0, vitest_1.expect)(win.webContents.send).toHaveBeenCalledWith('updater:state-changed', statePayload);
     });
+    (0, vitest_1.describe)('getHostUpdateStatus', () => {
+        (0, vitest_1.it)('should report the running version as latest before any check', () => {
+            (0, updater_1.broadcastState)({ type: 'idle' });
+            (0, vitest_1.expect)((0, updater_1.getHostUpdateStatus)()).toEqual({
+                currentVersion: '1.0.0',
+                latestVersion: '1.0.0',
+                updateAvailable: false,
+            });
+        });
+        (0, vitest_1.it)('should report an available update', () => {
+            (0, updater_1.broadcastState)({
+                type: 'available for download',
+                update: { version: '1.2.3' },
+            });
+            (0, vitest_1.expect)((0, updater_1.getHostUpdateStatus)()).toEqual({
+                currentVersion: '1.0.0',
+                latestVersion: '1.2.3',
+                updateAvailable: true,
+            });
+        });
+        (0, vitest_1.it)('should report a downloaded update as available', () => {
+            (0, updater_1.broadcastState)({ type: 'ready', update: { version: '1.2.3' } });
+            (0, vitest_1.expect)((0, updater_1.getHostUpdateStatus)()).toEqual({
+                currentVersion: '1.0.0',
+                latestVersion: '1.2.3',
+                updateAvailable: true,
+            });
+        });
+        (0, vitest_1.it)('should not report an update while a check is in flight', () => {
+            (0, updater_1.broadcastState)({ type: 'checking for updates' });
+            (0, vitest_1.expect)((0, updater_1.getHostUpdateStatus)()).toEqual({
+                currentVersion: '1.0.0',
+                latestVersion: '1.0.0',
+                updateAvailable: false,
+            });
+        });
+        (0, vitest_1.it)('should not check for updates on the request path', () => {
+            (0, updater_1.broadcastState)({ type: 'idle' });
+            (0, updater_1.getHostUpdateStatus)();
+            (0, vitest_1.expect)(electron_updater_1.autoUpdater.checkForUpdates).not.toHaveBeenCalled();
+        });
+    });
+    (0, vitest_1.describe)('applyHostUpdate', () => {
+        (0, vitest_1.it)('should quit and install when an update is ready', () => {
+            (0, updater_1.broadcastState)({ type: 'ready', update: { version: '1.2.3' } });
+            (0, vitest_1.expect)((0, updater_1.applyHostUpdate)()).toBe(true);
+            (0, vitest_1.expect)(electron_updater_1.autoUpdater.quitAndInstall).toHaveBeenCalled();
+        });
+        (0, vitest_1.it)('should not quit and install in an unpackaged build', () => {
+            // The Electron typings mark isPackaged readonly; the mock is a plain
+            // object, so cast to override it for this test.
+            const mockApp = electron_1.app;
+            mockApp.isPackaged = false;
+            (0, updater_1.broadcastState)({ type: 'ready', update: { version: '1.2.3' } });
+            (0, vitest_1.expect)((0, updater_1.applyHostUpdate)()).toBe(false);
+            (0, vitest_1.expect)(electron_updater_1.autoUpdater.quitAndInstall).not.toHaveBeenCalled();
+            mockApp.isPackaged = true;
+        });
+        (0, vitest_1.it)('should accept without acting while a download is in flight', () => {
+            (0, updater_1.broadcastState)({ type: 'downloading' });
+            (0, vitest_1.expect)((0, updater_1.applyHostUpdate)()).toBe(true);
+            (0, vitest_1.expect)(electron_updater_1.autoUpdater.quitAndInstall).not.toHaveBeenCalled();
+            (0, vitest_1.expect)(electron_updater_1.autoUpdater.checkForUpdates).not.toHaveBeenCalled();
+        });
+        (0, vitest_1.it)('should kick off a check when nothing is known yet', () => {
+            (0, updater_1.broadcastState)({ type: 'idle' });
+            (0, vitest_1.expect)((0, updater_1.applyHostUpdate)()).toBe(true);
+            (0, vitest_1.expect)(electron_updater_1.autoUpdater.checkForUpdates).toHaveBeenCalled();
+            (0, vitest_1.expect)(electron_updater_1.autoUpdater.quitAndInstall).not.toHaveBeenCalled();
+        });
+        (0, vitest_1.it)('should not start a second check while one is in flight', () => {
+            (0, updater_1.broadcastState)({ type: 'checking for updates' });
+            (0, vitest_1.expect)((0, updater_1.applyHostUpdate)()).toBe(true);
+            (0, vitest_1.expect)(electron_updater_1.autoUpdater.checkForUpdates).not.toHaveBeenCalled();
+        });
+    });
 });
