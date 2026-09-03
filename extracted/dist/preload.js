@@ -1183,8 +1183,17 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     "Scan the code to open this device in 远程控制, or copy link.": "扫描二维码以在远程控制中打开此设备，或复制链接。",
     "Scan the code to open this device in 远程控制, or copy link": "扫描二维码以在远程控制中打开此设备，或复制链接",
     "Scan the code to 打开 this device in 远程控制, or copy link。": "扫描二维码以在远程控制中打开此设备，或复制链接。",
-    "Scan the code to 打开 this device in 远程控制, or copy link.": "扫描二维码以在远程控制中打开此设备，或复制链接。",
     "Scan the code to 打开 this device in 远程控制, or copy link": "扫描二维码以在远程控制中打开此设备，或复制链接",
+    "Scan the code to 打开 this 设备 in 远程 Control, or 复制链接": "扫描二维码以在远程控制中打开此设备，或复制链接。",
+    "Scan the code to 打开 this 设备 in 远程 Control, or 复制链接。": "扫描二维码以在远程控制中打开此设备，或复制链接。",
+    "Scan the code to 打开 this 设备 in 远程 Control, or 复制链接.": "扫描二维码以在远程控制中打开此设备，或复制链接。",
+    "Scan the code to": "扫描二维码以",
+    "scan the code to": "扫描二维码以",
+    "open this device in Remote Control": "在远程控制中打开此设备",
+    "open this device in remote control": "在远程控制中打开此设备",
+    "this device in Remote Control": "在远程控制中的此设备",
+    "Control": "控制",
+    "control": "控制",
     "Scan the code to open this device": "扫描二维码以打开此设备",
     "in remote control": "在远程控制中",
     "in Remote Control": "在远程控制中",
@@ -1441,7 +1450,7 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     "update": "更新", "select": "选择", "clear": "清除", "search": "搜索", "find": "查找", "view": "查看", "show": "显示", "hide": "隐藏",
     "agent": "智能体", "agents": "智能体", "subagent": "子智能体", "subagents": "子智能体", "task": "任务", "tasks": "任务",
     "workspace": "工作区", "workspaces": "工作区", "directory": "目录", "folder": "文件夹", "file": "文件", "files": "文件",
-    "command": "命令", "commands": "命令", "palette": "面板", "terminal": "终端", "console": "控制台", "output": "输出", "input": "输入", "remote": "远程", "device": "设备", "devices": "设备", "link": "链接",
+    "command": "命令", "commands": "命令", "palette": "面板", "terminal": "终端", "console": "控制台", "output": "输出", "input": "输入", "remote": "远程", "control": "控制", "device": "设备", "devices": "设备", "link": "链接",
     "log": "日志", "logs": "日志", "setting": "设置", "settings": "设置", "preference": "偏好", "preferences": "偏好",
     "theme": "主题", "themes": "主题", "model": "模型", "models": "模型", "capability": "能力", "capabilities": "能力",
     "running": "运行中", "completed": "已完成", "failed": "已失败", "pending": "等待中", "success": "成功", "error": "错误",
@@ -1492,6 +1501,12 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
       const replacedCouldNot = trimmed.replace(/could not be opened/gi, '无法打开');
       if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, replacedCouldNot);
       return text.replace(trimmed, replacedCouldNot);
+    }
+
+    if (/Scan the code to.*(?:copy link|复制链接)/i.test(trimmed)) {
+      const fixedRemoteIntro = '扫描二维码以在远程控制中打开此设备，或复制链接。';
+      if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixedRemoteIntro);
+      return text.replace(trimmed, fixedRemoteIntro);
     }
 
     // --- Dynamic Agent Logs Regex Rules (Fixed Escaping) ---
@@ -1697,7 +1712,8 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     finalTranslated = finalTranslated.replace(/五小时限额s*Remaining/gi, '5 小时限额剩余');
     finalTranslated = finalTranslated.replace(/Claude and GPT 模型/g, 'Claude 与 GPT 模型');
     finalTranslated = finalTranslated.replace(/命令s*palette/gi, '命令面板');
-    finalTranslated = finalTranslated.replace(/Scan the code to (?:打开|open) this device in 远程控制[,s]+or copy link[。.]?/gi, '扫描二维码以在远程控制中打开此设备，或复制链接。');
+    finalTranslated = finalTranslated.replace(/Scan the code to .*(?:copy link|复制链接)[。.]?/gi, '扫描二维码以在远程控制中打开此设备，或复制链接。');
+    finalTranslated = finalTranslated.replace(/Scan the code to (?:打开|open) this (?:设备|device) in 远程s*(?:Control|控制)[,s]+or (?:复制链接|copy link)[。.]?/gi, '扫描二维码以在远程控制中打开此设备，或复制链接。');
     finalTranslated = finalTranslated.replace(/(?:工作了s*持续|总耗时s*持续|Worked for)s*(.+)/gi, '总耗时 $1');
     finalTranslated = finalTranslated.replace(/(?:Thoughts*持续|思考了s*持续)s*(.+)/gi, '思考了 $1');
     finalTranslated = finalTranslated.replace(/查看s*could not be opened/gi, '查看文件无法打开');
@@ -2000,3 +2016,4 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
 
 
 })();
+
