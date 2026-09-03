@@ -2228,6 +2228,17 @@ if (process.argv.includes('--now')) {
       process.exit(1);
     });
 } else {
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(`\n======================================================`);
+      console.log(` [提示] Antigravity 2.0 汉化服务已经在运行中！(端口 ${PORT})`);
+      console.log(` 本地管理面板: http://localhost:${PORT}`);
+      console.log(`======================================================\n`);
+    } else {
+      console.error('服务启动异常:', err.message);
+    }
+  });
+
   server.listen(PORT, () => {
     console.log(`\n======================================================`);
     console.log(` Antigravity 2.0 汉化服务已在后台运行！`);
