@@ -1516,19 +1516,12 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     return str.split('').map(c => specials.includes(c) ? '\\' + c : c).join('');
   };
 
-  // 极速性能核心：在启动时一次性预编译常用词汇正则，彻底消灭运行时循环动态 new RegExp 导致的数百毫秒卡死
-  const PRECOMPILED_CORE_PATTERNS = Object.keys(coreWords)
+  // 性能优化 4：启动阶段一次性预编译单次联合分词正则，彻底消灭运行时 80 次循环迭代正则匹配
+  const sortedCoreKeys = Object.keys(coreWords)
     .sort((a, b) => b.length - a.length)
-    .filter(w => w.length > 2 || /^[a-zA-Z0-9]+$/.test(w))
-    .map(w => {
-      const escaped = escapeRegExp(w);
-      const startB = /^[a-zA-Z0-9]/.test(w) ? '\\b' : '';
-      const endB = /[a-zA-Z0-9]$/.test(w) ? '\\b' : '';
-      return {
-        regex: new RegExp(startB + escaped + endB, 'gi'),
-        target: coreWords[w]
-      };
-    });
+    .filter(w => w.length > 2 || /^[a-zA-Z0-9]+$/.test(w));
+  const escapedCoreUnion = sortedCoreKeys.map(w => escapeRegExp(w)).join('|');
+  const CORE_WORDS_UNION_REGEX = new RegExp('\\b(' + escapedCoreUnion + ')\\b', 'gi');
 
   function translateString(text) {
     if (!text) return text;
@@ -1779,15 +1772,15 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
       return text; // Do not translate, keep original English sentence clean
     }
 
-    let temp = core;
     let replaced = false;
-    for (let i = 0; i < PRECOMPILED_CORE_PATTERNS.length; i++) {
-      const p = PRECOMPILED_CORE_PATTERNS[i];
-      if (p.regex.test(temp)) {
-        temp = temp.replace(p.regex, p.target);
+    let temp = core.replace(CORE_WORDS_UNION_REGEX, (matched) => {
+      const lower = matched.toLowerCase();
+      if (coreWords[lower]) {
         replaced = true;
+        return coreWords[lower];
       }
-    }
+      return matched;
+    });
 
     let finalTranslated = replaced ? temp : core;
     // 消除中文字符之间可能由分词替换残留的英文空格，提升翻译句子的连贯精致度
@@ -2018,41 +2011,31 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
 
   const observedRoots = new WeakSet();
   let isTranslating = false;
+  let batchRafHandle = null;
+  const pendingAddedNodes = new Set();
+  const pendingTextNodes = new Set();
+  const pendingAttrNodes = new Map();
 
-  function observeRoot(root) {
-    if (!root || observedRoots.has(root)) return;
-    observedRoots.add(root);
+  const scheduleBatchFrame = typeof requestAnimationFrame === 'function'
+    ? requestAnimationFrame
+    : (fn) => setTimeout(fn, 16);
 
-    const observer = new MutationObserver((mutations) => {
-      if (isTranslating) return;
-      isTranslating = true;
-      try {
-        for (const mutation of mutations) {
-          if (mutation.type === 'childList') {
-            const added = mutation.addedNodes;
-            for (let i = 0; i < added.length; i++) {
-              const node = added[i];
-              if (node.shadowRoot) {
-                observeRoot(node.shadowRoot);
-              }
-              if (!shouldSkipNode(node)) {
-                translateNode(node);
-              }
-            }
-          } else if (mutation.type === 'characterData') {
-            const node = mutation.target;
-            if (!shouldSkipNode(node)) {
-              const original = node.nodeValue;
-              const translated = translateString(original);
-              if (original !== translated) {
-                node.nodeValue = translated;
-              }
-              translatedNodes.add(node);
-            }
-          } else if (mutation.type === 'attributes') {
-            const target = mutation.target;
-            if (!shouldSkipNode(target)) {
-              const attrName = mutation.attributeName;
+  function scheduleBatchTranslation() {
+    if (batchRafHandle !== null) return;
+    batchRafHandle = scheduleBatchFrame(processBatchTranslation);
+  }
+
+  function processBatchTranslation() {
+    batchRafHandle = null;
+    if (isTranslating) return;
+    isTranslating = true;
+
+    try {
+      // 1. 批量处理属性变更
+      if (pendingAttrNodes.size > 0) {
+        for (const [target, attrs] of pendingAttrNodes) {
+          if (!shouldSkipNode(target)) {
+            for (const attrName of attrs) {
               if (attrName === 'value' && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
                 continue;
               }
@@ -2066,10 +2049,95 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
             }
           }
         }
-      } catch (e) {
-        console.error('Observer translation error:', e);
-      } finally {
-        isTranslating = false;
+        pendingAttrNodes.clear();
+      }
+
+      // 2. 批量处理文本变更 (characterData)
+      if (pendingTextNodes.size > 0) {
+        for (const node of pendingTextNodes) {
+          if (!shouldSkipNode(node)) {
+            const original = node.nodeValue;
+            const translated = translateString(original);
+            if (original !== translated) {
+              node.nodeValue = translated;
+            }
+            translatedNodes.add(node);
+          }
+        }
+        pendingTextNodes.clear();
+      }
+
+      // 3. 批量处理新增节点（性能优化 6：祖先包含剪枝，彻底消灭 O(N^2) 嵌套递归）
+      if (pendingAddedNodes.size > 0) {
+        const rootNodes = [];
+        for (const node of pendingAddedNodes) {
+          let hasAncestor = false;
+          let p = node.parentElement;
+          while (p) {
+            if (pendingAddedNodes.has(p)) {
+              hasAncestor = true;
+              break;
+            }
+            p = p.parentElement;
+          }
+          if (!hasAncestor) {
+            rootNodes.push(node);
+          }
+        }
+        pendingAddedNodes.clear();
+
+        for (let i = 0; i < rootNodes.length; i++) {
+          const node = rootNodes[i];
+          if (node.shadowRoot) {
+            observeRoot(node.shadowRoot);
+          }
+          if (!shouldSkipNode(node)) {
+            translateNode(node);
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Batch translation error:', e);
+    } finally {
+      isTranslating = false;
+    }
+  }
+
+  function observeRoot(root) {
+    if (!root || observedRoots.has(root)) return;
+    observedRoots.add(root);
+
+    const observer = new MutationObserver((mutations) => {
+      let needsSchedule = false;
+      for (let i = 0; i < mutations.length; i++) {
+        const mutation = mutations[i];
+        if (mutation.type === 'childList') {
+          const added = mutation.addedNodes;
+          for (let j = 0; j < added.length; j++) {
+            const node = added[j];
+            if (node.shadowRoot) {
+              observeRoot(node.shadowRoot);
+            }
+            pendingAddedNodes.add(node);
+            needsSchedule = true;
+          }
+        } else if (mutation.type === 'characterData') {
+          pendingTextNodes.add(mutation.target);
+          needsSchedule = true;
+        } else if (mutation.type === 'attributes') {
+          const target = mutation.target;
+          let attrSet = pendingAttrNodes.get(target);
+          if (!attrSet) {
+            attrSet = new Set();
+            pendingAttrNodes.set(target, attrSet);
+          }
+          attrSet.add(mutation.attributeName);
+          needsSchedule = true;
+        }
+      }
+
+      if (needsSchedule) {
+        scheduleBatchTranslation();
       }
     });
 
