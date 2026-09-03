@@ -4,15 +4,14 @@ Antigravity 深度汉化补丁程序
 
 中文 | [English](README.en.md)
 
-[![GitHub release](https://img.shields.io/github/v/release/LAN-TINA-WS/Antigravity-Chinese-Localization)](https://github.com/LAN-TINA-WS/Antigravity-Chinese-Localization/releases/latest)
-[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://github.com/LAN-TINA-WS/Antigravity-Chinese-Localization)
-[![Package Size](https://img.shields.io/badge/ASAR%20Size-4.44%20MB%20(Official%20Standard)-success)](https://github.com/LAN-TINA-WS/Antigravity-Chinese-Localization)
+[![GitHub release](https://img.shields.io/github/v/release/liominsb/Antigravity-Chinese-Localization)](https://github.com/liominsb/Antigravity-Chinese-Localization/releases/latest)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://github.com/liominsb/Antigravity-Chinese-Localization)
+[![Package Size](https://img.shields.io/badge/ASAR%20Size-4.44%20MB%20(Official%20Standard)-success)](https://github.com/liominsb/Antigravity-Chinese-Localization)
 [![Node Runtime](https://img.shields.io/badge/Node.js-%3E%3D%2014.0.0-informational)](https://nodejs.org/)
-[![License Proposal](https://img.shields.io/badge/License-MIT%20(Proposed)-orange)](https://github.com/liominsb/Antigravity-Chinese-Localization/issues/18)
 
 专为 Google Antigravity 打造的高性能、非破坏性深度汉化补丁。全面适配 Antigravity v2.12.0+ 最新架构，提供规划模式、全套系统设置、插件中心生态、多智能体协同等上千条界面的深度本地化支持，同时通过打包过滤规则彻底根治 asar 体积膨胀问题，保持官方原版 4.44MB 的轻量级运行规格。
 
-> [最新 Release 下载](https://github.com/LAN-TINA-WS/Antigravity-Chinese-Localization/releases/latest) · [问题反馈与建议](https://github.com/LAN-TINA-WS/Antigravity-Chinese-Localization/issues) · [上游原项目](https://github.com/liominsb/Antigravity-Chinese-Localization)
+> [最新 Release 下载](https://github.com/liominsb/Antigravity-Chinese-Localization/releases/latest) · [问题反馈与建议](https://github.com/liominsb/Antigravity-Chinese-Localization/issues)
 
 ---
 
@@ -168,10 +167,3 @@ node localize.js --restore
 | [LAN-TINA-WS](https://github.com/LAN-TINA-WS) | 2.12.0+ 深度汉化重构、4.44MB 瘦身修复、热更新机制设计、设置与插件生态词库扩充与独立维护 |
 
 - **参与贡献**：欢迎提交 Pull Request 或通过 Issues 反馈未汉化的词条与界面。
-- **上游 PR**：已向原作者仓库提交合并请求 [PR #17](https://github.com/liominsb/Antigravity-Chinese-Localization/pull/17)。
-
----
-
-## 开源许可证说明 (License Note)
-
-本项目开源许可由原作者确认中。为方便社区共同建设与合规使用，建议采用宽松的 MIT 许可证。详情与讨论进展请参阅 [Issue #18](https://github.com/liominsb/Antigravity-Chinese-Localization/issues/18)。

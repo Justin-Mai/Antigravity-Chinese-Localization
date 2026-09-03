@@ -337,6 +337,95 @@ const DOM_TRANSLATOR_INJECTION = `
     "MCP servers included": "包含 MCP 服务器",
     "Hooks included": "包含钩子",
     "Author: Google": "作者: Google",
+    "Browse and enable plugins from the Build With Google catalog.": "浏览并启用来自 Build With Google 目录的官方插件。",
+    "Browse and enable plugins from the Build With Google catalog": "浏览并启用来自 Build With Google 目录的官方插件",
+    "Use Add MCP to browse the store, or add a custom server via the MCP config.": "使用“添加 MCP”浏览应用商店，或通过 MCP 配置文件添加自定义服务器。",
+    "Use Add MCP to browse the store, or add a custom server via the MCP config": "使用“添加 MCP”浏览应用商店，或通过 MCP 配置文件添加自定义服务器",
+    "No MCP servers installed": "未安装任何 MCP 服务器",
+    "Add MCP": "添加 MCP",
+    "Open MCP Config": "打开 MCP 配置文件",
+    "Guidelines for interacting with GitHub and request permissions from the user when commands fail due to restrictions in the agent environment.": "与 GitHub 交互的执行规范；当命令因智能体环境受限失败时，向用户提请权限确认的指南。",
+    // 官方 Firebase 与 Google Cloud 扩展插件深度汉化
+    "Skills and MCP servers for building with Firebase.": "用于基于 Firebase 构建应用的专属技能与 MCP 服务器。",
+    "Skills and MCP servers for building with Firebase": "用于基于 Firebase 构建应用的专属技能与 MCP 服务器",
+    "Skills and MCP servers for working with Google Cloud.": "用于在 Google Cloud 云平台上进行开发的技能与 MCP 服务器。",
+    "Skills and MCP servers for working with Google Cloud": "用于在 Google Cloud 云平台上进行开发的技能与 MCP 服务器",
+    "Configure agent execution, queued message delivery, and permissions.": "配置智能体执行策略、消息队列发送机制以及安全权限。",
+    "Configure agent execution, queued message delivery, and permissions": "配置智能体执行策略、消息队列发送机制以及安全权限",
+    "Configure 智能体 执行, queued 消息 delivery, and 权限。": "配置智能体执行策略、消息队列发送机制以及安全权限。",
+    "Configure 智能体 执行, queued 消息 delivery, and 权限": "配置智能体执行策略、消息队列发送机制以及安全权限",
+    "Use Build With Google Plugins": "使用 Google 插件构建",
+    "Use Build with Google Plugins": "使用 Google 插件构建",
+    "Use Build With Google Plugins to": "使用 Google 插件构建以",
+    "queued message delivery": "消息队列发送",
+    "queued message": "排队消息",
+    "queued messages": "排队消息",
+
+    // ===== 官方插件市场 (Build with Antigravity Plugins) 深度全量汉化 =====
+    "Build with Antigravity Plugins": "使用 Antigravity 插件构建",
+    "Build with Antigravity plugins": "使用 Antigravity 插件构建",
+    "Build With Antigravity Plugins": "使用 Antigravity 插件构建",
+    "Build with Antigravity 插件": "使用 Antigravity 插件构建",
+    "Plugins are packaged collections of skills and MCPs to help the Agent in Antigravity work with Google developer products. You can always change your choices in Settings.": "插件是技能与 MCP 服务器的打包集合，用于帮助 Antigravity 中的智能体更好地协同 Google 开发者产品。您可以随时在设置中更改配置。",
+    "Plugins are packaged collections of skills and MCPs to help the Agent in Antigravity work with Google developer products.": "插件是技能与 MCP 服务器的打包集合，用于帮助 Antigravity 中的智能体更好地协同 Google 开发者产品。",
+    "You can always change your choices in Settings.": "您可以随时在设置中更改配置。",
+
+    // 1. Android
+    "Core tools and knowledge required to develop for Android.": "面向 Android 应用开发所需的核心工具集与专业领域知识。",
+    "Core tools and knowledge required to develop for Android": "面向 Android 应用开发所需的核心工具集与专业领域知识",
+    "Core 工具 and knowledge required to develop 持续 Android": "面向 Android 应用开发所需的核心工具集与专业领域知识",
+    "develop for Android": "Android 应用开发",
+
+    // 2. Modern Web Guidance
+    "Modern Web Guidance": "现代 Web 开发指南",
+    "Keep your coding agent up to date with the latest web best practices.": "让您的编码智能体紧跟最新的 Web 最佳实践与现代技术规范。",
+    "Keep your coding agent up to date with the latest web best practices": "让您的编码智能体紧跟最新的 Web 最佳实践与现代技术规范",
+    "Keep your coding 智能体 已是最新版本 with the latest web best practices。": "让您的编码智能体紧跟最新的 Web 最佳实践与现代技术规范。",
+    "Keep your coding 智能体 已是最新版本 with the latest web best practices": "让您的编码智能体紧跟最新的 Web 最佳实践与现代技术规范",
+    "latest web best practices": "最新的 Web 最佳实践",
+
+    // 3. Google Antigravity SDK
+    "Google Antigravity SDK": "Google Antigravity SDK",
+    "Using the Antigravity Python SDK to build AI agents.": "使用官方 Antigravity Python SDK 构建自定义 AI 智能体。",
+    "Using the Antigravity Python SDK to build AI agents": "使用官方 Antigravity Python SDK 构建自定义 AI 智能体",
+    "Using the Antigravity Python SDK to build AI 智能体": "使用官方 Antigravity Python SDK 构建自定义 AI 智能体",
+    "build AI agents": "构建 AI 智能体",
+
+    // 4. Science
+    "Science": "科学研究",
+    "Curated collection of agent skills for science.": "专为科学计算、学术研究与实验探索精选的智能体技能集合。",
+    "Curated collection of agent skills for science": "专为科学计算、学术研究与实验探索精选的智能体技能集合",
+    "agent skills for science": "科学研究智能体技能",
+
+    // 5. Firebase
+    "Prototype, build & run modern apps users love with Firebase's backend, AI, and operational infrastructure.": "借助 Firebase 强大的后端、AI 与运维基础设施，原型设计、构建并运行深受用户喜爱的现代应用程序。",
+    "Prototype, build & run modern apps users love with Firebase's backend, AI, and operational infrastructure": "借助 Firebase 强大的后端、AI 与运维基础设施，原型设计、构建并运行深受用户喜爱的现代应用程序",
+    "backend, AI, and operational infrastructure": "后端、AI 与运维基础设施",
+
+    // 6. Chrome DevTools
+    "Reliable automation, in-depth debugging, and performance analysis in Chrome using Chrome DevTools and Puppeteer.": "在 Chrome 中结合 Chrome DevTools 与 Puppeteer，实现高可靠的自动化操作、深度调试与性能分析。",
+    "Reliable automation, in-depth debugging, and performance analysis in Chrome using Chrome DevTools and Puppeteer": "在 Chrome 中结合 Chrome DevTools 与 Puppeteer，实现高可靠的自动化操作、深度调试与性能分析",
+    "in-depth debugging, and performance analysis in Chrome": "在 Chrome 中进行深度调试与性能分析",
+
+    // 7. Dart and Flutter
+    "Dart and Flutter": "Dart 与 Flutter",
+    "Skills providing tailored instructions for happy path Dart and Flutter development workflows.": "为流畅、标准的 Dart 与 Flutter 开发工作流提供定制化指令与实践技能。",
+    "Skills providing tailored instructions for happy path Dart and Flutter development workflows": "为流畅、标准的 Dart 与 Flutter 开发工作流提供定制化指令与实践技能",
+    "happy path Dart and Flutter development workflows": "标准的 Dart 与 Flutter 开发工作流",
+
+    // 8. Google Maps Platform
+    "Google Maps Platform": "Google Maps Platform",
+    "Build and prototype location-aware applications with Google Maps Platform. Integrate interactive maps, search and inspect Places details, calculate optimal routes.": "基于 Google Maps Platform 构建并原型设计位置感知应用。支持集成交互式地图、搜索与查看地点详情、计算最优行车路线。",
+    "Build and prototype location-aware applications with Google Maps Platform. Integrate interactive maps, search and inspect Places details, calculate optimal routes": "基于 Google Maps Platform 构建并原型设计位置感知应用。支持集成交互式地图、搜索与查看地点详情、计算最优行车路线",
+    "Integrate interactive maps, search and inspect Places details, calculate optimal routes.": "集成交互式地图、搜索与查看地点详情、计算最优行车路线。",
+    "Integrate interactive maps, search and inspect Places details, calculate optimal routes": "集成交互式地图、搜索与查看地点详情、计算最优行车路线",
+
+    // 9. Data Agent Kit
+    "Data Agent Kit": "数据智能体套件",
+    "Data 智能体 Kit": "数据智能体套件",
+    "Specialized suite of skills for data engineers and database practitioners on Google Cloud.": "专为 Google Cloud 上的数据工程师与数据库从业者打造的专业技能套件。",
+    "Specialized suite of skills for data engineers and database practitioners on Google Cloud": "专为 Google Cloud 上的数据工程师与数据库从业者打造的专业技能套件",
+    "data engineers and database practitioners on Google Cloud": "Google Cloud 数据工程师与数据库从业者",
 
     // 官方首发插件 (gemini-api 及扩展体系) 长句深度汉化
     "Build applications with the Gemini Interactions API and Live API, including text generation, multi-turn chat, streaming, function calling, managed agents, and real-time audio/video.": "使用 Gemini Interactions API 和 Live API 构建应用，包括文本生成、多轮对话、流式响应、函数调用、托管智能体以及实时音视频处理。",
@@ -761,9 +850,62 @@ const DOM_TRANSLATOR_INJECTION = `
     "Inherit model": "继承模型",
     "Select a model": "选择模型",
     "Model tier": "模型级别",
-    "Token usage": "Token 用量",
-    "Context window": "上下文窗口",
     "Remaining tokens": "剩余 Token",
+    "Remaining": "剩余",
+    "remaining": "剩余",
+    "Weekly limit remaining": "每周限额剩余",
+    "Weekly limit Remaining": "每周限额剩余",
+    "Weekly Limit Remaining": "每周限额剩余",
+    "5-hour limit remaining": "5 小时限额剩余",
+    "5-hour limit Remaining": "5 小时限额剩余",
+    "5-Hour Limit Remaining": "5 小时限额剩余",
+    "每周限额 Remaining": "每周限额剩余",
+    "五小时限额 Remaining": "5 小时限额剩余",
+    "Weekly limit": "每周限额",
+    "weekly limit": "每周限额",
+    "Weekly Limit": "每周限额",
+    "5-hour limit": "5 小时限额",
+    "5-Hour Limit": "5 小时限额",
+    "Claude and GPT models": "Claude 与 GPT 模型",
+    "Claude and GPT Models": "Claude 与 GPT 模型",
+    "Claude and GPT 模型": "Claude 与 GPT 模型",
+    "Gemini models": "Gemini 模型",
+    "Gemini Models": "Gemini 模型",
+
+    // 会话管理与右键/操作菜单 (Conversation Management & Context Menu)
+    "Rename": "重命名",
+    "rename": "重命名",
+    "Mark Unread": "标记为未读",
+    "Mark unread": "标记为未读",
+    "mark unread": "标记为未读",
+    "Mark as Unread": "标记为未读",
+    "Mark as unread": "标记为未读",
+    "Mark Read": "标记为已读",
+    "Mark read": "标记为已读",
+    "mark read": "标记为已读",
+    "Mark as Read": "标记为已读",
+    "Mark as read": "标记为已读",
+    "Pin": "置顶",
+    "pin": "置顶",
+    "Unpin": "取消置顶",
+    "unpin": "取消置顶",
+    "Archive": "归档",
+    "archive": "归档",
+    "Unarchive": "取消归档",
+    "unarchive": "取消归档",
+    "Copy Conversation Name": "复制对话名称",
+    "Copy conversation name": "复制对话名称",
+    "Copy Conversation ID": "复制对话 ID",
+    "Copy conversation id": "复制对话 ID",
+    "Copy Project Name": "复制项目名称",
+    "Copy project name": "复制项目名称",
+    "Copy Terminal": "复制终端命令",
+    "Copy terminal": "复制终端命令",
+    "Copy terminal command": "复制终端命令",
+    "Conversation name": "对话名称",
+    "Conversation Name": "对话名称",
+    "Delete Conversation": "删除对话",
+    "delete conversation": "删除对话",
 
     // 多智能体协同与子智能体 (Subagents & Teamwork)
     "Teamwork": "团队协作",
@@ -894,6 +1036,17 @@ const DOM_TRANSLATOR_INJECTION = `
     "Restart to Update": "重启以应用更新",
     "Up to date": "已是最新版本",
     "New version available": "有新版本可用",
+    "Automatic 检查更新": "自动检查更新",
+    "Automatic check for updates": "自动检查更新",
+    "Automatic Check for Updates": "自动检查更新",
+    "Automatic Updates": "自动更新",
+    "Automatic updates": "自动更新",
+    "Automatically prompt you to restart the app when a new update is available. When disabled, you can check for updates manually from the app menu.": "当有新版本可用时，自动提示您重启应用以完成更新。禁用后，您仍可通过应用菜单手动检查更新。",
+    "Automatically prompt you to restart the app when a new update is available. When disabled, you can check for updates manually from the app menu": "当有新版本可用时，自动提示您重启应用以完成更新。禁用后，您仍可通过应用菜单手动检查更新",
+    "Automatically prompt you to restart the app when a new update is available.": "当有新版本可用时，自动提示您重启应用以完成更新。",
+    "Automatically prompt you to restart the app when a new update is available": "当有新版本可用时，自动提示您重启应用以完成更新",
+    "When disabled, you can check for updates manually from the app menu.": "禁用后，您仍可通过应用菜单手动检查更新。",
+    "When disabled, you can check for updates manually from the app menu": "禁用后，您仍可通过应用菜单手动检查更新",
     "Copy code": "复制代码",
     "Copied!": "已复制！",
     "Copied": "已复制",
@@ -903,6 +1056,41 @@ const DOM_TRANSLATOR_INJECTION = `
     "Show less": "显示更少",
     "Details": "详情",
     "Overview": "概览",
+
+    // ===== 顶部应用菜单与命令面板 (Application Menu & Command Palette) =====
+    "Command Palette": "命令面板",
+    "Command Palette...": "命令面板...",
+    "Command palette": "命令面板",
+    "command palette": "命令面板",
+    "Palette": "面板",
+    "palette": "面板",
+    "命令palette": "命令面板",
+    "命令 Palette": "命令面板",
+    "命令 palette": "命令面板",
+    "New Window": "新建窗口",
+    "new window": "新建窗口",
+    "Open Folder": "打开文件夹",
+    "Open folder": "打开文件夹",
+    "Open Folder...": "打开文件夹...",
+    "Open Workspace": "打开工作区",
+    "Open workspace": "打开工作区",
+    "Open Workspace...": "打开工作区...",
+    "Save As...": "另存为...",
+    "Save As": "另存为",
+    "Save as": "另存为",
+    "Save all": "全部保存",
+    "Save All": "全部保存",
+    "Close Window": "关闭窗口",
+    "close window": "关闭窗口",
+    "Close Workspace": "关闭工作区",
+    "close workspace": "关闭工作区",
+    "Close Editor": "关闭编辑器",
+    "close editor": "关闭编辑器",
+    "Close Folder": "关闭文件夹",
+    "close folder": "关闭文件夹",
+    "Quit Antigravity": "退出 Antigravity",
+    "Exit": "退出",
+    "exit": "退出",
 
     // ===== 深度汉化补充：通用与应用设置 (General & App Settings) =====
     "Appearance": "外观",
@@ -980,6 +1168,43 @@ const DOM_TRANSLATOR_INJECTION = `
     "asks-for-review": "询问审查",
     "Turbo": "极速模式",
     "turbo": "极速模式",
+    "Turbo mode": "极速模式",
+    "turbo mode": "极速模式",
+    "极速模式 mode": "极速模式",
+    "Learn more about": "了解更多关于",
+    "learn more about": "了解更多关于",
+    "了解更多 about": "了解更多关于",
+
+    // ===== 通用执行与排队消息策略 (Execution & Queued Messages) =====
+    "Configure when follow-up messages are sent.": "配置后续跟进消息的发送时机。",
+    "Configure when follow-up messages are sent": "配置后续跟进消息的发送时机",
+    "Queue": "排队等待",
+    "queue": "排队等待",
+    "Send Immediately": "立即发送",
+    "send immediately": "立即发送",
+    "Steer": "实时插话指导",
+    "steer": "实时插话指导",
+    "Interrupt": "中断当前执行",
+    "interrupt": "中断当前执行",
+    "Controls the actions the agent can take.": "控制智能体可以执行的具体操作范围。",
+    "Controls the actions the agent can take": "控制智能体可以执行的具体操作范围",
+    "Controls the 操作 the 智能体 can take。": "控制智能体可以执行的具体操作范围。",
+    "Controls the 操作 the 智能体 can take": "控制智能体可以执行的具体操作范围",
+    "Whether the agent asks you to review its documents.": "控制智能体是否提请您审查其生成的文档工件。",
+    "Whether the agent asks you to review its documents": "控制智能体是否提请您审查其生成的文档工件",
+    "Modify permissions for files, terminal, and MCP tools.": "修改针对文件系统、终端命令以及 MCP 工具的安全权限。",
+    "Modify permissions for files, terminal, and MCP tools": "修改针对文件系统、终端命令以及 MCP 工具的安全权限",
+    "Modify 权限 持续 文件, 终端, and MCP 工具。": "修改针对文件系统、终端命令以及 MCP 工具的安全权限。",
+    "Modify 权限 持续 文件, 终端, and MCP 工具": "修改针对文件系统、终端命令以及 MCP 工具的安全权限",
+    "You can upgrade to a Google AI Ultra plan to receive higher rate limits.": "您可以升级至 Google AI Ultra 计划以获得更高额度的调用速率上限。",
+    "You can upgrade to a Google AI Ultra plan to receive higher rate limits": "您可以升级至 Google AI Ultra 计划以获得更高额度的调用速率上限",
+    "You can 升级 to a Google AI Ultra 计划 to receive higher rate 限额。": "您可以升级至 Google AI Ultra 计划以获得更高额度的调用速率上限。",
+    "You can 升级 to a Google AI Ultra 计划 to receive higher rate 限额": "您可以升级至 Google AI Ultra 计划以获得更高额度的调用速率上限",
+    "Keyboard Shortcuts": "键盘快捷键",
+    "keyboard shortcuts": "键盘快捷键",
+    "Keyboard 快捷键": "键盘快捷键",
+    "Narrow": "紧凑",
+    "narrow": "紧凑",
 
     // ===== 深度汉化补充：终端沙盒与安全隔离 (Terminal Sandbox & Security) =====
     "Terminal Sandbox": "终端沙盒",
@@ -1100,7 +1325,42 @@ const DOM_TRANSLATOR_INJECTION = `
     "Log out": "退出登录",
     "Sign out": "退出登录",
     "Manage subscription": "管理订阅计划",
-    "Manage Google account": "管理 Google 账号"
+    "Manage Google account": "管理 Google 账号",
+
+    // ===== 深度汉化补充：通用偏好、系统托盘与远程控制 =====
+    "Manage Antigravity app settings.": "管理 Antigravity 应用程序偏好设置。",
+    "Keep the app accessible from the menu bar and running in the background when all windows are closed.": "关闭所有窗口后，保持应用常驻系统托盘并继续在后台运行。",
+    "Work with local agents from another device.": "支持从其他设备远程协同与控制本地智能体。",
+    "Browser settings have moved": "浏览器设置已迁移",
+    "Browser settings have moved to the Browser section of General settings.": "浏览器设置已移动到“常规设置”的“浏览器”板块中。",
+    "Go to General settings": "前往常规设置",
+    "Models & Usage": "模型配额与用量",
+    "Manage your model quota and credits.": "管理您的模型配额与个人 AI 点数。",
+    "Show Selection Actions": "显示划词快捷操作",
+    "Show Selection Actions when selecting text": "选中文本时显示划词操作",
+    'Show "Edit" and "Chat" buttons when selecting text in the editor.': '在编辑器中选中代码或文本时，浮动显示“编辑”与“聊天”快捷按钮。',
+    "Selection Actions": "划词操作",
+    "Previous Pane Tab": "切换到上一个窗格",
+    "Next Pane Tab": "切换到下一个窗格",
+    "Toggle Terminal": "切换终端面板",
+    "Add to Chat/Quote": "添加到聊天引用",
+
+    // ===== 深度汉化补充：Labs 实验功能与开发者工具 =====
+    "Try out early-stage features before they ship. These may change or be removed at any time.": "在正式发布前抢先体验早期新特性。这些功能可能会随时变更或移除。",
+    "Experimental features": "实验性功能",
+    "Conversation Sharing": "对话分享",
+    "Generate a link that lets any Googler load a read-only copy of a conversation. Sharing exports the conversation history to your public x20 folder, so it needs that folder to be readable by others.": "生成一个只读对话分享链接。分享操作会将对话记录导出至公开目录，需要该目录对外具备读取权限。",
+    "Inline Actions": "内联操作卡片",
+    "Show a floating notification card when background conversations need your input. Answer questions, approve commands, and grant permissions without leaving your current conversation. Share feedback at go/inline-actions-feedback.": "当后台对话需要您的输入时显示浮动通知卡片。无需切换离开当前对话即可直接回答问题、审批命令及授予权限。",
+    "CitC Settings": "CitC 工作区设置",
+    "Manage settings specific to Google CitC workspaces development.": "管理专用于 Google CitC 工作区开发的配置项。",
+    "Best of N": "Best of N 策略配置",
+    "Manage how Best of N sets up the workspaces its arms run in.": "配置 Best of N 在各分支运行时的工作区环境。",
+    "Developer-only tools. These settings are stored locally in this browser and do not affect other users.": "仅限开发者使用的内部工具。这些设置仅保存在本地，不会影响其他用户。",
+    "Regroup Google3 Chats": "重新归类 Google3 对话",
+    "Google3 chats will be regrouped into their workspaces in the sidebar.": "侧边栏中的 Google3 对话将按所属工作区重新归类分组。",
+    "This migration may mess up your settings, chats, and sidebar.": "此项迁移可能会影响您的偏好设置、对话记录及侧边栏布局。",
+    "Follow the guide at go/jetski-project-migration to back up your data and run the migration.": "请按照相关指南备份您的数据后再执行迁移。"
   };
 
   const coreWords = {
@@ -1109,7 +1369,7 @@ const DOM_TRANSLATOR_INJECTION = `
     "update": "更新", "select": "选择", "clear": "清除", "search": "搜索", "find": "查找", "view": "查看", "show": "显示", "hide": "隐藏",
     "agent": "智能体", "agents": "智能体", "subagent": "子智能体", "subagents": "子智能体", "task": "任务", "tasks": "任务",
     "workspace": "工作区", "workspaces": "工作区", "directory": "目录", "folder": "文件夹", "file": "文件", "files": "文件",
-    "command": "命令", "commands": "命令", "terminal": "终端", "console": "控制台", "output": "输出", "input": "输入",
+    "command": "命令", "commands": "命令", "palette": "面板", "terminal": "终端", "console": "控制台", "output": "输出", "input": "输入",
     "log": "日志", "logs": "日志", "setting": "设置", "settings": "设置", "preference": "偏好", "preferences": "偏好",
     "theme": "主题", "themes": "主题", "model": "模型", "models": "模型", "capability": "能力", "capabilities": "能力",
     "running": "运行中", "completed": "已完成", "failed": "已失败", "pending": "等待中", "success": "成功", "error": "错误",
@@ -1164,6 +1424,11 @@ const DOM_TRANSLATOR_INJECTION = `
       dynamicMatch = dynamicMatch.replace(/^Canceled (.*)/, '已取消 $1');
       isDynamic = true;
     }
+    if (/^\\d+(\\.\\d+)?% of the (customization budget|budget) is (available|used)\\.?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/(\\d+(?:\\.\\d+)?)% of the (?:customization )?budget is available\\.?/i, '自定义额度尚有 $1% 可用。');
+      dynamicMatch = dynamicMatch.replace(/(\\d+(?:\\.\\d+)?)% of the (?:customization )?budget is used\\.?/i, '已使用 $1% 的自定义额度。');
+      isDynamic = true;
+    }
 
     // 配额提示句 (含动态天数/小时/分钟)
     if (/^You have used some of your (weekly|5-hour|hourly|daily) limit/.test(trimmed)) {
@@ -1182,6 +1447,29 @@ const DOM_TRANSLATOR_INJECTION = `
     // 模型分组配额说明长句
     if (/^Within each group, models share/.test(trimmed)) {
       dynamicMatch = '在每个分组中，模型共享每周限额和 5 小时限额。配额按 token 成本比例消耗。因此，较短的任务或使用更具性价比的模型时，限额可持续更长时间。5 小时限额用于平滑总需求，以便在所有用户间公平分配全球容量，而每周限额则与您的个人等级直接挂钩。';
+      isDynamic = true;
+    }
+
+    // 模型配额剩余动态匹配 (例如 "100% Remaining", "85.4% remaining")
+    if (/^(\d+(?:\.\d+)?%?)\s+remaining$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+(?:\.\d+)?%?)\s+remaining$/i, '$1 剩余');
+      isDynamic = true;
+    }
+    // 剩余时间刷新动态匹配 (例如 "15 minutes", "1 hour 26 minutes", "2 hours", "1 day")
+    if (/^(\d+)\s+hours?\s+(\d+)\s+minutes?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+hours?\s+(\d+)\s+minutes?$/i, '$1 小时 $2 分钟');
+      isDynamic = true;
+    }
+    if (/^(\d+)\s+minutes?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+minutes?$/i, '$1 分钟');
+      isDynamic = true;
+    }
+    if (/^(\d+)\s+hours?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+hours?$/i, '$1 小时');
+      isDynamic = true;
+    }
+    if (/^(\d+)\s+days?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+days?$/i, '$1 天');
       isDynamic = true;
     }
 
@@ -1307,14 +1595,22 @@ const DOM_TRANSLATOR_INJECTION = `
     let finalTranslated = replaced ? temp : core;
     // 消除中文字符之间可能由分词替换残留的英文空格，提升翻译句子的连贯精致度
     finalTranslated = finalTranslated.replace(/([\u4e00-\u9fa5])\s+([\u4e00-\u9fa5])/g, '$1$2');
+    // 特殊去重清洗：防止前置分词造成的“使用使用”与半中半英长句残留
+    finalTranslated = finalTranslated.replace(/使用使用 Google 插件构建/g, '使用 Google 插件构建');
+    finalTranslated = finalTranslated.replace(/Configure 智能体 执行[,\s]+queued 消息 delivery[,\s]+and 权限[。.]?/g, '配置智能体执行策略、消息队列发送机制以及安全权限。');
+    finalTranslated = finalTranslated.replace(/Automatic 检查更新/g, '自动检查更新');
+    finalTranslated = finalTranslated.replace(/每周限额\s*Remaining/gi, '每周限额剩余');
+    finalTranslated = finalTranslated.replace(/五小时限额\s*Remaining/gi, '5 小时限额剩余');
+    finalTranslated = finalTranslated.replace(/Claude and GPT 模型/g, 'Claude 与 GPT 模型');
+    finalTranslated = finalTranslated.replace(/命令\s*palette/gi, '命令面板');
     if (matchPunc) {
       finalTranslated += trailPunc;
     }
     return text.replace(trimmed, finalTranslated);
   }
 
-  // 用于模糊匹配类名中包含代码/预览/diff相关关键词的正则
-  const codeClassPattern = /(?:^|[\\s_-])(code|diff|source|syntax|highlight|viewer|hljs|shiki|prism|monaco|codemirror|token|line-number|line-content|gutter|codeblock|code-block|code-view|code-preview|file-preview|file-content)(?:$|[\\s_-])/i;
+  // 用于精确匹配代码编辑器、语法高亮等容器类名（收敛范围，防止误杀带 font-mono 或 viewer 的正常 UI）
+  const codeClassPattern = /(?:^|[\\s_-])(monaco-editor|editor-instance|hljs|shiki|prism|codemirror|line-content|gutter|codeblock|code-block|code-line|view-line)(?:$|[\\s_-])/i;
 
   function shouldSkipNode(node) {
     if (!node) return true;
@@ -1382,13 +1678,12 @@ const DOM_TRANSLATOR_INJECTION = `
         return true;
       }
 
-      // 4e. 类名匹配 — 精确与模糊检测（高精度防御，防止 Tailwind 选择器如 [&_code] 引起的误杀）
+      // 4e. 类名匹配 — 精确代码行与编辑器检测
       if (cur.className && typeof cur.className === 'string') {
         const lowerClass = cur.className.toLowerCase();
         if (
           lowerClass.includes('code-line') ||
-          lowerClass.includes('select-contain') ||
-          lowerClass.includes('font-mono') ||
+          lowerClass.includes('view-line') ||
           codeClassPattern.test(cur.className)
         ) {
           return true;
@@ -1433,6 +1728,7 @@ const DOM_TRANSLATOR_INJECTION = `
         }
       });
       if (node.shadowRoot) {
+        observeRoot(node.shadowRoot);
         translateNode(node.shadowRoot);
       }
       for (let i = 0; i < node.childNodes.length; i++) {
@@ -1453,15 +1749,21 @@ const DOM_TRANSLATOR_INJECTION = `
     attributeFilter: ['placeholder', 'title', 'aria-label', 'value']
   };
 
-  const observers = [];
+  const observedRoots = new WeakSet();
 
   function observeRoot(root) {
+    if (!root || observedRoots.has(root)) return;
+    observedRoots.add(root);
+
     const observer = new MutationObserver((mutations) => {
       observer.disconnect();
       try {
         for (const mutation of mutations) {
           if (mutation.type === 'childList') {
             mutation.addedNodes.forEach(node => {
+              if (node.shadowRoot) {
+                observeRoot(node.shadowRoot);
+              }
               if (!shouldSkipNode(node)) {
                 translateNode(node);
               }
@@ -1498,7 +1800,6 @@ const DOM_TRANSLATOR_INJECTION = `
       observer.observe(root, observerConfig);
     });
     observer.observe(root, observerConfig);
-    observers.push(observer);
   }
 
   // Hook attachShadow
