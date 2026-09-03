@@ -1560,6 +1560,17 @@ const DOM_TRANSLATOR_INJECTION = `
       return text.replace(trimmed, fixed);
     }
 
+    if (/\\d+(?:\\.\\d+)?% of the (?:customization )?budget is (?:available|used)/i.test(trimmed)) {
+      let fixed = trimmed;
+      if (/available/i.test(trimmed)) {
+        fixed = trimmed.replace(/(\\d+(?:\\.\\d+)?)% of the (?:customization )?budget is available[.。]?/i, '自定义额度尚有 $1% 可用。');
+      } else if (/used/i.test(trimmed)) {
+        fixed = trimmed.replace(/(\\d+(?:\\.\\d+)?)% of the (?:customization )?budget is used[.。]?/i, '已使用 $1% 的自定义额度。');
+      }
+      if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
+      return text.replace(trimmed, fixed);
+    }
+
     // --- Dynamic Agent Logs Regex Rules (Fixed Escaping) ---
     let dynamicMatch = trimmed;
     let isDynamic = false;
@@ -1589,9 +1600,10 @@ const DOM_TRANSLATOR_INJECTION = `
       dynamicMatch = dynamicMatch.replace(/^Canceled (.*)/, '已取消 $1');
       isDynamic = true;
     }
-    if (/^\\d+(\\.\\d+)?% of the (customization budget|budget) is (available|used)\\.?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/(\\d+(?:\\.\\d+)?)% of the (?:customization )?budget is available\\.?/i, '自定义额度尚有 $1% 可用。');
-      dynamicMatch = dynamicMatch.replace(/(\\d+(?:\\.\\d+)?)% of the (?:customization )?budget is used\\.?/i, '已使用 $1% 的自定义额度。');
+    if (/^\\d+(?:\\.\\d+)?% of the (?:customization )?budget is (?:available|used)[.。]?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch
+        .replace(/(\\d+(?:\\.\\d+)?)% of the (?:customization )?budget is available[.。]?/i, '自定义额度尚有 $1% 可用。')
+        .replace(/(\\d+(?:\\.\\d+)?)% of the (?:customization )?budget is used[.。]?/i, '已使用 $1% 的自定义额度。');
       isDynamic = true;
     }
 
