@@ -307,6 +307,12 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     "Google plugins": "Google 插件",
     "Official Google plugins": "Google 官方插件",
     "Official Google plugins designed for Antigravity.": "专为 Antigravity 设计的 Google 官方扩展插件。",
+    "Plugins are packaged collections of skills and MCPs to help the Agent in Antigravity work with Google developer products. You can always change your choices in Settings.": "插件是技能和 MCP 的打包集合，用于协助 Antigravity 中的智能体使用 Google 开发者产品。你可以随时在设置中更改你的选择。",
+    "Plugins are packaged collections of skills and MCPs to help the Agent in Antigravity work with Google developer products. You can always change your choices in Settings": "插件是技能和 MCP 的打包集合，用于协助 Antigravity 中的智能体使用 Google 开发者产品。你可以随时在设置中更改你的选择",
+    "Plugins are packaged collections of skills and MCPs to help the Agent in Antigravity work with Google developer products.": "插件是技能和 MCP 的打包集合，用于协助 Antigravity 中的智能体使用 Google 开发者产品。",
+    "Plugins are packaged collections of skills and MCPs to help the Agent in Antigravity work with Google developer products": "插件是技能和 MCP 的打包集合，用于协助 Antigravity 中的智能体使用 Google 开发者产品",
+    "You can always change your choices in Settings.": "你可以随时在设置中更改你的选择。",
+    "You can always change your choices in Settings": "你可以随时在设置中更改你的选择",
     "Plugins built and maintained by Google to extend Antigravity capabilities.": "由 Google 官方构建并维护，用于全面扩展 Antigravity 各项能力的插件。",
     "Explore, install, and manage plugins to enhance your agent with specialized skills, MCP servers, and rules.": "浏览、安装并管理插件，为智能体扩展专属技能、MCP 服务器与执行规则。",
     "Discover plugins to integrate with Google APIs, Cloud services, and developer tools.": "发现并集成适用于 Google API、云服务及开发者工具的官方插件。",
@@ -1585,6 +1591,21 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
       } else if (/used/i.test(trimmed)) {
         fixed = trimmed.replace(/(\d+(?:\.\d+)?)% of the (?:customization )?budget is used[.。]?/i, '已使用 $1% 的自定义额度。');
       }
+      if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
+      return text.replace(trimmed, fixed);
+    }
+
+    if (/^Plugins are packaged collections of/i.test(trimmed)) {
+      let fixed = '插件是技能和 MCP 的打包集合，用于协助 Antigravity 中的智能体使用 Google 开发者产品。';
+      if (/change your choices in Settings/i.test(trimmed)) {
+        fixed = '插件是技能和 MCP 的打包集合，用于协助 Antigravity 中的智能体使用 Google 开发者产品。你可以随时在设置中更改你的选择。';
+      }
+      if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
+      return text.replace(trimmed, fixed);
+    }
+
+    if (/^You can always change your choices in Settings[.。]?$/i.test(trimmed)) {
+      const fixed = '你可以随时在设置中更改你的选择。';
       if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
       return text.replace(trimmed, fixed);
     }
