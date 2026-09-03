@@ -696,7 +696,12 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     "No scheduled tasks configured.": "暂无已配置的计划任务。",
     // 配额提示 (含动态时间,用部分匹配)
     "You have used some of your weekly limit": "您已使用部分每周限额",
+    "You have used some of your weekly limit.": "您已使用部分每周限额。",
     "You have used some of your 5-hour limit": "您已使用部分 5 小时限额",
+    "You have used some of your 5-hour limit.": "您已使用部分 5 小时限额。",
+    "You have used some of your Five Hour Limit": "您已使用部分 5 小时限额",
+    "You have used some of your five-hour limit": "您已使用部分 5 小时限额",
+    "You have used some of your five hour limit": "您已使用部分 5 小时限额",
     "it will fully refresh in": "它将在以下时间后完全刷新：",
     "hours": "小时",
     "minutes": "分钟",
@@ -1500,11 +1505,11 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     // 配额提示句 (含动态天数/小时/分钟，支持全英或半中文状态下自愈清洗)
     if (/(?:You have used some of your|您已使用了部分).*(?:limit|限额)/i.test(trimmed)) {
       dynamicMatch = dynamicMatch
-        .replace(/^(?:You have used some of your|您已使用了部分)s*(?:weekly|每周)s*(?:limit|限额)?/i, '您已使用了部分每周限额')
-        .replace(/^(?:You have used some of your|您已使用了部分)s*(?:5-hour|five-hour|5 小时|五小时)s*(?:limit|限额)?/i, '您已使用了部分 5 小时限额')
-        .replace(/^(?:You have used some of your|您已使用了部分)s*(?:hourly|每小时)s*(?:limit|限额)?/i, '您已使用了部分每小时限额')
-        .replace(/^(?:You have used some of your|您已使用了部分)s*(?:daily|每日)s*(?:limit|限额)?/i, '您已使用了部分每日限额')
-        .replace(/(?:it will fully refresh in|它将在以下时间后完全刷新[：:]?)s*/i, ' 它将在以下时间后完全刷新：')
+        .replace(/^(?:You have used some of your|您已使用了部分)\s*(?:weekly|每周)\s*(?:limit|限额)?/i, '您已使用了部分每周限额')
+        .replace(/^(?:You have used some of your|您已使用了部分)\s*(?:5[- ]hour|five[- ]hour|5 小时|五小时)\s*(?:limit|限额)?/i, '您已使用了部分 5 小时限额')
+        .replace(/^(?:You have used some of your|您已使用了部分)\s*(?:hourly|每小时)\s*(?:limit|限额)?/i, '您已使用了部分每小时限额')
+        .replace(/^(?:You have used some of your|您已使用了部分)\s*(?:daily|每日)\s*(?:limit|限额)?/i, '您已使用了部分每日限额')
+        .replace(/(?:it will fully refresh in|它将在以下时间后完全刷新[：:]?)\s*/i, ' 它将在以下时间后完全刷新：')
         .replace(/(\d+)\s*days?/gi, ' $1 天')
         .replace(/(\d+)\s*hours?/gi, ' $1 小时')
         .replace(/(\d+)\s*minutes?\.?$/gi, ' $1 分钟')

@@ -1797,11 +1797,27 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
       return true;
     }
 
-    // 3. 特殊放行：针对执行步骤的独立药丸标签（如 <code class="whitespace-pre-wrap">Explored</code>）
-    // 如果是多行真正的代码容器 PRE，坚决跳过；但对于极短的纯文本步骤标签 CODE，予以精准放行
+    // 3. 特殊特权放行：针对执行步骤的药丸标签（如 Ran, Explored, Edited, Viewed, Thought, Thinking, Working 等）
+    // 无论其父级为 SPAN、CODE 还是 BUTTON，只要是系统执行药丸且不在用户提问气泡内，一律无条件放行汉化
+    const textContent = (element.innerText || element.textContent || '').trim();
+    const isActionPill = textContent.length <= 25 && /^(Explored|Ran|Viewed|Edited|Thought|Thinking|Working)$/i.test(textContent);
+    if (isActionPill) {
+      let inUserInput = false;
+      let checkCur = element;
+      while (checkCur && checkCur !== document.body) {
+        if (checkCur.classList && checkCur.classList.contains('group/user-input-step')) {
+          inUserInput = true;
+          break;
+        }
+        checkCur = checkCur.parentElement;
+      }
+      if (!inUserInput) {
+        skipCache.set(element, false);
+        return false;
+      }
+    }
+
     if (element.tagName === 'CODE') {
-      const text = (element.innerText || element.textContent || '').trim();
-      const isActionPill = text.length <= 25 && /^(Explored|Ran|Viewed|Edited|Thought|Thinking|Working)$/i.test(text);
       if (!isActionPill) {
         skipCache.set(element, true);
         return true;
@@ -1812,14 +1828,13 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
       return true;
     }
 
-    // 4. 输入框/文本域/富文本编辑器/用户消息气泡绝对跳过（输入前、输入中、发送后 100% 原样保留）
+    // 4. 输入框/文本域/富文本编辑器/用户提问气泡绝对跳过（输入前、输入中、发送后 100% 原样保留）
     if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
       skipCache.set(element, true);
       return true;
     }
     if (element.getAttribute && (
         element.getAttribute('contenteditable') === 'true' ||
-        element.getAttribute('data-quotable') === 'true' ||
         element.getAttribute('role') === 'textbox' ||
         element.getAttribute('data-lexical-editor') === 'true'
     )) {
@@ -1850,7 +1865,6 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
       // 用户输入框与富文本编辑器（输入前/输入中绝对不翻译）
       if (cur.getAttribute && (
           cur.getAttribute('contenteditable') === 'true' ||
-          cur.getAttribute('data-quotable') === 'true' ||
           cur.getAttribute('role') === 'textbox' ||
           cur.getAttribute('data-lexical-editor') === 'true'
       )) {
