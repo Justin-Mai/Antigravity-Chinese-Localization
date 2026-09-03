@@ -2021,11 +2021,14 @@ const DOM_TRANSLATOR_INJECTION = `
     if (node.nodeType === Node.TEXT_NODE) {
       if (translatedNodes.has(node)) return;
       const original = node.nodeValue;
+      if (!original || !original.trim()) return;
       const translated = translateString(original);
       if (original !== translated) {
         node.nodeValue = translated;
+        translatedNodes.add(node);
+      } else if (!/[a-zA-Z]/.test(original)) {
+        translatedNodes.add(node);
       }
-      translatedNodes.add(node);
     } else if (node.nodeType === Node.ELEMENT_NODE) {
       ['placeholder', 'title', 'aria-label', 'value'].forEach(attr => {
         if (node.hasAttribute && node.hasAttribute(attr)) {
@@ -2071,13 +2074,20 @@ const DOM_TRANSLATOR_INJECTION = `
   const pendingTextNodes = new Set();
   const pendingAttrNodes = new Map();
 
-  const scheduleBatchFrame = typeof requestAnimationFrame === 'function'
-    ? requestAnimationFrame
-    : (fn) => setTimeout(fn, 16);
+  const scheduleBatchFrame = (fn) => {
+    if (typeof queueMicrotask === 'function') {
+      queueMicrotask(fn);
+    } else if (typeof requestAnimationFrame === 'function') {
+      requestAnimationFrame(fn);
+    } else {
+      setTimeout(fn, 0);
+    }
+  };
 
   function scheduleBatchTranslation() {
     if (batchRafHandle !== null) return;
-    batchRafHandle = scheduleBatchFrame(processBatchTranslation);
+    batchRafHandle = true;
+    scheduleBatchFrame(processBatchTranslation);
   }
 
   function processBatchTranslation() {
@@ -2112,11 +2122,15 @@ const DOM_TRANSLATOR_INJECTION = `
         for (const node of pendingTextNodes) {
           if (!shouldSkipNode(node)) {
             const original = node.nodeValue;
-            const translated = translateString(original);
-            if (original !== translated) {
-              node.nodeValue = translated;
+            if (original && original.trim()) {
+              const translated = translateString(original);
+              if (original !== translated) {
+                node.nodeValue = translated;
+                translatedNodes.add(node);
+              } else if (!/[a-zA-Z]/.test(original)) {
+                translatedNodes.add(node);
+              }
             }
-            translatedNodes.add(node);
           }
         }
         pendingTextNodes.clear();
@@ -2177,6 +2191,7 @@ const DOM_TRANSLATOR_INJECTION = `
             needsSchedule = true;
           }
         } else if (mutation.type === 'characterData') {
+          translatedNodes.delete(mutation.target);
           pendingTextNodes.add(mutation.target);
           needsSchedule = true;
         } else if (mutation.type === 'attributes') {
