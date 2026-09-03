@@ -6,7 +6,7 @@ Antigravity 深度汉化补丁程序
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://github.com/LAN-TINA-WS/Antigravity-Chinese-Localization)
 [![Package Size](https://img.shields.io/badge/ASAR%20Size-4.44%20MB%20(Official%20Standard)-success)](https://github.com/LAN-TINA-WS/Antigravity-Chinese-Localization)
 [![Node Runtime](https://img.shields.io/badge/Node.js-%3E%3D%2014.0.0-informational)](https://nodejs.org/)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+[![License Proposal](https://img.shields.io/badge/License-MIT%20(Proposed)-orange)](https://github.com/liominsb/Antigravity-Chinese-Localization/issues/18)
 
 专为 Google Antigravity 打造的高性能、非破坏性深度汉化补丁。全面适配 Antigravity v2.12.0+ 最新架构，提供规划模式、全套系统设置、插件中心生态、多智能体协同等上千条界面的深度本地化支持，同时通过打包过滤规则彻底根治 asar 体积膨胀问题，保持官方原版 4.44MB 的轻量级运行规格。
 
@@ -170,6 +170,6 @@ node localize.js --restore
 
 ---
 
-## 开源许可证 (License)
+## 开源许可证说明 (License Note)
 
-本项目采用 [MIT License](LICENSE) 开源许可。你可以自由地分发、修改和在商业/非商业项目中使用本项目代码，但须保留原始版权声明与免责条款。
+本项目开源许可由原作者确认中。为方便社区共同建设与合规使用，建议采用宽松的 MIT 许可证。详情与讨论进展请参阅 [Issue #18](https://github.com/liominsb/Antigravity-Chinese-Localization/issues/18)。
