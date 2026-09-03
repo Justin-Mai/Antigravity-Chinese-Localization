@@ -22,6 +22,7 @@ const wizardAPI = {
 };
 electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
 
+
 // Antigravity 2.0 Chinese Localization Engine Enhanced
 (function() {
   const dictionary = {
@@ -576,7 +577,212 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     "not found": "未找到",
     "Not Found": "未找到",
     "No longer available": "已不可用",
-    "Path": "路径"
+    "Path": "路径",
+
+    // ===== Antigravity 2.12.0+ 深度汉化补充 =====
+    // 规划模式 (Planning Mode)
+    "Planning Mode": "规划模式",
+    "planning mode": "规划模式",
+    "Planning Mode is ON": "规划模式已开启",
+    "Planning Mode is OFF": "规划模式已关闭",
+    "Implementation Plan": "实施计划",
+    "implementation plan": "实施计划",
+    "implementation_plan.md": "实施计划.md",
+    "Walkthrough": "变更回顾",
+    "walkthrough": "变更回顾",
+    "walkthrough.md": "变更回顾.md",
+    "User Review Required": "需用户审批",
+    "Open Questions": "待确认问题",
+    "Proposed Changes": "拟定变更",
+    "Verification Plan": "验证计划",
+    "Automated Tests": "自动化测试",
+    "Manual Verification": "手动验证",
+    "Proceed": "继续执行",
+    "Plan Execution": "计划执行",
+    "Approve Plan": "批准计划",
+    "Reject Plan": "拒绝计划",
+    "Plan approved": "计划已批准",
+    "Plan rejected": "计划已拒绝",
+    "Creating plan...": "正在生成计划...",
+    "Updating plan...": "正在更新计划...",
+    "Reviewing plan...": "正在审核计划...",
+    "Implementation plan created": "实施计划已创建",
+    "Implementation plan updated": "实施计划已更新",
+    "Exit Planning Mode": "退出规划模式",
+    "Enter Planning Mode": "进入规划模式",
+    "Plan Mode": "规划模式",
+    "Plan": "计划",
+    "Goal Description": "目标描述",
+    "Component Name": "组件名称",
+
+    // 模型与深度推理控制 (Models & Reasoning)
+    "Reasoning Effort": "推理深度",
+    "reasoning effort": "推理深度",
+    "High reasoning effort": "高推理深度",
+    "Medium reasoning effort": "中推理深度",
+    "Low reasoning effort": "低推理深度",
+    "Auto reasoning effort": "自动推理深度",
+    "Thinking Budget": "思考预算",
+    "thinking budget": "思考预算",
+    "Reasoning": "推理思考",
+    "Thinking": "思考中",
+    "Thought": "思考",
+    "Thought process": "思考过程",
+    "Internal reasoning": "内部推理",
+    "Gemini 3.8 Flash (High)": "Gemini 3.8 Flash (高思考)",
+    "Gemini 3.8 Flash (Low)": "Gemini 3.8 Flash (低思考)",
+    "Gemini 3.8 Pro": "Gemini 3.8 Pro",
+    "Gemini 2.5 Flash": "Gemini 2.5 Flash",
+    "Gemini 2.5 Pro": "Gemini 2.5 Pro",
+    "Claude 3.7 Sonnet": "Claude 3.7 Sonnet",
+    "Claude 3.7 Sonnet (Thinking)": "Claude 3.7 Sonnet (深度思考)",
+    "Claude 3.5 Sonnet": "Claude 3.5 Sonnet",
+    "Default model": "默认模型",
+    "Inherit model": "继承模型",
+    "Select a model": "选择模型",
+    "Model tier": "模型级别",
+    "Token usage": "Token 用量",
+    "Context window": "上下文窗口",
+    "Remaining tokens": "剩余 Token",
+
+    // 多智能体协同与子智能体 (Subagents & Teamwork)
+    "Teamwork": "团队协作",
+    "teamwork": "团队协作",
+    "Manage Subagents": "管理子智能体",
+    "manage subagents": "管理子智能体",
+    "Active Subagents": "活跃子智能体",
+    "Invoke subagent": "调用子智能体",
+    "Define subagent": "定义子智能体",
+    "Kill subagent": "终止子智能体",
+    "Kill all": "终止全部",
+    "Waiting for input": "等待输入",
+    "Waiting for dependents": "等待依赖任务",
+    "Waiting for message": "等待消息",
+    "Canceling": "正在取消",
+    "Errored": "发生错误",
+    "Idle": "空闲",
+    "Unspecified": "未指定",
+    "Research Agent": "调研智能体",
+    "Codebase Researcher": "代码库调研员",
+    "Conversation ID": "对话 ID",
+    "Conversation transcript": "对话记录",
+    "Transcript logs": "转录日志",
+    "Reactive Wakeup": "响应式唤醒",
+    "No polling needed": "无需轮询",
+    "Subagent conversation": "子智能体对话",
+    "Parent agent": "父智能体",
+    "Child agent": "子智能体",
+
+    // 工作区隔离与分支模式
+    "Branch Workspace": "分支隔离工作区",
+    "Share Workspace": "共享工作区",
+    "Inherit Workspace": "继承工作区",
+    "Isolated branch": "隔离分支",
+    "Shared repository": "共享仓库",
+    "Workspace directory permissions": "工作区目录权限",
+    "Active workspace": "活动工作区",
+    "Switch workspace": "切换工作区",
+    "Add folder to workspace": "添加文件夹到工作区",
+    "Remove from workspace": "从工作区移除",
+
+    // MCP 与扩展工具体系
+    "MCP Servers": "MCP 服务器",
+    "MCP Server": "MCP 服务器",
+    "MCP Tools": "MCP 工具",
+    "Call MCP Tools": "调用 MCP 工具",
+    "Active MCPs": "活跃 MCP 服务",
+    "Connectors": "连接器",
+    "Configure MCP server": "配置 MCP 服务器",
+    "Inspect parameters": "检查参数",
+    "Tool execution": "工具执行",
+    "Tool call": "工具调用",
+    "Tool calls": "工具调用",
+    "Tool summary": "工具摘要",
+    "Tool action": "工具操作",
+    "Built-in tools": "内置工具",
+    "External tools": "外部工具",
+    "Running command": "运行命令",
+    "Analyzing directory": "分析目录",
+    "Searching the web": "搜索网页",
+    "Editing file": "编辑文件",
+    "Viewing file": "查看文件",
+    "Semantic searching": "语义搜索",
+
+    // 权限控制与沙盒增强
+    "Sandbox": "沙盒",
+    "Sandboxed": "沙盒内",
+    "Unsandboxed": "沙盒外",
+    "Commands Outside Sandbox": "沙盒外命令",
+    "Terminal & Tooling Permissions": "终端与工具权限",
+    "Network Access Rules": "网络访问规则",
+    "File Access Rules": "文件访问规则",
+    "Allowed paths": "允许路径",
+    "Denied paths": "拒绝路径",
+    "Allowed commands": "允许命令",
+    "Denied commands": "拒绝命令",
+    "Allowed URLs": "允许的 URL",
+    "Denied URLs": "拒绝的 URL",
+    "Always allow": "总是允许",
+    "Ask every time": "每次询问",
+    "Deny by default": "默认拒绝",
+    "Allowlist": "白名单",
+    "Denylist": "黑名单",
+    "Global permissions": "全局权限",
+    "Project permissions": "项目权限",
+
+    // 定时任务与调度 (Schedule & Cron)
+    "Schedule": "计划调度",
+    "One-shot timer": "单次定时器",
+    "Recurring cron": "循环定时任务",
+    "Cron expression": "Cron 表达式",
+    "Duration in seconds": "持续秒数",
+    "Max iterations": "最大执行次数",
+    "Timer condition": "定时条件",
+    "Early termination": "提前终止",
+    "Any message": "任何消息",
+    "Specific sender": "特定发送者",
+    "Expired": "已过期",
+
+    // 自定义技能与规则 (Customizations & Skills)
+    "Customizations": "自定义配置",
+    "Skills": "技能",
+    "Skill": "技能",
+    "Rules": "规则",
+    "Rule": "规则",
+    "Plugins": "插件",
+    "Sidecars": "伴生进程 (Sidecars)",
+    "Hooks": "钩子",
+    "App Data Directory": "应用数据目录",
+    "Artifact": "工件",
+    "Artifacts": "工件",
+    "Artifact metadata": "工件元数据",
+
+    // 通用界面与交互
+    "Loading Antigravity": "正在加载 Antigravity...",
+    "Setting up…": "正在启动/设置中...",
+    "Setting up...": "正在启动/设置中...",
+    "Recent Workspaces": "最近工作区",
+    "Clear Cache": "清除缓存",
+    "Reset Settings": "重置设置",
+    "Log Out": "退出登录",
+    "Sign In": "登录",
+    "Sign in with Google": "使用 Google 账号登录",
+    "Signed in as": "当前登录为",
+    "Check for Updates": "检查更新",
+    "Checking for Updates...": "正在检查更新...",
+    "Downloading Update...": "正在下载更新...",
+    "Restart to Update": "重启以应用更新",
+    "Up to date": "已是最新版本",
+    "New version available": "有新版本可用",
+    "Copy code": "复制代码",
+    "Copied!": "已复制！",
+    "Copied": "已复制",
+    "Collapse": "折叠",
+    "Expand": "展开",
+    "Show more": "显示更多",
+    "Show less": "显示更少",
+    "Details": "详情",
+    "Overview": "概览"
   };
 
   const coreWords = {
@@ -673,6 +879,28 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     // "xxx was not found" 动态提示
     if (/^.+ was not found.?$/i.test(trimmed)) {
       dynamicMatch = dynamicMatch.replace(/^(.+) was not found.?$/i, '$1 未找到');
+      isDynamic = true;
+    }
+
+    // 步骤与回合动态提示
+    if (/^Step d+ ([^)]+):?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Step (d+) (([^)]+)):?/i, '步骤 $1 ($2)：');
+      isDynamic = true;
+    }
+    if (/^d+ turns?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(d+) turns?$/i, '$1 回合');
+      isDynamic = true;
+    }
+    if (/^Turn d+$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Turn (d+)$/i, '第 $1 回合');
+      isDynamic = true;
+    }
+    if (/^Task id "[^"]+" finished with result:$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Task id "([^"]+)" finished with result:$/i, '任务 "$1" 执行完成：');
+      isDynamic = true;
+    }
+    if (/^Tool is running as a background task with task id: (.+)$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Tool is running as a background task with task id: (.+)$/i, '工具正在后台运行 (任务ID: $1)');
       isDynamic = true;
     }
 

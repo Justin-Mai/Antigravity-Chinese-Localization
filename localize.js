@@ -701,28 +701,6 @@ const DOM_TRANSLATOR_INJECTION = `
     "Goal Description": "目标描述",
     "Component Name": "组件名称",
 
-    // 模型与深度推理控制 (Models & Reasoning)
-    "Reasoning Effort": "推理深度",
-    "reasoning effort": "推理深度",
-    "High reasoning effort": "高推理深度",
-    "Medium reasoning effort": "中推理深度",
-    "Low reasoning effort": "低推理深度",
-    "Auto reasoning effort": "自动推理深度",
-    "Thinking Budget": "思考预算",
-    "thinking budget": "思考预算",
-    "Reasoning": "推理思考",
-    "Thinking": "思考中",
-    "Thought": "思考",
-    "Thought process": "思考过程",
-    "Internal reasoning": "内部推理",
-    "Gemini 3.8 Flash (High)": "Gemini 3.8 Flash (高思考)",
-    "Gemini 3.8 Flash (Low)": "Gemini 3.8 Flash (低思考)",
-    "Gemini 3.8 Pro": "Gemini 3.8 Pro",
-    "Gemini 2.5 Flash": "Gemini 2.5 Flash",
-    "Gemini 2.5 Pro": "Gemini 2.5 Pro",
-    "Claude 3.7 Sonnet": "Claude 3.7 Sonnet",
-    "Claude 3.7 Sonnet (Thinking)": "Claude 3.7 Sonnet (深度思考)",
-    "Claude 3.5 Sonnet": "Claude 3.5 Sonnet",
     "Default model": "默认模型",
     "Inherit model": "继承模型",
     "Select a model": "选择模型",
@@ -887,7 +865,7 @@ const DOM_TRANSLATOR_INJECTION = `
     "schedule": "调度", "cron": "定时任务", "tools": "工具", "tool": "工具", "execute": "执行", "execution": "执行", "plan": "计划",
     "chat": "聊天", "message": "消息", "messages": "消息", "history": "历史", "clear history": "清除历史",
     "worked": "工作了", "changed": "已更改", "review": "审核", "reviewing": "审核中", "reviewed": "已审核", "for": "持续",
-    "thought": "思考了", "edited": "编辑了", "canceled": "已取消", "js": "Js",
+    "edited": "编辑了", "canceled": "已取消", "js": "Js",
     "explore": "探索", "explored": "浏览了", "change": "更改", "changes": "更改",
     "turn": "回合", "turns": "回合"
   };
@@ -910,10 +888,6 @@ const DOM_TRANSLATOR_INJECTION = `
     
     if (/^Worked for \\d+s$/.test(trimmed)) {
       dynamicMatch = dynamicMatch.replace(/Worked for (\\d+)s/, '已工作 $1 秒');
-      isDynamic = true;
-    }
-    if (/^Thought for \\d+s$/.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/Thought for (\\d+)s/, '已思考 $1 秒');
       isDynamic = true;
     }
     if (/^Edited .* \\+\\d+ -\\d+$/.test(trimmed)) {
