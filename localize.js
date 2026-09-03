@@ -1787,12 +1787,19 @@ const DOM_TRANSLATOR_INJECTION = `
       return true;
     }
 
-    // 4. 输入框/文本域绝对跳过
-    if (node.nodeType === Node.TEXT_NODE) {
-      if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-        skipCache.set(element, true);
-        return true;
-      }
+    // 4. 输入框/文本域/富文本编辑器/用户消息气泡绝对跳过（输入前、输入中、发送后 100% 原样保留）
+    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+      skipCache.set(element, true);
+      return true;
+    }
+    if (element.getAttribute && (
+        element.getAttribute('contenteditable') === 'true' ||
+        element.getAttribute('data-quotable') === 'true' ||
+        element.getAttribute('role') === 'textbox' ||
+        element.getAttribute('data-lexical-editor') === 'true'
+    )) {
+      skipCache.set(element, true);
+      return true;
     }
 
     // 5. 检查元素自身是否带有代码语言标记属性
@@ -1815,7 +1822,13 @@ const DOM_TRANSLATOR_INJECTION = `
         break;
       }
 
-      if (cur.getAttribute && cur.getAttribute('contenteditable') === 'true') {
+      // 用户输入框与富文本编辑器（输入前/输入中绝对不翻译）
+      if (cur.getAttribute && (
+          cur.getAttribute('contenteditable') === 'true' ||
+          cur.getAttribute('data-quotable') === 'true' ||
+          cur.getAttribute('role') === 'textbox' ||
+          cur.getAttribute('data-lexical-editor') === 'true'
+      )) {
         shouldSkip = true;
         break;
       }
@@ -1832,6 +1845,9 @@ const DOM_TRANSLATOR_INJECTION = `
       }
 
       if (cur.classList && (
+        cur.classList.contains('group/user-input-step') ||
+        cur.classList.contains('user-message') ||
+        cur.classList.contains('cursor-text') ||
         cur.classList.contains('monaco-editor') || 
         cur.classList.contains('editor-instance') ||
         cur.classList.contains('input-area') ||
