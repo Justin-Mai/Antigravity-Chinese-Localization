@@ -1187,6 +1187,14 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     "Scan the code to 打开 this 设备 in 远程 Control, or 复制链接": "扫描二维码以在远程控制中打开此设备，或复制链接。",
     "Scan the code to 打开 this 设备 in 远程 Control, or 复制链接。": "扫描二维码以在远程控制中打开此设备，或复制链接。",
     "Scan the code to 打开 this 设备 in 远程 Control, or 复制链接.": "扫描二维码以在远程控制中打开此设备，或复制链接。",
+    "Scan the code to 打开 this 设备 in 远程 控制, or 复制链接": "扫描二维码以在远程控制中打开此设备，或复制链接。",
+    "Scan the code to 打开 this 设备 in 远程 控制, or 复制链接。": "扫描二维码以在远程控制中打开此设备，或复制链接。",
+    "Scan the code to 打开 this 设备 in 远程 控制, or 复制链接.": "扫描二维码以在远程控制中打开此设备，或复制链接。",
+    "Scan the code to open this device in Remote Control, or": "扫描二维码以在远程控制中打开此设备，或",
+    "Scan the code to open this device in remote control, or": "扫描二维码以在远程控制中打开此设备，或",
+    "Scan the code to 打开 this 设备 in 远程 控制, or": "扫描二维码以在远程控制中打开此设备，或",
+    "Scan the code to 打开 this 设备 in 远程 Control, or": "扫描二维码以在远程控制中打开此设备，或",
+    "Scan the code to 打开 this device in 远程控制, or": "扫描二维码以在远程控制中打开此设备，或",
     "Scan the code to": "扫描二维码以",
     "scan the code to": "扫描二维码以",
     "open this device in Remote Control": "在远程控制中打开此设备",
@@ -1503,10 +1511,22 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
       return text.replace(trimmed, replacedCouldNot);
     }
 
-    if (/Scan the code to.*(?:copy link|复制链接)/i.test(trimmed)) {
-      const fixedRemoteIntro = '扫描二维码以在远程控制中打开此设备，或复制链接。';
-      if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixedRemoteIntro);
-      return text.replace(trimmed, fixedRemoteIntro);
+    if (/Scan the code to/i.test(trimmed)) {
+      if (/Scan the code to.*,s*ors*$/i.test(trimmed)) {
+        const fixed = '扫描二维码以在远程控制中打开此设备，或';
+        if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
+        return text.replace(trimmed, fixed);
+      }
+      if (/Scan the code to.*(?:copy link|复制链接)/i.test(trimmed)) {
+        const fixed = '扫描二维码以在远程控制中打开此设备，或复制链接。';
+        if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
+        return text.replace(trimmed, fixed);
+      }
+      if (/Scan the code to.*(?:Remote Control|远程s*控制)/i.test(trimmed)) {
+        const fixed = '扫描二维码以在远程控制中打开此设备';
+        if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
+        return text.replace(trimmed, fixed);
+      }
     }
 
     // --- Dynamic Agent Logs Regex Rules (Fixed Escaping) ---
