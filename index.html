@@ -721,9 +721,9 @@
     async function updateStatus() {
       const params = getParams();
       
-      // 如果使用默认路径但账户名为空，则直接标记为等待输入，且不发起后端请求，防误报
-      if (params.useDefault && !params.username) {
-        document.getElementById('status-installed').innerHTML = '<span class="dot red"></span>等待输入账户名';
+      // 仅在取消默认路径且未填写自定义路径时等待输入
+      if (!params.useDefault && !params.customPath) {
+        document.getElementById('status-installed').innerHTML = '<span class="dot red"></span>等待输入自定义路径';
         document.getElementById('status-backup').innerHTML = '<span class="dot amber"></span>等待配置';
         document.getElementById('status-running').innerHTML = '<span class="dot amber"></span>等待配置';
         return;
@@ -743,8 +743,7 @@
         
         if (data.defaultUsername) {
           inputUsername.placeholder = `例如: ${data.defaultUsername}`;
-          
-          if (!localStorage.getItem('localizer_username') && !inputUsername.value) {
+          if (!inputUsername.value) {
             inputUsername.value = data.defaultUsername;
             saveSettings();
           }
