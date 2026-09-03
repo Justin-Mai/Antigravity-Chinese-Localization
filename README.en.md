@@ -4,15 +4,14 @@ Antigravity Deep Chinese Localization Patch
 
 [中文](README.md) | English
 
-[![GitHub release](https://img.shields.io/github/v/release/LAN-TINA-WS/Antigravity-Chinese-Localization)](https://github.com/LAN-TINA-WS/Antigravity-Chinese-Localization/releases/latest)
-[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://github.com/LAN-TINA-WS/Antigravity-Chinese-Localization)
-[![Package Size](https://img.shields.io/badge/ASAR%20Size-4.44%20MB%20(Official%20Standard)-success)](https://github.com/LAN-TINA-WS/Antigravity-Chinese-Localization)
+[![GitHub release](https://img.shields.io/github/v/release/liominsb/Antigravity-Chinese-Localization)](https://github.com/liominsb/Antigravity-Chinese-Localization/releases/latest)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://github.com/liominsb/Antigravity-Chinese-Localization)
+[![Package Size](https://img.shields.io/badge/ASAR%20Size-4.44%20MB%20(Official%20Standard)-success)](https://github.com/liominsb/Antigravity-Chinese-Localization)
 [![Node Runtime](https://img.shields.io/badge/Node.js-%3E%3D%2014.0.0-informational)](https://nodejs.org/)
-[![License Proposal](https://img.shields.io/badge/License-MIT%20(Proposed)-orange)](https://github.com/liominsb/Antigravity-Chinese-Localization/issues/18)
 
 A high-performance, non-destructive Chinese localization patch designed for Google Antigravity. Fully adapted to the latest Antigravity v2.12.0+ architecture, providing deep localization across thousands of UI strings—including Planning Mode, the entire Settings panel, the Google Plugins marketplace, and Subagent Teamwork. Package filtering optimizations ensure the final `app.asar` maintains the official 4.44 MB standard size without bloating.
 
-> [Latest Release](https://github.com/LAN-TINA-WS/Antigravity-Chinese-Localization/releases/latest) · [Issues & Feedback](https://github.com/LAN-TINA-WS/Antigravity-Chinese-Localization/issues) · [Upstream Repository](https://github.com/liominsb/Antigravity-Chinese-Localization)
+> [Latest Release](https://github.com/liominsb/Antigravity-Chinese-Localization/releases/latest) · [Issues & Feedback](https://github.com/liominsb/Antigravity-Chinese-Localization/issues)
 
 ---
 
@@ -168,10 +167,3 @@ The application will be cleanly restored from `app.asar.bak`.
 | [LAN-TINA-WS](https://github.com/LAN-TINA-WS) | v2.12.0+ deep localization rewrite, 4.44 MB slim-down fix, hot-upgrade engine, Settings/Plugins dictionary expansion, and standalone maintenance |
 
 - **Contributing**: Pull requests and issue reports on missing phrases are warmly welcomed.
-- **Upstream PR**: Merged upstream tracking via [PR #17](https://github.com/liominsb/Antigravity-Chinese-Localization/pull/17) and [PR #19](https://github.com/liominsb/Antigravity-Chinese-Localization/pull/19).
-
----
-
-## License Note
-
-Open source licensing for this repository is currently pending confirmation by the original creator. For broader community collaboration and compliance, an MIT License is proposed. See discussion in [Issue #18](https://github.com/liominsb/Antigravity-Chinese-Localization/issues/18).
