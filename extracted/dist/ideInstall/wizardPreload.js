@@ -1101,6 +1101,14 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     "Scan the code to 打开 this 设备 in 远程 Control, or 复制链接": "扫描二维码以在远程控制中打开此设备，或复制链接。",
     "Scan the code to 打开 this 设备 in 远程 Control, or 复制链接。": "扫描二维码以在远程控制中打开此设备，或复制链接。",
     "Scan the code to 打开 this 设备 in 远程 Control, or 复制链接.": "扫描二维码以在远程控制中打开此设备，或复制链接。",
+    "Scan the code to 打开 this 设备 in 远程 控制, or 复制链接": "扫描二维码以在远程控制中打开此设备，或复制链接。",
+    "Scan the code to 打开 this 设备 in 远程 控制, or 复制链接。": "扫描二维码以在远程控制中打开此设备，或复制链接。",
+    "Scan the code to 打开 this 设备 in 远程 控制, or 复制链接.": "扫描二维码以在远程控制中打开此设备，或复制链接。",
+    "Scan the code to open this device in Remote Control, or": "扫描二维码以在远程控制中打开此设备，或",
+    "Scan the code to open this device in remote control, or": "扫描二维码以在远程控制中打开此设备，或",
+    "Scan the code to 打开 this 设备 in 远程 控制, or": "扫描二维码以在远程控制中打开此设备，或",
+    "Scan the code to 打开 this 设备 in 远程 Control, or": "扫描二维码以在远程控制中打开此设备，或",
+    "Scan the code to 打开 this device in 远程控制, or": "扫描二维码以在远程控制中打开此设备，或",
     "Scan the code to": "扫描二维码以",
     "scan the code to": "扫描二维码以",
     "open this device in Remote Control": "在远程控制中打开此设备",
@@ -1417,10 +1425,22 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
       return text.replace(trimmed, replacedCouldNot);
     }
 
-    if (/Scan the code to.*(?:copy link|复制链接)/i.test(trimmed)) {
-      const fixedRemoteIntro = '扫描二维码以在远程控制中打开此设备，或复制链接。';
-      if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixedRemoteIntro);
-      return text.replace(trimmed, fixedRemoteIntro);
+    if (/Scan the code to/i.test(trimmed)) {
+      if (/Scan the code to.*,s*ors*$/i.test(trimmed)) {
+        const fixed = '扫描二维码以在远程控制中打开此设备，或';
+        if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
+        return text.replace(trimmed, fixed);
+      }
+      if (/Scan the code to.*(?:copy link|复制链接)/i.test(trimmed)) {
+        const fixed = '扫描二维码以在远程控制中打开此设备，或复制链接。';
+        if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
+        return text.replace(trimmed, fixed);
+      }
+      if (/Scan the code to.*(?:Remote Control|远程s*控制)/i.test(trimmed)) {
+        const fixed = '扫描二维码以在远程控制中打开此设备';
+        if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
+        return text.replace(trimmed, fixed);
+      }
     }
 
     // --- Dynamic Agent Logs Regex Rules (Fixed Escaping) ---
@@ -1681,12 +1701,19 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
       return true;
     }
 
-    // 4. 输入框/文本域绝对跳过
-    if (node.nodeType === Node.TEXT_NODE) {
-      if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-        skipCache.set(element, true);
-        return true;
-      }
+    // 4. 输入框/文本域/富文本编辑器/用户消息气泡绝对跳过（输入前、输入中、发送后 100% 原样保留）
+    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+      skipCache.set(element, true);
+      return true;
+    }
+    if (element.getAttribute && (
+        element.getAttribute('contenteditable') === 'true' ||
+        element.getAttribute('data-quotable') === 'true' ||
+        element.getAttribute('role') === 'textbox' ||
+        element.getAttribute('data-lexical-editor') === 'true'
+    )) {
+      skipCache.set(element, true);
+      return true;
     }
 
     // 5. 检查元素自身是否带有代码语言标记属性
@@ -1709,7 +1736,13 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
         break;
       }
 
-      if (cur.getAttribute && cur.getAttribute('contenteditable') === 'true') {
+      // 用户输入框与富文本编辑器（输入前/输入中绝对不翻译）
+      if (cur.getAttribute && (
+          cur.getAttribute('contenteditable') === 'true' ||
+          cur.getAttribute('data-quotable') === 'true' ||
+          cur.getAttribute('role') === 'textbox' ||
+          cur.getAttribute('data-lexical-editor') === 'true'
+      )) {
         shouldSkip = true;
         break;
       }
@@ -1726,6 +1759,9 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
       }
 
       if (cur.classList && (
+        cur.classList.contains('group/user-input-step') ||
+        cur.classList.contains('user-message') ||
+        cur.classList.contains('cursor-text') ||
         cur.classList.contains('monaco-editor') || 
         cur.classList.contains('editor-instance') ||
         cur.classList.contains('input-area') ||

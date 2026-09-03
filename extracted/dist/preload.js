@@ -859,6 +859,15 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     "5-hour limit remaining": "5 小时限额剩余",
     "5-hour limit Remaining": "5 小时限额剩余",
     "5-Hour Limit Remaining": "5 小时限额剩余",
+    "Five Hour Limit Remaining": "5 小时限额剩余",
+    "Five Hour Limit remaining": "5 小时限额剩余",
+    "Five hour limit remaining": "5 小时限额剩余",
+    "Five-Hour Limit Remaining": "5 小时限额剩余",
+    "Five-hour limit remaining": "5 小时限额剩余",
+    "Five Hour Limit": "5 小时限额",
+    "Five hour limit": "5 小时限额",
+    "Five-Hour Limit": "5 小时限额",
+    "Five-hour limit": "5 小时限额",
     "每周限额 Remaining": "每周限额剩余",
     "五小时限额 Remaining": "5 小时限额剩余",
     "Weekly limit": "每周限额",
@@ -1564,18 +1573,29 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
       isDynamic = true;
     }
 
-    // 配额提示句 (含动态天数/小时/分钟)
-    if (/^You have used some of your (weekly|5-hour|hourly|daily) limit/.test(trimmed)) {
+    // 限额剩余标题动态匹配 (例如 "Five Hour Limit Remaining", "Weekly Limit Remaining", "5-hour limit remaining")
+    if (/^(Weekly|Five[- ]Hour|5[- ]Hour|Hourly|Daily)s+Limits+Remaining$/i.test(trimmed)) {
+      const lower = trimmed.toLowerCase();
+      if (lower.includes('weekly')) dynamicMatch = '每周限额剩余';
+      else if (lower.includes('five') || lower.includes('5')) dynamicMatch = '5 小时限额剩余';
+      else if (lower.includes('hourly')) dynamicMatch = '每小时限额剩余';
+      else if (lower.includes('daily')) dynamicMatch = '每日限额剩余';
+      isDynamic = true;
+    }
+
+    // 配额提示句 (含动态天数/小时/分钟，支持全英或半中文状态下自愈清洗)
+    if (/(?:You have used some of your|您已使用了部分).*(?:limit|限额)/i.test(trimmed)) {
       dynamicMatch = dynamicMatch
-        .replace(/^You have used some of your weekly limit/, '您已使用了部分每周限额')
-        .replace(/^You have used some of your 5-hour limit/, '您已使用了部分 5 小时限额')
-        .replace(/^You have used some of your hourly limit/, '您已使用了部分每小时限额')
-        .replace(/^You have used some of your daily limit/, '您已使用了部分每日限额')
-        .replace(/it will fully refresh in/, '它将在以下时间后完全刷新：')
-        .replace(/(d+)s*days?/g, '$1 天 ')
-        .replace(/(d+)s*hours?/g, '$1 小时 ')
-        .replace(/(d+)s*minutes?.?$/g, '$1 分钟')
-        .replace(/[,.]/g, '');
+        .replace(/^(?:You have used some of your|您已使用了部分)s*(?:weekly|每周)s*(?:limit|限额)?/i, '您已使用了部分每周限额')
+        .replace(/^(?:You have used some of your|您已使用了部分)s*(?:5-hour|five-hour|5 小时|五小时)s*(?:limit|限额)?/i, '您已使用了部分 5 小时限额')
+        .replace(/^(?:You have used some of your|您已使用了部分)s*(?:hourly|每小时)s*(?:limit|限额)?/i, '您已使用了部分每小时限额')
+        .replace(/^(?:You have used some of your|您已使用了部分)s*(?:daily|每日)s*(?:limit|限额)?/i, '您已使用了部分每日限额')
+        .replace(/(?:it will fully refresh in|它将在以下时间后完全刷新[：:]?)s*/i, ' 它将在以下时间后完全刷新：')
+        .replace(/(\d+)\s*days?/gi, ' $1 天')
+        .replace(/(\d+)\s*hours?/gi, ' $1 小时')
+        .replace(/(\d+)\s*minutes?\.?$/gi, ' $1 分钟')
+        .replace(/\s+/g, ' ')
+        .trim();
       isDynamic = true;
     }
     // 模型分组配额说明长句
