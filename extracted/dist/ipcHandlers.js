@@ -39,12 +39,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerIpcHandlers = registerIpcHandlers;
 const electron_1 = require("electron");
 const electron_updater_1 = require("electron-updater");
+const types_1 = require("./types");
 const updater_1 = require("./updater");
 const main_1 = __importDefault(require("electron-log/main"));
 const fs = __importStar(require("fs/promises"));
 const customScheme_1 = require("./customScheme");
 const tray_1 = require("./tray");
 const constants_1 = require("./ideInstall/constants");
+const url_1 = require("url");
 /**
  * Registers all IPC handlers for the main process.
  */
@@ -60,9 +62,21 @@ function registerIpcHandlers(storageManager) {
         }
         return result.filePaths[0];
     });
+    // Like 'dialog:open-workspace' but allows selecting multiple folders,
+    // returning an array of paths (empty if cancelled).
+    electron_1.ipcMain.handle('dialog:open-workspaces', async () => {
+        const result = await electron_1.dialog.showOpenDialog({
+            properties: ['openDirectory', 'createDirectory', 'multiSelections'],
+            title: 'Open workspaces',
+        });
+        if (result.canceled || result.filePaths.length === 0) {
+            return [];
+        }
+        return result.filePaths;
+    });
     // Auto-updater
     electron_1.ipcMain.handle('updater:apply', async () => {
-        (0, updater_1.broadcastState)({ type: 'ready' });
+        (0, updater_1.broadcastState)({ type: types_1.UpdateState.Ready });
     });
     electron_1.ipcMain.handle('updater:quit-and-install', () => {
         if (!electron_1.app.isPackaged) {
@@ -199,6 +213,38 @@ function registerIpcHandlers(storageManager) {
             win.webContents.toggleDevTools();
         }
     });
+    // Zoom — main-process source of truth so the level is reliably persisted
+    // across restarts on all platforms (works around a Chromium quirk on Windows
+    // where renderer-only webFrame.setZoomLevel changes aren't cached).
+    const ZOOM_LEVEL_KEY = 'zoomLevel';
+    const ZOOM_STEP = 0.5;
+    electron_1.ipcMain.handle('window:zoom-in', async () => {
+        const win = electron_1.BrowserWindow.getFocusedWindow() || electron_1.BrowserWindow.getAllWindows()[0];
+        if (win) {
+            const newLevel = win.webContents.getZoomLevel() + ZOOM_STEP;
+            win.webContents.setZoomLevel(newLevel);
+            await storageManager.updateItems({
+                [ZOOM_LEVEL_KEY]: String(newLevel),
+            });
+        }
+    });
+    electron_1.ipcMain.handle('window:zoom-out', async () => {
+        const win = electron_1.BrowserWindow.getFocusedWindow() || electron_1.BrowserWindow.getAllWindows()[0];
+        if (win) {
+            const newLevel = win.webContents.getZoomLevel() - ZOOM_STEP;
+            win.webContents.setZoomLevel(newLevel);
+            await storageManager.updateItems({
+                [ZOOM_LEVEL_KEY]: String(newLevel),
+            });
+        }
+    });
+    electron_1.ipcMain.handle('window:reset-zoom', async () => {
+        const win = electron_1.BrowserWindow.getFocusedWindow() || electron_1.BrowserWindow.getAllWindows()[0];
+        if (win) {
+            win.webContents.setZoomLevel(0);
+            await storageManager.updateItems({ [ZOOM_LEVEL_KEY]: String(0) });
+        }
+    });
     // Auto-updater manual check
     electron_1.ipcMain.handle('updater:check-for-updates', () => {
         (0, updater_1.checkForUpdates)(true);
@@ -210,6 +256,9 @@ function registerIpcHandlers(storageManager) {
             url.startsWith('antigravity-ide://')) {
             await electron_1.shell.openExternal(url);
         }
+    });
+    electron_1.ipcMain.handle('shell:reveal-in-file-picker', (_event, path) => {
+        electron_1.shell.showItemInFolder((0, url_1.fileURLToPath)(path));
     });
     // IDE installation check
     electron_1.ipcMain.handle('ide:is-installed', async () => {

@@ -69,6 +69,7 @@ function addItemToSubmenu(appMenu, submenuLabel, position, item) {
     submenuItem.submenu.insert(position, item);
 }
 
+
 const menuTranslationMap = {
   'File': '文件',
   'Edit': '编辑',

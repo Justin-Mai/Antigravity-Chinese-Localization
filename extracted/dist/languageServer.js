@@ -183,7 +183,8 @@ function setupNodeModules(env, modules) {
  * After resolving, callers should monitor `handle.exitPromise` to detect
  * crashes that occur after startup.
  */
-function startLanguageServer(port, csrf, headless) {
+function startLanguageServer(port, csrf, options = {}) {
+    const { headless, hostBridgeUrl, hostBridgeToken } = options;
     return new Promise((resolve, reject) => {
         const logStream = fs.createWriteStream((0, paths_1.getLsLogPath)(), { flags: 'w' });
         // We need to pass the override flags because the LS is running in standalone mode
@@ -209,6 +210,11 @@ function startLanguageServer(port, csrf, headless) {
             'https://daily-cloudcode-pa.googleapis.com',
             '--enable_sidecars',
         ];
+        // Point the LS at the main process' host bridge server. The LS tolerates
+        // these being absent, but we always pass them when the server is up.
+        if (hostBridgeUrl && hostBridgeToken) {
+            args.push(`--host_bridge_url=${hostBridgeUrl}`, `--host_bridge_token=${hostBridgeToken}`);
+        }
         if (headless) {
             args.push('--headless');
         }
@@ -322,7 +328,7 @@ function setIntentionalTermination(value) {
  */
 async function startAndMonitorLanguageServer(port, csrf, options = {}) {
     setIntentionalTermination(false); // Reset
-    const handle = await startLanguageServer(port, csrf, options.headless);
+    const handle = await startLanguageServer(port, csrf, options);
     _lsPort = handle.port;
     if (options.onPortChanged) {
         options.onPortChanged(_lsPort);
@@ -363,7 +369,9 @@ function monitorLsCrashInternal(handle, port, csrf, options) {
             return;
         }
         try {
-            const newHandle = await startLanguageServer(port, csrf);
+            // Pass the same options through, otherwise a restarted LS silently
+            // loses --headless and the host bridge flags.
+            const newHandle = await startLanguageServer(port, csrf, options);
             _lsPort = newHandle.port;
             if (options.onPortChanged) {
                 options.onPortChanged(_lsPort);
