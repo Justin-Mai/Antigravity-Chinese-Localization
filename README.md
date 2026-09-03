@@ -2,6 +2,8 @@
 
 Antigravity 深度汉化补丁程序
 
+中文 | [English](README.en.md)
+
 [![GitHub release](https://img.shields.io/github/v/release/LAN-TINA-WS/Antigravity-Chinese-Localization)](https://github.com/LAN-TINA-WS/Antigravity-Chinese-Localization/releases/latest)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://github.com/LAN-TINA-WS/Antigravity-Chinese-Localization)
 [![Package Size](https://img.shields.io/badge/ASAR%20Size-4.44%20MB%20(Official%20Standard)-success)](https://github.com/LAN-TINA-WS/Antigravity-Chinese-Localization)
