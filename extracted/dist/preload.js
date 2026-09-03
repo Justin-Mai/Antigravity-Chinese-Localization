@@ -24,6 +24,7 @@ const updaterAPI = {
 };
 const dialogAPI = {
     showOpenDialog: () => electron_1.ipcRenderer.invoke('dialog:open-workspace'),
+    showOpenMultipleFolderDialog: () => electron_1.ipcRenderer.invoke('dialog:open-workspaces'),
 };
 const notificationAPI = {
     send: (options) => electron_1.ipcRenderer.invoke('notification:send', options),
@@ -82,17 +83,16 @@ const electronNativeAPI = {
     close: () => electron_1.ipcRenderer.invoke('window:close'),
     toggleDevTools: () => electron_1.ipcRenderer.invoke('window:toggle-devtools'),
     zoomIn: () => {
-        const current = electron_1.webFrame.getZoomLevel();
-        electron_1.webFrame.setZoomLevel(current + 0.5);
+        void electron_1.ipcRenderer.invoke('window:zoom-in');
     },
     zoomOut: () => {
-        const current = electron_1.webFrame.getZoomLevel();
-        electron_1.webFrame.setZoomLevel(current - 0.5);
+        void electron_1.ipcRenderer.invoke('window:zoom-out');
     },
     resetZoom: () => {
-        electron_1.webFrame.setZoomLevel(0);
+        void electron_1.ipcRenderer.invoke('window:reset-zoom');
     },
     openExternal: (url) => electron_1.ipcRenderer.invoke('shell:open-external', url),
+    revealInFilePicker: (path) => electron_1.ipcRenderer.invoke('shell:reveal-in-file-picker', path),
 };
 const ideAPI = {
     isInstalled: () => electron_1.ipcRenderer.invoke('ide:is-installed'),
@@ -107,6 +107,7 @@ electron_1.contextBridge.exposeInMainWorld('deepLink', deepLinkAPI);
 electron_1.contextBridge.exposeInMainWorld('agent', agentAPI);
 electron_1.contextBridge.exposeInMainWorld('electronNative', electronNativeAPI);
 electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
+
 
 // Antigravity 2.0 Chinese Localization Engine Enhanced
 (function() {
@@ -288,8 +289,64 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     "No MCP Servers": "无已安装的 MCP 服务器",
     "You currently don't have any MCP Servers installed.": "您当前未安装任何 MCP 服务器。",
     "Add an MCP server above": "在上方添加一个 MCP 服务器",
+    // Build With Google Plugins & 官方插件生态
     "Build With Google Plugins": "使用 Google 插件构建",
-    
+    "Build with Google Plugins": "使用 Google 插件构建",
+    "build with google plugins": "使用 Google 插件构建",
+    "Google Plugins": "Google 插件",
+    "Google plugins": "Google 插件",
+    "Official Google plugins": "Google 官方插件",
+    "Official Google plugins designed for Antigravity.": "专为 Antigravity 设计的 Google 官方扩展插件。",
+    "Plugins built and maintained by Google to extend Antigravity capabilities.": "由 Google 官方构建并维护，用于全面扩展 Antigravity 各项能力的插件。",
+    "Explore, install, and manage plugins to enhance your agent with specialized skills, MCP servers, and rules.": "浏览、安装并管理插件，为智能体扩展专属技能、MCP 服务器与执行规则。",
+    "Discover plugins to integrate with Google APIs, Cloud services, and developer tools.": "发现并集成适用于 Google API、云服务及开发者工具的官方插件。",
+    "Install Plugin": "安装插件",
+    "Uninstall Plugin": "卸载插件",
+    "Enable Plugin": "启用插件",
+    "Disable Plugin": "禁用插件",
+    "Installed Plugins": "已安装插件",
+    "Available Plugins": "可用插件",
+    "All Plugins": "全部插件",
+    "Featured Plugins": "精选插件",
+    "Search plugins...": "搜索插件...",
+    "Search plugins": "搜索插件",
+    "No plugins found": "未找到相关插件",
+    "No plugins installed": "尚未安装任何插件",
+    "Loading plugins...": "正在加载插件列表...",
+    "Failed to load plugins": "加载插件列表失败",
+    "Reload plugins": "重新加载插件",
+    "Check for plugin updates": "检查插件更新",
+    "Plugin Settings": "插件设置",
+    "Plugin details": "插件详情",
+    "View details": "查看详情",
+    "View Documentation": "查看文档",
+    "View documentation": "查看文档",
+    "Bundled Skills": "内置技能",
+    "Bundled skills": "内置技能",
+    "bundled skills": "内置技能",
+    "Bundled Rules": "内置规则",
+    "Bundled rules": "内置规则",
+    "bundled rules": "内置规则",
+    "Bundled MCP Servers": "内置 MCP 服务器",
+    "Bundled MCP servers": "内置 MCP 服务器",
+    "bundled MCP servers": "内置 MCP 服务器",
+    "Bundled Hooks": "内置生命周期钩子",
+    "bundled hooks": "内置生命周期钩子",
+    "Skills included": "包含技能",
+    "Rules included": "包含规则",
+    "MCP servers included": "包含 MCP 服务器",
+    "Hooks included": "包含钩子",
+    "Author: Google": "作者: Google",
+
+    // 官方首发插件 (gemini-api 及扩展体系) 长句深度汉化
+    "Build applications with the Gemini Interactions API and Live API, including text generation, multi-turn chat, streaming, function calling, managed agents, and real-time audio/video.": "使用 Gemini Interactions API 和 Live API 构建应用，包括文本生成、多轮对话、流式响应、函数调用、托管智能体以及实时音视频处理。",
+    "Use this skill when building applications with Gemini API hosted models, including Gemini and Gemma 4, working with multimodal content (text, images, audio, video), implementing function calling, using structured outputs, or needing current model specifications. Covers SDK usage (google-genai for Python, @google/genai for JavaScript/TypeScript, com.google.genai:google-genai for Java, google.golang.org/genai for Go), model selection, and API capabilities.": "在使用 Gemini API 托管模型（包括 Gemini 与 Gemma 4）构建应用、处理多模态内容（文本/图像/音频/视频）、实现函数调用、使用结构化输出或需要当前模型规格时使用此技能。覆盖各主流语言 SDK 使用、模型选择及 API 核心能力。",
+    "Use this skill when writing code that calls the Gemini API for text generation, multi-turn chat, multimodal understanding, image generation, video generation, streaming responses, background research tasks, function calling, structured output, or migrating from the old generateContent API. This skill covers the Interactions API, the recommended way to use Gemini models and agents in Python and TypeScript.": "在编写调用 Gemini API 进行文本生成、多轮对话、多模态理解、图像/视频生成、流式响应、后台调研、函数调用、结构化输出或从旧版迁移时使用此技能。本技能覆盖 Interactions API，这是在 Python 和 TypeScript 中使用 Gemini 模型与智能体的官方推荐方式。",
+    "Use this skill when building real-time, bidirectional streaming applications with the Gemini Live API. Covers WebSocket-based audio/video/text streaming, voice activity detection (VAD), native audio features, function calling, session management, ephemeral tokens for client-side auth, live translation, and all Live API configuration options. SDKs covered - google-genai (Python), @google/genai (JavaScript/TypeScript).": "在通过 Gemini Live API 构建低延迟双向实时流式应用时使用此技能。覆盖基于 WebSocket 的音视频/文本流、语音活动检测 (VAD)、原生音频特性、函数调用、会话管理、客户端临时令牌认证、实时翻译及所有 Live API 配置项。",
+    "Use this skill for generative video editing, text-to-video, image-referenced video generation, first-frame-to-video, first-and-last-frame transitions, and video extensions using Gemini Omni 1.1 Flash (gemini-omni-1.1-flash) via the official google-genai SDK. Includes workflows for pre-processing/optimizing high-resolution or long source videos with ffmpeg, stripping audio for full sound regeneration, and handling turn-by-turn video editing and parallel execution.": "在使用 Gemini Omni 1.1 Flash (gemini-omni-1.1-flash) 通过官方 google-genai SDK 进行生成式视频编辑、文生视频、图像参考视频生成、首尾帧过渡及视频拓展时使用此技能。包含使用 ffmpeg 预处理优化高分辨率源视频、音频分离以及多轮分步编辑工作流。",
+    "How to render rich interactive HTML widgets inline in the chat or as standalone artifacts. Use this skill when you want to show the user diagrams, data visualizations, interactive controls, educational walkthroughs, or any rich visual content beyond plain text and markdown.": "如何在对话中以内联方式或作为独立工件渲染丰富的交互式 HTML 小部件。当需要向用户展示架构图表、数据可视化、交互式控件、教程回顾或超出纯文本与 Markdown 的丰富视觉内容时使用此技能。",
+    "Comprehensive guide and reference for the Antigravity Customization System. Use to explain how customizations work, their loading priority, discovery mechanisms, and to guide the creation of skills, rules, plugins, hooks, and MCP servers.": "Antigravity 自定义扩展系统的完整指南与技术参考。用于阐述自定义项的工作机制、加载优先级、自动发现机制，并指导技能、规则、插件、钩子及 MCP 服务器的创建。",
+    "Provides a comprehensive guide, quick reference, and sitemap for Google Antigravity (AGY), including the Antigravity CLI (agy), Antigravity 2.0, Antigravity IDE, Python SDK, slash commands, keybindings, and customizations (skills, rules, MCP, sidecars). Activate this skill when the user asks questions about how to use, configure, or customize Antigravity, AGY, the agy CLI, the Antigravity IDE, or Antigravity 2.0.": "提供 Google Antigravity (AGY) 的完整指南、速查参考与系统导航，涵盖 Antigravity CLI (agy)、Antigravity 2.0、Antigravity IDE、Python SDK、斜杠命令、快捷键及自定义扩展（技能、规则、MCP、Sidecar）。",
     // Account
     "Account": "账号",
     "Manage your plan, credentials, and general preferences.": "管理您的计划、凭据和常规偏好。",
@@ -662,7 +719,388 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     "not found": "未找到",
     "Not Found": "未找到",
     "No longer available": "已不可用",
-    "Path": "路径"
+    "Path": "路径",
+
+    // ===== Antigravity 2.12.0+ 深度汉化补充 =====
+    // 规划模式 (Planning Mode)
+    "Planning Mode": "规划模式",
+    "planning mode": "规划模式",
+    "Planning Mode is ON": "规划模式已开启",
+    "Planning Mode is OFF": "规划模式已关闭",
+    "Implementation Plan": "实施计划",
+    "implementation plan": "实施计划",
+    "implementation_plan.md": "实施计划.md",
+    "Walkthrough": "变更回顾",
+    "walkthrough": "变更回顾",
+    "walkthrough.md": "变更回顾.md",
+    "User Review Required": "需用户审批",
+    "Open Questions": "待确认问题",
+    "Proposed Changes": "拟定变更",
+    "Verification Plan": "验证计划",
+    "Automated Tests": "自动化测试",
+    "Manual Verification": "手动验证",
+    "Proceed": "继续执行",
+    "Plan Execution": "计划执行",
+    "Approve Plan": "批准计划",
+    "Reject Plan": "拒绝计划",
+    "Plan approved": "计划已批准",
+    "Plan rejected": "计划已拒绝",
+    "Creating plan...": "正在生成计划...",
+    "Updating plan...": "正在更新计划...",
+    "Reviewing plan...": "正在审核计划...",
+    "Implementation plan created": "实施计划已创建",
+    "Implementation plan updated": "实施计划已更新",
+    "Exit Planning Mode": "退出规划模式",
+    "Enter Planning Mode": "进入规划模式",
+    "Plan Mode": "规划模式",
+    "Plan": "计划",
+    "Goal Description": "目标描述",
+    "Component Name": "组件名称",
+
+    "Default model": "默认模型",
+    "Inherit model": "继承模型",
+    "Select a model": "选择模型",
+    "Model tier": "模型级别",
+    "Token usage": "Token 用量",
+    "Context window": "上下文窗口",
+    "Remaining tokens": "剩余 Token",
+
+    // 多智能体协同与子智能体 (Subagents & Teamwork)
+    "Teamwork": "团队协作",
+    "teamwork": "团队协作",
+    "Manage Subagents": "管理子智能体",
+    "manage subagents": "管理子智能体",
+    "Active Subagents": "活跃子智能体",
+    "Invoke subagent": "调用子智能体",
+    "Define subagent": "定义子智能体",
+    "Kill subagent": "终止子智能体",
+    "Kill all": "终止全部",
+    "Waiting for input": "等待输入",
+    "Waiting for dependents": "等待依赖任务",
+    "Waiting for message": "等待消息",
+    "Canceling": "正在取消",
+    "Errored": "发生错误",
+    "Idle": "空闲",
+    "Unspecified": "未指定",
+    "Research Agent": "调研智能体",
+    "Codebase Researcher": "代码库调研员",
+    "Conversation ID": "对话 ID",
+    "Conversation transcript": "对话记录",
+    "Transcript logs": "转录日志",
+    "Reactive Wakeup": "响应式唤醒",
+    "No polling needed": "无需轮询",
+    "Subagent conversation": "子智能体对话",
+    "Parent agent": "父智能体",
+    "Child agent": "子智能体",
+
+    // 工作区隔离与分支模式
+    "Branch Workspace": "分支隔离工作区",
+    "Share Workspace": "共享工作区",
+    "Inherit Workspace": "继承工作区",
+    "Isolated branch": "隔离分支",
+    "Shared repository": "共享仓库",
+    "Workspace directory permissions": "工作区目录权限",
+    "Active workspace": "活动工作区",
+    "Switch workspace": "切换工作区",
+    "Add folder to workspace": "添加文件夹到工作区",
+    "Remove from workspace": "从工作区移除",
+
+    // MCP 与扩展工具体系
+    "MCP Servers": "MCP 服务器",
+    "MCP Server": "MCP 服务器",
+    "MCP Tools": "MCP 工具",
+    "Call MCP Tools": "调用 MCP 工具",
+    "Active MCPs": "活跃 MCP 服务",
+    "Connectors": "连接器",
+    "Configure MCP server": "配置 MCP 服务器",
+    "Inspect parameters": "检查参数",
+    "Tool execution": "工具执行",
+    "Tool call": "工具调用",
+    "Tool calls": "工具调用",
+    "Tool summary": "工具摘要",
+    "Tool action": "工具操作",
+    "Built-in tools": "内置工具",
+    "External tools": "外部工具",
+    "Running command": "运行命令",
+    "Analyzing directory": "分析目录",
+    "Searching the web": "搜索网页",
+    "Editing file": "编辑文件",
+    "Viewing file": "查看文件",
+    "Semantic searching": "语义搜索",
+
+    // 权限控制与沙盒增强
+    "Sandbox": "沙盒",
+    "Sandboxed": "沙盒内",
+    "Unsandboxed": "沙盒外",
+    "Commands Outside Sandbox": "沙盒外命令",
+    "Terminal & Tooling Permissions": "终端与工具权限",
+    "Network Access Rules": "网络访问规则",
+    "File Access Rules": "文件访问规则",
+    "Allowed paths": "允许路径",
+    "Denied paths": "拒绝路径",
+    "Allowed commands": "允许命令",
+    "Denied commands": "拒绝命令",
+    "Allowed URLs": "允许的 URL",
+    "Denied URLs": "拒绝的 URL",
+    "Always allow": "总是允许",
+    "Ask every time": "每次询问",
+    "Deny by default": "默认拒绝",
+    "Allowlist": "白名单",
+    "Denylist": "黑名单",
+    "Global permissions": "全局权限",
+    "Project permissions": "项目权限",
+
+    // 定时任务与调度 (Schedule & Cron)
+    "Schedule": "计划调度",
+    "One-shot timer": "单次定时器",
+    "Recurring cron": "循环定时任务",
+    "Cron expression": "Cron 表达式",
+    "Duration in seconds": "持续秒数",
+    "Max iterations": "最大执行次数",
+    "Timer condition": "定时条件",
+    "Early termination": "提前终止",
+    "Any message": "任何消息",
+    "Specific sender": "特定发送者",
+    "Expired": "已过期",
+
+    // 自定义技能与规则 (Customizations & Skills)
+    "Customizations": "自定义配置",
+    "Skills": "技能",
+    "Skill": "技能",
+    "Rules": "规则",
+    "Rule": "规则",
+    "Plugins": "插件",
+    "Sidecars": "伴生进程 (Sidecars)",
+    "Hooks": "钩子",
+    "App Data Directory": "应用数据目录",
+    "Artifact": "工件",
+    "Artifacts": "工件",
+    "Artifact metadata": "工件元数据",
+
+    // 通用界面与交互
+    "Loading Antigravity": "正在加载 Antigravity...",
+    "Setting up…": "正在启动/设置中...",
+    "Setting up...": "正在启动/设置中...",
+    "Recent Workspaces": "最近工作区",
+    "Clear Cache": "清除缓存",
+    "Reset Settings": "重置设置",
+    "Log Out": "退出登录",
+    "Sign In": "登录",
+    "Sign in with Google": "使用 Google 账号登录",
+    "Signed in as": "当前登录为",
+    "Check for Updates": "检查更新",
+    "Checking for Updates...": "正在检查更新...",
+    "Downloading Update...": "正在下载更新...",
+    "Restart to Update": "重启以应用更新",
+    "Up to date": "已是最新版本",
+    "New version available": "有新版本可用",
+    "Copy code": "复制代码",
+    "Copied!": "已复制！",
+    "Copied": "已复制",
+    "Collapse": "折叠",
+    "Expand": "展开",
+    "Show more": "显示更多",
+    "Show less": "显示更少",
+    "Details": "详情",
+    "Overview": "概览",
+
+    // ===== 深度汉化补充：通用与应用设置 (General & App Settings) =====
+    "Appearance": "外观",
+    "appearance": "外观",
+    "Theme": "主题",
+    "Themes": "主题",
+    "Theme mode": "主题模式",
+    "Theme Mode": "主题模式",
+    "theme mode": "主题模式",
+    "Color theme": "颜色主题",
+    "Custom theme": "自定义主题",
+    "Light": "浅色",
+    "Dark": "深色",
+    "System": "跟随系统",
+    "Follow system": "跟随系统",
+    "Inherit from system": "跟随系统设置",
+    "Conversation width": "对话区宽度",
+    "Conversation Width": "对话区宽度",
+    "conversation width": "对话区宽度",
+    "Compact": "紧凑",
+    "Comfortable": "适中",
+    "Wide": "加宽",
+    "Full width": "全宽",
+    "Full Width": "全宽",
+    "App Settings": "应用设置",
+    "Keep computer awake": "保持电脑唤醒",
+    "Keep computer awake while running tasks": "运行任务时防止电脑休眠",
+    "Prevent the system from sleeping during long-running agent tasks.": "在智能体执行长时间任务期间防止系统进入休眠。",
+    "Run in background": "后台运行",
+    "Run in background when closed": "关闭窗口后在后台继续运行",
+    "Run in background when all windows are closed": "关闭所有窗口后在后台继续运行",
+    "Keep Antigravity running in the background when all windows are closed.": "关闭所有窗口后，保持 Antigravity 在系统后台运行。",
+    "Auto-check for updates": "自动检查更新",
+    "Auto check for updates": "自动检查更新",
+    "Automatically check for updates": "自动检查软件更新",
+    "Automatically check for and notify about application updates.": "自动检查并提示新版本应用程序更新。",
+    "Notifications": "系统通知",
+    "Enable system notifications": "启用系统通知",
+    "Enable system notifications on task completion": "任务完成时发送系统通知",
+    "Task completion notifications": "任务完成通知",
+    "Receive desktop notifications when background tasks or agent turns finish.": "当后台任务或智能体回合完成时接收桌面通知。",
+    "Play sound on task completion": "任务完成时播放提示音",
+    "Sound effects": "声音效果",
+
+    // ===== 深度汉化补充：工具执行与自动审批策略 (Tool Execution & Approval) =====
+    "Tool Execution Policy": "工具执行策略",
+    "Tool execution policy": "工具执行策略",
+    "Auto-Execution Policy": "自动执行策略",
+    "Auto Execution Policy": "自动执行策略",
+    "auto-execution policy": "自动执行策略",
+    "Execution Policy": "执行策略",
+    "execution policy": "执行策略",
+    "Controls whether terminal commands require approval before running": "控制终端命令在运行前是否需要人工审批",
+    "Controls whether terminal commands require approval before running.": "控制终端命令在运行前是否需要人工审批。",
+    "Always proceed": "总是直接执行",
+    "Always Proceed": "总是直接执行",
+    "always-proceed": "总是直接执行",
+    "Always proceed (Run without asking)": "总是直接执行 (无需询问)",
+    "Request review": "请求人工审查",
+    "Request Review": "请求人工审查",
+    "request-review": "请求人工审查",
+    "Request review (Ask before every command)": "请求人工审查 (每次运行命令前询问)",
+    "Proceed in sandbox": "在沙盒中直接执行",
+    "Proceed in Sandbox": "在沙盒中直接执行",
+    "proceed-in-sandbox": "在沙盒中直接执行",
+    "Proceed in sandbox (Run in sandbox without asking)": "在沙盒中直接执行 (沙盒内无需询问)",
+    "Strict": "严格模式",
+    "strict": "严格模式",
+    "Strict (Ask for all tools)": "严格模式 (所有工具调用均需确认)",
+    "Agent decides": "智能体自主决定",
+    "agent-decides": "智能体自主决定",
+    "Agent decides (Request review when recommended)": "智能体自主决定 (仅在有风险时请求审查)",
+    "Asks for review": "询问审查",
+    "Ask for review": "询问审查",
+    "asks-for-review": "询问审查",
+    "Turbo": "极速模式",
+    "turbo": "极速模式",
+
+    // ===== 深度汉化补充：终端沙盒与安全隔离 (Terminal Sandbox & Security) =====
+    "Terminal Sandbox": "终端沙盒",
+    "terminal sandbox": "终端沙盒",
+    "Sandbox Mode": "沙盒模式",
+    "sandbox mode": "沙盒模式",
+    "Enable Terminal Sandbox": "启用终端沙盒",
+    "enable terminal sandbox": "启用终端沙盒",
+    "Run agent commands inside a restricted sandbox environment for added security.": "在受限沙盒环境中运行智能体命令以提高系统安全性。",
+    "Run agent commands inside a restricted sandbox environment": "在受限沙盒环境中运行智能体命令",
+    "for added security.": "以提高安全性。",
+    "Commands executed outside the sandbox require approval.": "在沙盒外执行的命令必须经过用户明确批准。",
+    "Commands executed outside the sandbox require explicit user confirmation.": "在沙盒外执行的命令需要用户显式确认。",
+    "Sandbox allowed domains": "沙盒允许访问的域名",
+    "Sandbox Allowed Domains": "沙盒允许域名",
+
+    // ===== 深度汉化补充：文件与网络访问策略 (File & Network Access) =====
+    "Non-Workspace File Access": "工作区外文件访问",
+    "Non-Workspace File Access Policy": "工作区外文件访问策略",
+    "non-workspace file access policy": "工作区外文件访问策略",
+    "File Access Policy": "文件访问策略",
+    "file access policy": "文件访问策略",
+    "Controls whether the agent can read or write files outside the current workspace root": "控制智能体是否可以读写当前工作区根目录之外的文件",
+    "Controls whether the agent can read or write files outside the current workspace root.": "控制智能体是否可以读写当前工作区根目录之外的文件。",
+    "Internet Access Policy": "网络访问策略",
+    "internet access policy": "网络访问策略",
+    "Controls whether the agent can make network requests": "控制智能体是否可以发起网络外部请求",
+    "Controls whether the agent can make network requests.": "控制智能体是否可以发起网络外部请求。",
+    "Allow agent access to .gitignore files": "允许智能体访问 .gitignore 忽略的文件",
+    "Allow agent access to .gitignore files.": "允许智能体访问 .gitignore 忽略的文件。",
+    "Allow": "允许",
+    "allow": "允许",
+    "Ask": "每次询问",
+    "ask": "每次询问",
+    "Deny": "拒绝",
+    "deny": "拒绝",
+    "Allow/deny": "允许/拒绝",
+    "Allow/Deny": "允许/拒绝",
+
+    // ===== 深度汉化补充：权限规则、白名单与黑名单 (Permissions & Lists) =====
+    "Permission Grants": "权限授予规则",
+    "permission grants": "权限授予规则",
+    "Global permission grants": "全局权限规则",
+    "Project-scoped permission grants": "项目专属权限规则",
+    "Command Allowlist": "命令白名单",
+    "Command Denylist": "命令黑名单",
+    "Command Allowlist / Denylist": "命令白名单 / 黑名单",
+    "Specify terminal commands that are always permitted or always blocked.": "指定始终允许直接执行或始终禁止执行的终端命令。",
+    "Browser Allowlist": "浏览器白名单",
+    "browser allowlist": "浏览器白名单",
+    "Restrict which domains the agent's browser tools can navigate to.": "限制智能体浏览器工具可以访问的域名范围。",
+    "Define global allow/deny rules for specific files, commands, and URLs.": "为特定的文件路径、终端命令及网络 URL 定义全局允许/拒绝规则。",
+    "Add path": "添加路径",
+    "Add Path": "添加路径",
+    "Add command": "添加命令",
+    "Add Command": "添加命令",
+    "Add URL": "添加 URL",
+    "Add domain": "添加域名",
+    "Add Domain": "添加域名",
+    "Add rule": "添加规则",
+    "Add Rule": "添加规则",
+    "Edit rule": "编辑规则",
+    "Remove rule": "移除规则",
+    "Delete rule": "删除规则",
+
+    // ===== 深度汉化补充：工件审查模式 (Artifact Review Mode) =====
+    "Artifact Review Mode": "工件审查模式",
+    "artifact review mode": "工件审查模式",
+    "Artifact Review": "工件审查",
+    "artifact review": "工件审查",
+    "Controls when the agent asks for artifact review": "控制智能体何时向用户提请工件审查",
+    "Controls when the agent asks for artifact review.": "控制智能体何时向用户提请工件审查。",
+    "Override artifact review behavior per project.": "在当前项目中覆盖工件审查行为设置。",
+
+    // ===== 深度汉化补充：浏览器 JS 执行策略 (Browser JS Execution) =====
+    "Browser JavaScript Execution": "浏览器 JavaScript 执行策略",
+    "Browser JavaScript Execution Policy": "浏览器 JavaScript 执行策略",
+    "Browser JS Execution Policy": "浏览器 JS 执行策略",
+    "browser js execution policy": "浏览器 JS 执行策略",
+    "Controls whether the browser tool can execute JavaScript on web pages.": "控制浏览器工具是否可以在网页上执行 JavaScript 脚本。",
+
+    // ===== 深度汉化补充：远程控制 (Remote Control) =====
+    "Remote Control": "远程控制",
+    "remote control": "远程控制",
+    "Enable Remote Control": "启用远程控制",
+    "enable remote control": "启用远程控制",
+    "Remote control hostname": "远程控制主机名",
+    "Remote Control Hostname": "远程控制主机名",
+    "Allow controlling this agent instance remotely via CLI or web.": "允许通过命令行工具或 Web 端远程控制当前智能体实例。",
+    "Staying disconnected: Remote Control user setting is off": "保持断开：远程控制用户设置已关闭",
+
+    // ===== 深度汉化补充：数据存储、缓存与维护 (Data, Storage & Reset) =====
+    "Data & Storage": "数据与存储",
+    "Data and Storage": "数据与存储",
+    "Storage": "存储空间",
+    "Clear cache": "清除缓存",
+    "Clear Cache": "清除缓存",
+    "Clear temporary data and cached assets.": "清除临时数据和缓存资源。",
+    "Reset all settings": "重置所有设置",
+    "Reset all settings to default": "恢复所有设置为默认值",
+    "Reset Settings": "重置设置",
+    "Restore all settings back to their factory default values.": "将所有配置选项还原为出厂默认设置。",
+    "Open configuration folder": "打开配置所在文件夹",
+    "Open application logs": "打开应用程序日志",
+    "Open Logs Folder": "打开日志文件夹",
+    "Data storage path": "数据存储路径",
+
+    // ===== 深度汉化补充：点数用量与账号 (Credits & Account) =====
+    "AI Credits": "AI 点数",
+    "ai credits": "AI 点数",
+    "Use AI credits": "使用个人 AI 点数",
+    "use ai credits": "使用个人 AI 点数",
+    "Consume personal tier credits for faster inference and higher rate limits.": "使用个人等级点数以获得更快的推理速度和更高的调用限额。",
+    "Account": "账号",
+    "Account & Profile": "账号与个人中心",
+    "Sign in with Google": "使用 Google 账号登录",
+    "Signed in as": "当前登录账号",
+    "Log out": "退出登录",
+    "Sign out": "退出登录",
+    "Manage subscription": "管理订阅计划",
+    "Manage Google account": "管理 Google 账号"
   };
 
   const coreWords = {
@@ -681,7 +1119,7 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     "schedule": "调度", "cron": "定时任务", "tools": "工具", "tool": "工具", "execute": "执行", "execution": "执行", "plan": "计划",
     "chat": "聊天", "message": "消息", "messages": "消息", "history": "历史", "clear history": "清除历史",
     "worked": "工作了", "changed": "已更改", "review": "审核", "reviewing": "审核中", "reviewed": "已审核", "for": "持续",
-    "thought": "思考了", "edited": "编辑了", "canceled": "已取消", "js": "Js",
+    "edited": "编辑了", "canceled": "已取消", "js": "Js",
     "explore": "探索", "explored": "浏览了", "change": "更改", "changes": "更改",
     "turn": "回合", "turns": "回合"
   };
@@ -704,10 +1142,6 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     
     if (/^Worked for \d+s$/.test(trimmed)) {
       dynamicMatch = dynamicMatch.replace(/Worked for (\d+)s/, '已工作 $1 秒');
-      isDynamic = true;
-    }
-    if (/^Thought for \d+s$/.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/Thought for (\d+)s/, '已思考 $1 秒');
       isDynamic = true;
     }
     if (/^Edited .* \+\d+ -\d+$/.test(trimmed)) {
@@ -759,6 +1193,28 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     // "xxx was not found" 动态提示
     if (/^.+ was not found.?$/i.test(trimmed)) {
       dynamicMatch = dynamicMatch.replace(/^(.+) was not found.?$/i, '$1 未找到');
+      isDynamic = true;
+    }
+
+    // 步骤与回合动态提示
+    if (/^Step d+ ([^)]+):?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Step (d+) (([^)]+)):?/i, '步骤 $1 ($2)：');
+      isDynamic = true;
+    }
+    if (/^d+ turns?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(d+) turns?$/i, '$1 回合');
+      isDynamic = true;
+    }
+    if (/^Turn d+$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Turn (d+)$/i, '第 $1 回合');
+      isDynamic = true;
+    }
+    if (/^Task id "[^"]+" finished with result:$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Task id "([^"]+)" finished with result:$/i, '任务 "$1" 执行完成：');
+      isDynamic = true;
+    }
+    if (/^Tool is running as a background task with task id: (.+)$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Tool is running as a background task with task id: (.+)$/i, '工具正在后台运行 (任务ID: $1)');
       isDynamic = true;
     }
 

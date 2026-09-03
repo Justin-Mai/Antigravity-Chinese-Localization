@@ -13,7 +13,7 @@ vitest_1.vi.mock('../utils');
         vitest_1.vi.clearAllMocks();
         mockStorageManager = {
             getItems: vitest_1.vi.fn().mockResolvedValue({
-                runInBackground: String(process.platform !== 'win32'),
+                runInBackground: 'true',
                 keepComputerAwake: 'false',
             }),
             onDidChange: vitest_1.vi.fn().mockReturnValue({ dispose: vitest_1.vi.fn() }),

@@ -53,7 +53,7 @@ vitest_1.vi.mock('electron');
             vitest_1.vi.mocked(fs_1.existsSync).mockReturnValue(false);
             const items = await storageManager.getItems();
             (0, vitest_1.expect)(items).toEqual({
-                runInBackground: String(process.platform !== 'win32'),
+                runInBackground: String(process.platform === 'darwin'),
                 keepComputerAwake: 'false',
                 autoCheckForUpdates: 'true',
             });
@@ -64,7 +64,7 @@ vitest_1.vi.mock('electron');
             vitest_1.vi.mocked(fs.readFile).mockResolvedValue('');
             const items = await storageManager.getItems();
             (0, vitest_1.expect)(items).toEqual({
-                runInBackground: String(process.platform !== 'win32'),
+                runInBackground: String(process.platform === 'darwin'),
                 keepComputerAwake: 'false',
                 autoCheckForUpdates: 'true',
             });
@@ -75,7 +75,7 @@ vitest_1.vi.mock('electron');
             const items = await storageManager.getItems();
             (0, vitest_1.expect)(items).toEqual({
                 key1: 'value1',
-                runInBackground: String(process.platform !== 'win32'),
+                runInBackground: String(process.platform === 'darwin'),
                 keepComputerAwake: 'false',
                 autoCheckForUpdates: 'true',
             });
@@ -85,7 +85,7 @@ vitest_1.vi.mock('electron');
             vitest_1.vi.mocked(fs.readFile).mockResolvedValue('invalid-json');
             const items = await storageManager.getItems();
             (0, vitest_1.expect)(items).toEqual({
-                runInBackground: String(process.platform !== 'win32'),
+                runInBackground: String(process.platform === 'darwin'),
                 keepComputerAwake: 'false',
                 autoCheckForUpdates: 'true',
             });
