@@ -1057,33 +1057,6 @@ const DOM_TRANSLATOR_INJECTION = `
     "Details": "详情",
     "Overview": "概览",
 
-    // ===== 对话执行步骤与动作标签 (Execution Step Tags - Style A) =====
-    "Ran": "已运行",
-    "ran": "已运行",
-    "Running": "正在运行",
-    "Thought": "已思考",
-    "thought": "已思考",
-    "Thinking...": "思考中...",
-    "thinking...": "思考中...",
-    "Thinking": "思考中",
-    "thinking": "思考中",
-    "Viewed": "已查看",
-    "viewed": "已查看",
-    "Viewing": "正在查看",
-    "viewing": "正在查看",
-    "Edited": "已编辑",
-    "edited": "已编辑",
-    "Editing": "正在编辑",
-    "editing": "正在编辑",
-    "Searched": "已搜索",
-    "searched": "已搜索",
-    "Searching": "正在搜索",
-    "searching": "正在搜索",
-    "Explored": "已探索",
-    "explored": "已探索",
-    "Exploring": "正在探索",
-    "exploring": "正在探索",
-
     // ===== 顶部应用菜单与命令面板 (Application Menu & Command Palette) =====
     "Command Palette": "命令面板",
     "Command Palette...": "命令面板...",
@@ -1440,10 +1413,9 @@ const DOM_TRANSLATOR_INJECTION = `
     "active": "活跃", "background": "后台", "parent": "父级", "child": "子级", "branch": "分支", "share": "共享", "inherit": "继承",
     "original": "原始", "backup": "备份", "duration": "持续时间", "seconds": "秒", "timer": "定时器", "timers": "定时器",
     "schedule": "调度", "cron": "定时任务", "tools": "工具", "tool": "工具", "execute": "执行", "execution": "执行", "plan": "计划",
-    "chat": "聊天", "message": "消息", "messages": "消息", "history": "历史", "clear history": "清除历史",
-    "worked": "工作了", "changed": "已更改", "review": "审核", "reviewing": "审核中", "reviewed": "已审核", "for": "持续",
-    "edited": "编辑了", "canceled": "已取消", "js": "Js",
-    "explore": "探索", "explored": "已探索", "searches": "次搜索", "search": "次搜索", "change": "更改", "changes": "更改",
+    "changed": "已更改", "review": "审核", "reviewing": "审核中", "reviewed": "已审核",
+    "canceled": "已取消", "js": "Js",
+    "explore": "探索", "search": "搜索", "change": "更改", "changes": "更改",
     "turn": "回合", "turns": "回合"
   };
 
@@ -1484,37 +1456,8 @@ const DOM_TRANSLATOR_INJECTION = `
     let dynamicMatch = trimmed;
     let isDynamic = false;
     
-    // 对话执行步骤标签动态时间匹配 (例如 "Thought for 14s", "Thought for 1m", "Worked for 1m", "Worked for 14s")
-    if (/^Thought (?:for|持续) (.+)$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^Thought (?:for|持续) (.+)$/i, '已思考 $1');
-      isDynamic = true;
-    }
-    if (/^Worked (?:for|持续) (.+)$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^Worked (?:for|持续) (.+)$/i, '已耗时 $1');
-      isDynamic = true;
-    }
     if (/^Edited .* \\+\\d+ -\\d+$/.test(trimmed)) {
       dynamicMatch = dynamicMatch.replace(/Edited (.*) \\+(\\d+) -(\\d+)/, '编辑了 $1 (+$2 -$3)');
-      isDynamic = true;
-    }
-    if (/^\\d+ files? changed$/.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(\\d+) files? changed(.*)/, '$1 个文件已更改$2');
-      isDynamic = true;
-    }
-    if (/^Explored(?:\s+(.+))?$/i.test(trimmed)) {
-      if (/^Explored\s+(\d+)\s+searches?$/i.test(trimmed)) {
-        dynamicMatch = dynamicMatch.replace(/^Explored\s+(\d+)\s+searches?/i, '已探索 $1 次搜索');
-      } else if (/^Explored\s+(\d+)\s+files?$/i.test(trimmed)) {
-        dynamicMatch = dynamicMatch.replace(/^Explored\s+(\d+)\s+files?(.*)/i, '已探索 $1 个文件$2');
-      } else if (/^Explored\s+(.+)$/i.test(trimmed)) {
-        dynamicMatch = dynamicMatch.replace(/^Explored\s+(.+)$/i, '已探索 $1');
-      } else {
-        dynamicMatch = '已探索';
-      }
-      isDynamic = true;
-    }
-    if (/^(\d+)\s+searches?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+searches?/i, '$1 次搜索');
       isDynamic = true;
     }
     if (/^Canceled taskkill/.test(trimmed)) {
@@ -1696,8 +1639,6 @@ const DOM_TRANSLATOR_INJECTION = `
     finalTranslated = finalTranslated.replace(/Claude and GPT 模型/g, 'Claude 与 GPT 模型');
     finalTranslated = finalTranslated.replace(/命令\s*palette/gi, '命令面板');
     finalTranslated = finalTranslated.replace(/Scan the code to (?:打开|open) this device in 远程控制[,\s]+or copy link[。.]?/gi, '扫描二维码以在远程控制中打开此设备，或复制链接。');
-    finalTranslated = finalTranslated.replace(/Thought\s+持续\s+(.+)/gi, '已思考 $1');
-    finalTranslated = finalTranslated.replace(/(?:工作了|已工作)\s+持续\s+(.+)/gi, '已耗时 $1');
     if (matchPunc) {
       finalTranslated += trailPunc;
     }
@@ -1724,24 +1665,9 @@ const DOM_TRANSLATOR_INJECTION = `
       return skipCache.get(element);
     }
 
-    // 2. 绝对不能翻译的脚本/样式/按键标签
-    const skipTags = ['SCRIPT', 'STYLE', 'NOSCRIPT', 'KBD', 'SAMP', 'VAR'];
+    // 2. 绝对不能翻译的脚本/样式/代码块/按键标签
+    const skipTags = ['SCRIPT', 'STYLE', 'CODE', 'PRE', 'NOSCRIPT', 'KBD', 'SAMP', 'VAR'];
     if (skipTags.includes(element.tagName)) {
-      skipCache.set(element, true);
-      return true;
-    }
-
-    // 3. 特殊放行：针对执行步骤的药丸标签（如 <code class="whitespace-pre-wrap">Explored</code>）
-    // 如果是多行真正的代码容器 PRE，坚决跳过；但对于极短的纯文本步骤标签 CODE，予以放行
-    if (element.tagName === 'CODE') {
-      const text = (element.innerText || element.textContent || '').trim();
-      const isActionPill = text.length <= 25 && /^(Explored|Ran|Viewed|Edited|Thought|Thinking|Worked)$/i.test(text);
-      if (!isActionPill) {
-        skipCache.set(element, true);
-        return true;
-      }
-    }
-    if (element.tagName === 'PRE') {
       skipCache.set(element, true);
       return true;
     }
