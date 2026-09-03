@@ -1057,6 +1057,33 @@ const DOM_TRANSLATOR_INJECTION = `
     "Details": "详情",
     "Overview": "概览",
 
+    // ===== 对话执行步骤与动作标签 (Execution Step Tags - Style A) =====
+    "Ran": "已运行",
+    "ran": "已运行",
+    "Running": "正在运行",
+    "Thought": "已思考",
+    "thought": "已思考",
+    "Thinking...": "思考中...",
+    "thinking...": "思考中...",
+    "Thinking": "思考中",
+    "thinking": "思考中",
+    "Viewed": "已查看",
+    "viewed": "已查看",
+    "Viewing": "正在查看",
+    "viewing": "正在查看",
+    "Edited": "已编辑",
+    "edited": "已编辑",
+    "Editing": "正在编辑",
+    "editing": "正在编辑",
+    "Searched": "已搜索",
+    "searched": "已搜索",
+    "Searching": "正在搜索",
+    "searching": "正在搜索",
+    "Explored": "已探索",
+    "explored": "已探索",
+    "Exploring": "正在探索",
+    "exploring": "正在探索",
+
     // ===== 顶部应用菜单与命令面板 (Application Menu & Command Palette) =====
     "Command Palette": "命令面板",
     "Command Palette...": "命令面板...",
@@ -1436,8 +1463,13 @@ const DOM_TRANSLATOR_INJECTION = `
     let dynamicMatch = trimmed;
     let isDynamic = false;
     
-    if (/^Worked for \\d+s$/.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/Worked for (\\d+)s/, '已工作 $1 秒');
+    // 对话执行步骤标签动态时间匹配 (例如 "Thought for 14s", "Thought for 1m", "Worked for 1m", "Worked for 14s")
+    if (/^Thought (?:for|持续) (.+)$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Thought (?:for|持续) (.+)$/i, '已思考 $1');
+      isDynamic = true;
+    }
+    if (/^Worked (?:for|持续) (.+)$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Worked (?:for|持续) (.+)$/i, '已耗时 $1');
       isDynamic = true;
     }
     if (/^Edited .* \\+\\d+ -\\d+$/.test(trimmed)) {
@@ -1640,6 +1672,8 @@ const DOM_TRANSLATOR_INJECTION = `
     finalTranslated = finalTranslated.replace(/Claude and GPT 模型/g, 'Claude 与 GPT 模型');
     finalTranslated = finalTranslated.replace(/命令\s*palette/gi, '命令面板');
     finalTranslated = finalTranslated.replace(/Scan the code to (?:打开|open) this device in 远程控制[,\s]+or copy link[。.]?/gi, '扫描二维码以在远程控制中打开此设备，或复制链接。');
+    finalTranslated = finalTranslated.replace(/Thought\s+持续\s+(.+)/gi, '已思考 $1');
+    finalTranslated = finalTranslated.replace(/(?:工作了|已工作)\s+持续\s+(.+)/gi, '已耗时 $1');
     if (matchPunc) {
       finalTranslated += trailPunc;
     }
