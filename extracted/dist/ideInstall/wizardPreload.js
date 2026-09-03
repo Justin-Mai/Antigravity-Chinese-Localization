@@ -971,6 +971,42 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     "Details": "详情",
     "Overview": "概览",
 
+    // ===== 对话流步骤标签与执行状态 (用户定制方案 3) =====
+    "Ran": "运行",
+    "ran": "运行",
+    "Running": "运行中",
+    "Thought": "思考过程",
+    "thought": "思考过程",
+    "Thinking...": "思考中...",
+    "thinking...": "思考中...",
+    "Thinking": "思考中",
+    "thinking": "思考中",
+    "Explored": "检索",
+    "explored": "检索",
+    "Exploring": "检索中",
+    "exploring": "检索中",
+    "Edited": "编辑",
+    "edited": "编辑",
+    "Editing": "编辑中",
+    "editing": "编辑中",
+    "Viewed": "查看",
+    "viewed": "查看",
+    "Viewing": "查看中",
+    "viewing": "查看中",
+    "Searched": "搜索",
+    "searched": "搜索",
+    "Searching": "搜索中",
+    "searching": "搜索中",
+    "Working...": "处理中...",
+    "working...": "处理中...",
+    "Working": "处理中",
+    "working": "处理中",
+    "Load older messages": "加载更早消息",
+    "Artifact not found": "未找到产物文件",
+    "could not be opened": "无法打开",
+    "Tool definitions": "工具定义",
+    "Subagent definitions": "子智能体定义",
+
     // ===== 顶部应用菜单与命令面板 (Application Menu & Command Palette) =====
     "Command Palette": "命令面板",
     "Command Palette...": "命令面板...",
@@ -1366,12 +1402,35 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
       return text.replace(trimmed, stringCache.get(trimmed));
     }
 
+    if (trimmed.includes('could not be opened')) {
+      const replacedCouldNot = trimmed.replace(/could not be opened/gi, '无法打开');
+      if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, replacedCouldNot);
+      return text.replace(trimmed, replacedCouldNot);
+    }
+
     // --- Dynamic Agent Logs Regex Rules (Fixed Escaping) ---
     let dynamicMatch = trimmed;
     let isDynamic = false;
     
-    if (/^Edited .* \+\d+ -\d+$/.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/Edited (.*) \+(\d+) -(\d+)/, '编辑了 $1 (+$2 -$3)');
+    // 用户定制方案 3：思考了 (时间) 与 总耗时 (时间) 动态正则
+    if (/^Thought (?:for|持续) (.+)$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Thought (?:for|持续) (.+)$/i, '思考了 $1');
+      isDynamic = true;
+    }
+    if (/^Worked (?:for|持续) (.+)$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Worked (?:for|持续) (.+)$/i, '总耗时 $1');
+      isDynamic = true;
+    }
+    if (/^\\d+ files? changed(.*)$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\\d+) files? changed(.*)/i, '$1 个文件已更改$2');
+      isDynamic = true;
+    }
+    if (/^(\\d+)\\s+searches?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\\d+)\\s+searches?/i, '$1 次搜索');
+      isDynamic = true;
+    }
+    if (/^Edited (.*) \\+(\\d+) -(\\d+)$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Edited (.*) \\+(\\d+) -(\\d+)/i, '编辑 $1 (+$2 -$3)');
       isDynamic = true;
     }
     if (/^Canceled taskkill/.test(trimmed)) {
@@ -1553,6 +1612,11 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     finalTranslated = finalTranslated.replace(/Claude and GPT 模型/g, 'Claude 与 GPT 模型');
     finalTranslated = finalTranslated.replace(/命令s*palette/gi, '命令面板');
     finalTranslated = finalTranslated.replace(/Scan the code to (?:打开|open) this device in 远程控制[,s]+or copy link[。.]?/gi, '扫描二维码以在远程控制中打开此设备，或复制链接。');
+    finalTranslated = finalTranslated.replace(/(?:工作了s*持续|总耗时s*持续|Worked for)s*(.+)/gi, '总耗时 $1');
+    finalTranslated = finalTranslated.replace(/(?:Thoughts*持续|思考了s*持续)s*(.+)/gi, '思考了 $1');
+    finalTranslated = finalTranslated.replace(/查看s*could not be opened/gi, '查看文件无法打开');
+    finalTranslated = finalTranslated.replace(/could not be opened/gi, '无法打开');
+    finalTranslated = finalTranslated.replace(/(\d+)\s+searches?/gi, '$1 次搜索');
     if (matchPunc) {
       finalTranslated += trailPunc;
     }
@@ -1579,9 +1643,24 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
       return skipCache.get(element);
     }
 
-    // 2. 绝对不能翻译的脚本/样式/代码块/按键标签
-    const skipTags = ['SCRIPT', 'STYLE', 'CODE', 'PRE', 'NOSCRIPT', 'KBD', 'SAMP', 'VAR'];
+    // 2. 绝对不能翻译的脚本/样式/按键标签
+    const skipTags = ['SCRIPT', 'STYLE', 'NOSCRIPT', 'KBD', 'SAMP', 'VAR'];
     if (skipTags.includes(element.tagName)) {
+      skipCache.set(element, true);
+      return true;
+    }
+
+    // 3. 特殊放行：针对执行步骤的独立药丸标签（如 <code class="whitespace-pre-wrap">Explored</code>）
+    // 如果是多行真正的代码容器 PRE，坚决跳过；但对于极短的纯文本步骤标签 CODE，予以精准放行
+    if (element.tagName === 'CODE') {
+      const text = (element.innerText || element.textContent || '').trim();
+      const isActionPill = text.length <= 25 && /^(Explored|Ran|Viewed|Edited|Thought|Thinking|Working)$/i.test(text);
+      if (!isActionPill) {
+        skipCache.set(element, true);
+        return true;
+      }
+    }
+    if (element.tagName === 'PRE') {
       skipCache.set(element, true);
       return true;
     }
@@ -1713,24 +1792,28 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
   };
 
   const observedRoots = new WeakSet();
+  let isTranslating = false;
 
   function observeRoot(root) {
     if (!root || observedRoots.has(root)) return;
     observedRoots.add(root);
 
     const observer = new MutationObserver((mutations) => {
-      observer.disconnect();
+      if (isTranslating) return;
+      isTranslating = true;
       try {
         for (const mutation of mutations) {
           if (mutation.type === 'childList') {
-            mutation.addedNodes.forEach(node => {
+            const added = mutation.addedNodes;
+            for (let i = 0; i < added.length; i++) {
+              const node = added[i];
               if (node.shadowRoot) {
                 observeRoot(node.shadowRoot);
               }
               if (!shouldSkipNode(node)) {
                 translateNode(node);
               }
-            });
+            }
           } else if (mutation.type === 'characterData') {
             const node = mutation.target;
             if (!shouldSkipNode(node)) {
@@ -1759,9 +1842,11 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
         }
       } catch (e) {
         console.error('Observer translation error:', e);
+      } finally {
+        isTranslating = false;
       }
-      observer.observe(root, observerConfig);
     });
+
     observer.observe(root, observerConfig);
   }
 
@@ -1773,17 +1858,52 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     return shadowRoot;
   };
 
+  function safeScan() {
+    if (document.body) {
+      try {
+        translateNode(document.body);
+      } catch (e) {
+        console.error('Translation scan error:', e);
+      }
+      observeRoot(document.body);
+    }
+  }
+
   function startObserver() {
-    if (!document.body) {
-      document.addEventListener('DOMContentLoaded', startObserver);
-      return;
-    }
+    safeScan();
+
+    // 1. 渐进式多阶挂载兜底 (Progressive Mounting Backstop)
+    // 应对托盘重开、温热加载下 React 异步挂载延迟与路由初次渲染
+    [50, 150, 400, 1000, 2500].forEach(delay => {
+      setTimeout(safeScan, delay);
+    });
+
+    // 2. 窗口激活 (Focus) 与可见性恢复 (VisibilityChange) 兜底
+    // 无论是窗口从最小化还原、托盘重新唤醒，还是失焦后重新聚焦，自动触发增量补丁
+    window.addEventListener('focus', safeScan);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        safeScan();
+      }
+    });
+
+    // 3. 单页应用 (SPA) 路由切换监听 (History API Hook)
+    // 保证在不同会话、项目切换、从欢迎根路径跳转至具体任务视图时即时汉化
     try {
-      translateNode(document.body);
-    } catch (e) {
-      console.error('Translation error:', e);
-    }
-    observeRoot(document.body);
+      const origPushState = history.pushState;
+      history.pushState = function() {
+        const ret = origPushState.apply(this, arguments);
+        setTimeout(safeScan, 50);
+        return ret;
+      };
+      const origReplaceState = history.replaceState;
+      history.replaceState = function() {
+        const ret = origReplaceState.apply(this, arguments);
+        setTimeout(safeScan, 50);
+        return ret;
+      };
+      window.addEventListener('popstate', () => setTimeout(safeScan, 50));
+    } catch (_) {}
   }
 
   if (document.readyState === 'loading') {

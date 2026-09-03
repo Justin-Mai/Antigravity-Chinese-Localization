@@ -1878,24 +1878,28 @@ const DOM_TRANSLATOR_INJECTION = `
   };
 
   const observedRoots = new WeakSet();
+  let isTranslating = false;
 
   function observeRoot(root) {
     if (!root || observedRoots.has(root)) return;
     observedRoots.add(root);
 
     const observer = new MutationObserver((mutations) => {
-      observer.disconnect();
+      if (isTranslating) return;
+      isTranslating = true;
       try {
         for (const mutation of mutations) {
           if (mutation.type === 'childList') {
-            mutation.addedNodes.forEach(node => {
+            const added = mutation.addedNodes;
+            for (let i = 0; i < added.length; i++) {
+              const node = added[i];
               if (node.shadowRoot) {
                 observeRoot(node.shadowRoot);
               }
               if (!shouldSkipNode(node)) {
                 translateNode(node);
               }
-            });
+            }
           } else if (mutation.type === 'characterData') {
             const node = mutation.target;
             if (!shouldSkipNode(node)) {
@@ -1924,9 +1928,11 @@ const DOM_TRANSLATOR_INJECTION = `
         }
       } catch (e) {
         console.error('Observer translation error:', e);
+      } finally {
+        isTranslating = false;
       }
-      observer.observe(root, observerConfig);
     });
+
     observer.observe(root, observerConfig);
   }
 
@@ -1938,17 +1944,52 @@ const DOM_TRANSLATOR_INJECTION = `
     return shadowRoot;
   };
 
+  function safeScan() {
+    if (document.body) {
+      try {
+        translateNode(document.body);
+      } catch (e) {
+        console.error('Translation scan error:', e);
+      }
+      observeRoot(document.body);
+    }
+  }
+
   function startObserver() {
-    if (!document.body) {
-      document.addEventListener('DOMContentLoaded', startObserver);
-      return;
-    }
+    safeScan();
+
+    // 1. 渐进式多阶挂载兜底 (Progressive Mounting Backstop)
+    // 应对托盘重开、温热加载下 React 异步挂载延迟与路由初次渲染
+    [50, 150, 400, 1000, 2500].forEach(delay => {
+      setTimeout(safeScan, delay);
+    });
+
+    // 2. 窗口激活 (Focus) 与可见性恢复 (VisibilityChange) 兜底
+    // 无论是窗口从最小化还原、托盘重新唤醒，还是失焦后重新聚焦，自动触发增量补丁
+    window.addEventListener('focus', safeScan);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        safeScan();
+      }
+    });
+
+    // 3. 单页应用 (SPA) 路由切换监听 (History API Hook)
+    // 保证在不同会话、项目切换、从欢迎根路径跳转至具体任务视图时即时汉化
     try {
-      translateNode(document.body);
-    } catch (e) {
-      console.error('Translation error:', e);
-    }
-    observeRoot(document.body);
+      const origPushState = history.pushState;
+      history.pushState = function() {
+        const ret = origPushState.apply(this, arguments);
+        setTimeout(safeScan, 50);
+        return ret;
+      };
+      const origReplaceState = history.replaceState;
+      history.replaceState = function() {
+        const ret = origReplaceState.apply(this, arguments);
+        setTimeout(safeScan, 50);
+        return ret;
+      };
+      window.addEventListener('popstate', () => setTimeout(safeScan, 50));
+    } catch (_) {}
   }
 
   if (document.readyState === 'loading') {
