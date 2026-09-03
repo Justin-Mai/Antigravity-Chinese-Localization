@@ -1499,6 +1499,15 @@ const DOM_TRANSLATOR_INJECTION = `
   };
 
   const combinedDict = Object.assign({}, coreWords, dictionary);
+  // 性能优化 1：预先构建全小写字典 Map，将未命中小写查找由 O(N) 降低为 O(1)
+  const lowerDictionary = new Map();
+  for (const k in dictionary) {
+    const lk = k.toLowerCase();
+    if (!lowerDictionary.has(lk)) {
+      lowerDictionary.set(lk, dictionary[k]);
+    }
+  }
+
   const stringCache = new Map();
   const MAX_STRING_CACHE = 5000;
 
@@ -1525,6 +1534,11 @@ const DOM_TRANSLATOR_INJECTION = `
     if (!text) return text;
     const trimmed = text.trim();
     if (!trimmed) return text;
+
+    // 性能优化 2：极速短路。若文本完全不包含任何英文字母（纯中文/纯数字/纯标点），绝对无需查英文词典或跑正则，瞬间原样返回
+    if (!/[a-zA-Z]/.test(trimmed)) {
+      return text;
+    }
 
     // 0. 极速缓存查询（O(1) 命中瞬间返回）
     if (stringCache.has(trimmed)) {
@@ -1746,19 +1760,8 @@ const DOM_TRANSLATOR_INJECTION = `
       else trailPunc = matchPunc; // keep ..., …
     }
 
-    // Check stripped core in dictionary
-    let coreTranslated = '';
-    if (dictionary[core]) {
-      coreTranslated = dictionary[core];
-    } else {
-      const coreLower = core.toLowerCase();
-      for (const key in dictionary) {
-        if (key.toLowerCase() === coreLower) {
-          coreTranslated = dictionary[key];
-          break;
-        }
-      }
-    }
+    // Check stripped core in dictionary (O(1) exact or O(1) case-insensitive)
+    const coreTranslated = dictionary[core] || lowerDictionary.get(core.toLowerCase()) || '';
 
     if (coreTranslated) {
       return text.replace(trimmed, coreTranslated + trailPunc);
@@ -1960,16 +1963,21 @@ const DOM_TRANSLATOR_INJECTION = `
     return shouldSkip;
   }
 
+  // 性能优化 3：已处理文本节点记忆化 WeakSet，消除父容器重绘时的重复遍历
+  const translatedNodes = new WeakSet();
+
   function translateNode(node) {
     if (!node) return;
     if (shouldSkipNode(node)) return;
 
     if (node.nodeType === Node.TEXT_NODE) {
+      if (translatedNodes.has(node)) return;
       const original = node.nodeValue;
       const translated = translateString(original);
       if (original !== translated) {
         node.nodeValue = translated;
       }
+      translatedNodes.add(node);
     } else if (node.nodeType === Node.ELEMENT_NODE) {
       ['placeholder', 'title', 'aria-label', 'value'].forEach(attr => {
         if (node.hasAttribute && node.hasAttribute(attr)) {
@@ -2039,6 +2047,7 @@ const DOM_TRANSLATOR_INJECTION = `
               if (original !== translated) {
                 node.nodeValue = translated;
               }
+              translatedNodes.add(node);
             }
           } else if (mutation.type === 'attributes') {
             const target = mutation.target;
