@@ -286,6 +286,13 @@ const DOM_TRANSLATOR_INJECTION = `
     "Token Usage": "Token 使用详情",
     "The breakdown below shows token usage from customizations like skills, rules, and MCP. If the budget is exceeded, large customizations will be truncated automatically.": "以下详情展示了来自技能、规则和 MCP 等自定义项的 Token 使用情况。如果额度超限，大型自定义内容将被自动截断。",
     "of the customization budget is available.": "的自定义额度可用。",
+    "% of the customization budget is available.": "% 的自定义额度可用。",
+    "% of the customization budget is available。": "% 的自定义额度可用。",
+    "% of the customization budget is available": "% 的自定义额度可用。",
+    "% of the budget is available.": "% 的自定义额度可用。",
+    "% of the budget is available。": "% 的自定义额度可用。",
+    "% of the customization budget is used.": "% 的自定义额度已使用。",
+    "% of the customization budget is used。": "% 的自定义额度已使用。",
     "100.0% of the customization budget is available.": "100.0% 的自定义额度可用。",
     "No customizations found for this workspace.": "未找到此工作区的自定义项。",
     "Installed MCP Servers": "已安装的 MCP 服务器",
@@ -1560,9 +1567,13 @@ const DOM_TRANSLATOR_INJECTION = `
       return text.replace(trimmed, fixed);
     }
 
-    if (/\\d+(?:\\.\\d+)?% of the (?:customization )?budget is (?:available|used)/i.test(trimmed)) {
+    if (/% of the (?:customization )?budget is (?:available|used)/i.test(trimmed)) {
       let fixed = trimmed;
-      if (/available/i.test(trimmed)) {
+      if (/^%\\s*of the (?:customization )?budget is available[.。]?$/i.test(trimmed)) {
+        fixed = '% 的自定义额度可用。';
+      } else if (/^%\\s*of the (?:customization )?budget is used[.。]?$/i.test(trimmed)) {
+        fixed = '% 的自定义额度已使用。';
+      } else if (/available/i.test(trimmed)) {
         fixed = trimmed.replace(/(\\d+(?:\\.\\d+)?)% of the (?:customization )?budget is available[.。]?/i, '自定义额度尚有 $1% 可用。');
       } else if (/used/i.test(trimmed)) {
         fixed = trimmed.replace(/(\\d+(?:\\.\\d+)?)% of the (?:customization )?budget is used[.。]?/i, '已使用 $1% 的自定义额度。');
