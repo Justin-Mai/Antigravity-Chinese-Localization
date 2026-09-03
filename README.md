@@ -165,5 +165,6 @@ node localize.js --restore
 | :--- | :--- |
 | [liominsb](https://github.com/liominsb) | 原项目创作者，搭建了最初的 Electron asar 注入与 Web 控制中心基础架构 |
 | [LAN-TINA-WS](https://github.com/LAN-TINA-WS) | 2.12.0+ 深度汉化重构、4.44MB 瘦身修复、热更新机制设计、设置与插件生态词库扩充与独立维护 |
+| [Justin-Mai](https://github.com/Justin-Mai) | 2.0 汉化控制中心架构升级、多用户/自定义路径、心跳自愈与防劫持、代码预览与 Diff 防误翻译隔离机制 |
 
 - **参与贡献**：欢迎提交 Pull Request 或通过 Issues 反馈未汉化的词条与界面。
