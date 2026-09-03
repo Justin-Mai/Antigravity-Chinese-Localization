@@ -1,24 +1,22 @@
 @echo off
-title Antigravity 2.0 Chinese Localizer Service
+chcp 936 >nul
+title Antigravity 2.0 汉化管理服务
 echo =======================================================
-echo  Antigravity 2.0 Chinese Localizer Service
+echo  Antigravity 2.0 汉化管理面板
 echo =======================================================
 echo.
-echo Starting localization backend service...
-echo Opening dashboard in your default browser...
+echo 正在启动本地管理服务...
+echo 正在默认浏览器中打开控制台...
 echo.
 
-:: Open the browser dashboard
 start "" "http://localhost:3388"
 
-:: Start the node service
-node localize.js
+node "%~dp0localize.js"
 
 if %errorlevel% neq 0 (
   echo.
-  echo [ERROR] Failed to start the localization service.
-  echo Please make sure Node.js is installed on your system.
-  echo You can download it from https://nodejs.org
+  echo [错误] 启动汉化服务失败。
+  echo 请确认系统已安装 Node.js (https://nodejs.org)
   echo.
   pause
 )

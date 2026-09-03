@@ -676,13 +676,56 @@ const DOM_TRANSLATOR_INJECTION = `
     "Fast": "快速",
 
     // 第5轮: 单数形式补全 (分组选项)
-    "Project": "项目",
-    "project": "项目",
     "projects": "项目",
     "Conversation": "对话",
     "conversation": "对话",
     "Workspace": "工作区",
     "workspace": "工作区",
+
+    // 复合短语与单字防护
+    "Select Project": "选择项目",
+    "New Project": "新建项目",
+    "Quick Start": "快速开始",
+    "No Project": "不在项目中",
+
+    // 2.10.0 Models & Usage
+    "Models": "模型",
+    "Models & Usage": "模型与用量",
+    "Manage your model quota and credits.": "管理您的模型配额与额度。",
+    "Plan": "计划",
+    "You can upgrade to a Google AI Ultra plan to receive higher rate limits.": "您可以升级到 Google AI Ultra 计划以获得更高额的使用速率限制。",
+    "Gemini Models": "Gemini 模型",
+    "Weekly Limit Remaining": "每周剩余限额",
+    "Five Hour Limit Remaining": "5 小时剩余限额",
+    "Claude and GPT models": "Claude 与 GPT 模型",
+
+    // 2.10.0 应用设置与远程控制 (Remote Control)
+    "Manage Antigravity app settings.": "管理 Antigravity 应用设置。",
+    "Keep the app accessible from the menu bar and running in the background when all windows are closed.": "在关闭所有窗口后，保持应用在菜单栏中可访问并在后台运行。",
+    "Remote Control": "远程控制",
+    "Enable Remote Control": "启用远程控制",
+    "Work with local agents from another device.": "在其他设备上与本地智能体协同工作。",
+    "Device Name": "设备名称",
+    "Scan the code to open this device in Remote Control, or copy link.": "扫描二维码以在远程控制中打开此设备，或复制链接。",
+    "copy link": "复制链接",
+    "copy link.": "复制链接。",
+
+    // 2.10.0 通用设置页 (Execution & Queued Messages)
+    "Configure agent execution, queued message delivery, and permissions.": "配置智能体执行、队列消息发送以及权限。",
+    "Execution": "执行",
+    "Queued Messages": "队列消息",
+    "Configure when follow-up messages are sent.": "配置后续消息的发送时机。",
+    "Queue": "排队",
+    "Send Immediately": "立即发送",
+    "Keyboard shortcuts": "键盘快捷键",
+    "Turbo Mode": "Turbo 极速模式",
+    "Turbo mode": "Turbo 极速模式",
+    "Learn more about Turbo mode": "了解关于 Turbo 模式的更多信息",
+
+    // 浏览器设置分段补充
+    "Configure the browser subagent. It requires": "配置浏览器子智能体。这需要",
+    "to be installed.": "需要安装。",
+    "to be installed": "需要安装",
 
     // ===== 第6轮彻底验证补充 =====
     // 窗口控制
@@ -1103,126 +1146,31 @@ const DOM_TRANSLATOR_INJECTION = `
     "Manage Google account": "管理 Google 账号"
   };
 
-  const coreWords = {
-    "create": "创建", "delete": "删除", "new": "新建", "edit": "编辑", "save": "保存", "cancel": "取消", "confirm": "确认",
-    "close": "关闭", "open": "打开", "stop": "停止", "start": "启动", "run": "运行", "add": "添加", "remove": "移除",
-    "update": "更新", "select": "选择", "clear": "清除", "search": "搜索", "find": "查找", "view": "查看", "show": "显示", "hide": "隐藏",
-    "agent": "智能体", "agents": "智能体", "subagent": "子智能体", "subagents": "子智能体", "task": "任务", "tasks": "任务",
-    "workspace": "工作区", "workspaces": "工作区", "directory": "目录", "folder": "文件夹", "file": "文件", "files": "文件",
-    "command": "命令", "commands": "命令", "terminal": "终端", "console": "控制台", "output": "输出", "input": "输入",
-    "log": "日志", "logs": "日志", "setting": "设置", "settings": "设置", "preference": "偏好", "preferences": "偏好",
-    "theme": "主题", "themes": "主题", "model": "模型", "models": "模型", "capability": "能力", "capabilities": "能力",
-    "running": "运行中", "completed": "已完成", "failed": "已失败", "pending": "等待中", "success": "成功", "error": "错误",
-    "system": "系统", "prompt": "提示词", "instructions": "指令", "description": "描述", "name": "名称", "version": "版本",
-    "active": "活跃", "background": "后台", "parent": "父级", "child": "子级", "branch": "分支", "share": "共享", "inherit": "继承",
-    "original": "原始", "backup": "备份", "duration": "持续时间", "seconds": "秒", "timer": "定时器", "timers": "定时器",
-    "schedule": "调度", "cron": "定时任务", "tools": "工具", "tool": "工具", "execute": "执行", "execution": "执行", "plan": "计划",
-    "chat": "聊天", "message": "消息", "messages": "消息", "history": "历史", "clear history": "清除历史",
-    "worked": "工作了", "changed": "已更改", "review": "审核", "reviewing": "审核中", "reviewed": "已审核", "for": "持续",
-    "edited": "编辑了", "canceled": "已取消", "js": "Js",
-    "explore": "探索", "explored": "浏览了", "change": "更改", "changes": "更改",
-    "turn": "回合", "turns": "回合"
-  };
-
-  const combinedDict = Object.assign({}, coreWords, dictionary);
-
-  const escapeRegExp = (str) => {
-    const specials = ['[', ']', '(', ')', '{', '}', '*', '+', '?', '.', '^', '$', '|', '\\\\'];
-    return str.split('').map(c => specials.includes(c) ? '\\\\' + c : c).join('');
-  };
 
   function translateString(text) {
     if (!text) return text;
     const trimmed = text.trim();
     if (!trimmed) return text;
 
-    // --- Dynamic Agent Logs Regex Rules (Fixed Escaping) ---
-    let dynamicMatch = trimmed;
-    let isDynamic = false;
-    
-    if (/^Worked for \\d+s$/.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/Worked for (\\d+)s/, '已工作 $1 秒');
-      isDynamic = true;
-    }
-    if (/^Edited .* \\+\\d+ -\\d+$/.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/Edited (.*) \\+(\\d+) -(\\d+)/, '编辑了 $1 (+$2 -$3)');
-      isDynamic = true;
-    }
-    if (/^\\d+ files? changed$/.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(\\d+) files? changed(.*)/, '$1 个文件已更改$2');
-      isDynamic = true;
-    }
-    if (/^Explored/.test(trimmed)) {
-      if (/^Explored \\d+ files?$/.test(trimmed)) {
-        dynamicMatch = dynamicMatch.replace(/^Explored (\\d+) files?(.*)/, '浏览了 $1 个文件$2');
-      } else if (/^Explored (.*)$/.test(trimmed)) {
-        dynamicMatch = dynamicMatch.replace(/^Explored (.*)/, '浏览了 $1');
-      }
-      isDynamic = true;
-    }
-    if (/^Canceled taskkill/.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^Canceled (.*)/, '已取消 $1');
-      isDynamic = true;
-    }
-
     // 配额提示句 (含动态天数/小时/分钟)
-    if (/^You have used some of your (weekly|5-hour|hourly|daily) limit/.test(trimmed)) {
-      dynamicMatch = dynamicMatch
-        .replace(/^You have used some of your weekly limit/, '您已使用了部分每周限额')
-        .replace(/^You have used some of your 5-hour limit/, '您已使用了部分 5 小时限额')
-        .replace(/^You have used some of your hourly limit/, '您已使用了部分每小时限额')
-        .replace(/^You have used some of your daily limit/, '您已使用了部分每日限额')
-        .replace(/it will fully refresh in/, '它将在以下时间后完全刷新：')
-        .replace(/(\d+)\s*days?/g, '$1 天 ')
-        .replace(/(\d+)\s*hours?/g, '$1 小时 ')
-        .replace(/(\d+)\s*minutes?\.?$/g, '$1 分钟')
-        .replace(/[,.]/g, '');
-      isDynamic = true;
+    if (/^You have used some of your (weekly|5-hour|hourly|daily) limit/i.test(trimmed)) {
+      let dynamicMatch = trimmed
+        .replace(/^You have used some of your weekly limit/i, '您已使用了部分每周限额')
+        .replace(/^You have used some of your 5-hour limit/i, '您已使用了部分 5 小时限额')
+        .replace(/^You have used some of your hourly limit/i, '您已使用了部分每小时限额')
+        .replace(/^You have used some of your daily limit/i, '您已使用了部分每日限额')
+        .replace(/it will fully refresh in:?\\s*/i, '它将在以下时间后完全刷新： ')
+        .replace(/(\\d+)\\s*days?/gi, '$1 天')
+        .replace(/(\\d+)\\s*hours?/gi, '$1 小时')
+        .replace(/(\\d+)\\s*minutes?/gi, '$1 分钟')
+        .trim();
+      return text.replace(trimmed, dynamicMatch);
     }
     // 模型分组配额说明长句
     if (/^Within each group, models share/.test(trimmed)) {
-      dynamicMatch = '在每个分组中，模型共享每周限额和 5 小时限额。配额按 token 成本比例消耗。因此，较短的任务或使用更具性价比的模型时，限额可持续更长时间。5 小时限额用于平滑总需求，以便在所有用户间公平分配全球容量，而每周限额则与您的个人等级直接挂钩。';
-      isDynamic = true;
-    }
-
-    // 项目/路径不存在的动态提示 (项目名 + " does not exist"，超3词无法走分词)
-    if (/^.+ does not exist\.?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(.+) does not exist\.?$/i, '$1 不存在');
-      isDynamic = true;
-    }
-    // "xxx was not found" 动态提示
-    if (/^.+ was not found\.?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(.+) was not found\.?$/i, '$1 未找到');
-      isDynamic = true;
-    }
-
-    // 步骤与回合动态提示
-    if (/^Step \d+ \([^\)]+\):?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^Step (\d+) \(([^\)]+)\):?/i, '步骤 $1 ($2)：');
-      isDynamic = true;
-    }
-    if (/^\d+ turns?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(\d+) turns?$/i, '$1 回合');
-      isDynamic = true;
-    }
-    if (/^Turn \d+$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^Turn (\d+)$/i, '第 $1 回合');
-      isDynamic = true;
-    }
-    if (/^Task id "[^"]+" finished with result:$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^Task id "([^"]+)" finished with result:$/i, '任务 "$1" 执行完成：');
-      isDynamic = true;
-    }
-    if (/^Tool is running as a background task with task id: (.+)$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^Tool is running as a background task with task id: (.+)$/i, '工具正在后台运行 (任务ID: $1)');
-      isDynamic = true;
-    }
-
-    if (isDynamic) {
+      const dynamicMatch = '在每个分组中，模型共享每周限额和 5 小时限额。配额按 token 成本比例消耗。因此，较短的任务或使用更具性价比的模型时，限额可持续更长时间。5 小时限额用于平滑总需求，以便在所有用户间公平分配全球容量，而每周限额则与您的个人等级直接挂钩。';
       return text.replace(trimmed, dynamicMatch);
     }
-    // --- End Dynamic Regex ---
-
     // 1. Direct Literal Match (Exact match including punctuation)
     if (dictionary[trimmed]) {
       return text.replace(trimmed, dictionary[trimmed]);
@@ -1235,7 +1183,7 @@ const DOM_TRANSLATOR_INJECTION = `
       }
     }
 
-    // 2. Intelligent Punctuation Stripping & Reconstruction
+    // 2. Intelligent Punctuation Stripping & Exact Reconstruction
     let core = trimmed;
     let trailPunc = '';
     let matchPunc = '';
@@ -1256,7 +1204,7 @@ const DOM_TRANSLATOR_INJECTION = `
       else if (matchPunc === '？') trailPunc = '？';
       else if (matchPunc === '！') trailPunc = '！';
       else if (matchPunc === '。') trailPunc = '。';
-      else trailPunc = matchPunc; // keep ..., …
+      else trailPunc = matchPunc;
     }
 
     // Check stripped core in dictionary
@@ -1277,130 +1225,137 @@ const DOM_TRANSLATOR_INJECTION = `
       return text.replace(trimmed, coreTranslated + trailPunc);
     }
 
-    // 3. Fallback to word-by-word ONLY for short strings (<= 3 words)
-    // 如果短语中已经包含了中文字符（即原本就是汉化内容或中英混排），则严禁进入英文分词翻译
-    // 这可以完美阻止像中英文混排短语被分词规则执行二次翻译导致重叠和污染
-    if (/[\u4e00-\u9fa5]/.test(core)) {
-      return text;
-    }
-    // This prevents long unmatched sentences from getting mangled into Chinglish.
-    const wordsCount = core.split(/\s+/).filter(Boolean).length;
-    if (wordsCount > 3) {
-      return text; // Do not translate, keep original English sentence clean
-    }
-
-    let temp = core;
-    let replaced = false;
-    const sortedKeys = Object.keys(combinedDict).sort((a, b) => b.length - a.length);
-    for (const key of sortedKeys) {
-      if (key.length <= 3 && !/^[a-zA-Z0-9]+$/.test(key)) continue;
-      const escapedKey = escapeRegExp(key);
-      const startBoundary = /^[a-zA-Z0-9]/.test(key) ? '\\\\b' : '';
-      const endBoundary = /[a-zA-Z0-9]$/.test(key) ? '\\\\b' : '';
-      const regex = new RegExp(startBoundary + escapedKey + endBoundary, 'gi');
-      if (regex.test(temp)) {
-        temp = temp.replace(regex, combinedDict[key]);
-        replaced = true;
-      }
-    }
-
-    let finalTranslated = replaced ? temp : core;
-    // 消除中文字符之间可能由分词替换残留的英文空格，提升翻译句子的连贯精致度
-    finalTranslated = finalTranslated.replace(/([\u4e00-\u9fa5])\s+([\u4e00-\u9fa5])/g, '$1$2');
-    if (matchPunc) {
-      finalTranslated += trailPunc;
-    }
-    return text.replace(trimmed, finalTranslated);
+    // 严禁分词替换，未命中字典的文本一律 100% 保持英文原样
+    return text;
   }
 
-  // 用于模糊匹配类名中包含代码/预览/diff相关关键词的正则
-  const codeClassPattern = /(?:^|[\\s_-])(code|diff|source|syntax|highlight|viewer|hljs|shiki|prism|monaco|codemirror|token|line-number|line-content|gutter|codeblock|code-block|code-view|code-preview|file-preview|file-content)(?:$|[\\s_-])/i;
+  // 用于模糊匹配类名中包含代码/预览/diff/正文/思考日志相关关键词的正则
+  const codeClassPattern = /(?:^|[\\s_-])(code|diff|source|syntax|highlight|viewer|hljs|shiki|prism|monaco|codemirror|token|line-number|line-content|gutter|codeblock|code-block|code-view|code-preview|file-preview|file-content|conversation-container|conversation-view|chat-history|message-content|prose|markdown-body|thought-container|agent-thought|agent-log|path-label|file-path|breadcrumb|filename)(?:$|[\\s_-])/i;
 
   function shouldSkipNode(node) {
     if (!node) return true;
     
-    // 如果是文本节点，我们检查其父元素；如果是属性/元素节点，检查自身
-    const element = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
-    if (!element) return false;
+    try {
+      // 1. 如果是文本节点，先检查文本自身特征
+      if (node.nodeType === Node.TEXT_NODE) {
+        const val = node.nodeValue ? node.nodeValue.trim() : '';
+        // 如果文本节点本身包含路径特征（如包含路径斜杠或常见文件扩展名），直接跳过
+        if (val && (/[\\/\\\\]/.test(val) || /\\.(md|js|ts|json|py|yaml|yml|html|css|bat|sh|png|jpg|svg)$/i.test(val))) {
+          return true;
+        }
+      }
 
-    // 1. 绝对不能翻译的脚本/样式/代码块标签
-    const skipTags = ['SCRIPT', 'STYLE', 'CODE', 'PRE', 'NOSCRIPT', 'KBD', 'SAMP', 'VAR'];
-    if (skipTags.includes(element.tagName)) {
+      // 如果是文本节点，我们检查其父元素；如果是属性/元素节点，检查自身
+      const element = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
+      if (!element) return false;
+
+      // 2. 绝对不能翻译的脚本/样式/代码块标签
+      const skipTags = ['SCRIPT', 'STYLE', 'CODE', 'PRE', 'NOSCRIPT', 'KBD', 'SAMP', 'VAR'];
+      if (skipTags.includes(element.tagName)) {
+        return true;
+      }
+
+      // 3. 如果是文本节点，并且其父元素是输入框/文本域，必须跳过文本节点翻译
+      if (node.nodeType === Node.TEXT_NODE) {
+        if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+          return true;
+        }
+      }
+
+      // 4. 检查元素自身是否带有代码语言或消息特征标记属性
+      if (element.getAttribute) {
+        if (element.getAttribute('data-language') || 
+            element.getAttribute('data-code') ||
+            element.getAttribute('data-line') ||
+            element.getAttribute('data-line-number') ||
+            element.getAttribute('data-message-id')) {
+          return true;
+        }
+      }
+
+      // 5. 向上递归检查祖先节点
+      let cur = element;
+      while (cur) {
+        // 5a. contenteditable 区域
+        if (cur.getAttribute && cur.getAttribute('contenteditable') === 'true') {
+          return true;
+        }
+
+        // 5b. 检查 data 属性（代码块、消息容器等标记）
+        if (cur.getAttribute) {
+          if (cur.getAttribute('data-language') || 
+              cur.getAttribute('data-code') ||
+              cur.getAttribute('data-line') ||
+              cur.getAttribute('data-line-number') ||
+              cur.getAttribute('data-message-id')) {
+            return true;
+          }
+        }
+
+        // 5c. 检查 role 属性
+        if (cur.getAttribute) {
+          const role = cur.getAttribute('role');
+          if (role === 'code' || role === 'log') {
+            return true;
+          }
+        }
+
+        // 5d. 精确类名匹配 — 已知的编辑器/输入/对话/思考区域
+        if (cur.classList && (
+          cur.classList.contains('monaco-editor') || 
+          cur.classList.contains('editor-instance') ||
+          cur.classList.contains('input-area') ||
+          cur.classList.contains('chat-input') ||
+          cur.classList.contains('conversation-container') ||
+          cur.classList.contains('conversation-view') ||
+          cur.classList.contains('prose') ||
+          cur.classList.contains('thought-container') ||
+          cur.classList.contains('path-label')
+        )) {
+          return true;
+        }
+
+        // 5e. 类名高精度全面拦截 — 确保所有步骤折叠栏、对话流、思考日志绝对不被翻译
+        if (cur.className && typeof cur.className === 'string') {
+          const lowerClass = cur.className.toLowerCase();
+          if (
+            lowerClass.includes('conversation') ||
+            lowerClass.includes('message') ||
+            lowerClass.includes('prose') ||
+            lowerClass.includes('chat') ||
+            lowerClass.includes('thought') ||
+            lowerClass.includes('step') ||
+            lowerClass.includes('turn') ||
+            lowerClass.includes('tool') ||
+            lowerClass.includes('action') ||
+            lowerClass.includes('log') ||
+            lowerClass.includes('timeline') ||
+            lowerClass.includes('accordion') ||
+            lowerClass.includes('collapsible') ||
+            lowerClass.includes('code-line') ||
+            lowerClass.includes('select-contain') ||
+            lowerClass.includes('font-mono') ||
+            lowerClass.includes('workspace-dropdown') ||
+            lowerClass.includes('workspace-item') ||
+            lowerClass.includes('folder-item') ||
+            lowerClass.includes('project-item') ||
+            lowerClass.includes('breadcrumb') ||
+            codeClassPattern.test(cur.className)
+          ) {
+            return true;
+          }
+        }
+
+        // 5f. 检查 tagName: 如果在 PRE 或 CODE 结构内部也应跳过
+        if (cur.tagName === 'PRE' || cur.tagName === 'CODE') {
+          return true;
+        }
+
+        cur = cur.parentElement;
+      }
+    } catch (e) {
+      // 异常时采取防御性策略，直接跳过翻译，避免在未知结构中误翻译正文
       return true;
-    }
-
-    // 2. 如果是文本节点，并且其父元素是输入框/文本域，必须跳过文本节点翻译
-    if (node.nodeType === Node.TEXT_NODE) {
-      if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-        return true;
-      }
-    }
-
-    // 3. 检查元素自身是否带有代码语言标记属性
-    if (element.getAttribute) {
-      if (element.getAttribute('data-language') || 
-          element.getAttribute('data-code') ||
-          element.getAttribute('data-line') ||
-          element.getAttribute('data-line-number')) {
-        return true;
-      }
-    }
-
-    // 4. 向上递归检查祖先节点
-    let cur = element;
-    while (cur) {
-      // 4a. contenteditable 区域
-      if (cur.getAttribute && cur.getAttribute('contenteditable') === 'true') {
-        return true;
-      }
-
-      // 4b. 检查 data 属性（代码块语言标记等）
-      if (cur.getAttribute) {
-        if (cur.getAttribute('data-language') || 
-            cur.getAttribute('data-code') ||
-            cur.getAttribute('data-line') ||
-            cur.getAttribute('data-line-number')) {
-          return true;
-        }
-      }
-
-      // 4c. 检查 role 属性
-      if (cur.getAttribute) {
-        const role = cur.getAttribute('role');
-        if (role === 'code') {
-          return true;
-        }
-      }
-
-      // 4d. 精确类名匹配 — 已知的编辑器/输入区域
-      if (cur.classList && (
-        cur.classList.contains('monaco-editor') || 
-        cur.classList.contains('editor-instance') ||
-        cur.classList.contains('input-area') ||
-        cur.classList.contains('chat-input')
-      )) {
-        return true;
-      }
-
-      // 4e. 类名匹配 — 精确与模糊检测（高精度防御，防止 Tailwind 选择器如 [&_code] 引起的误杀）
-      if (cur.className && typeof cur.className === 'string') {
-        const lowerClass = cur.className.toLowerCase();
-        if (
-          lowerClass.includes('code-line') ||
-          lowerClass.includes('select-contain') ||
-          lowerClass.includes('font-mono') ||
-          codeClassPattern.test(cur.className)
-        ) {
-          return true;
-        }
-      }
-
-      // 4f. 检查 tagName: 如果在 PRE 或 CODE 结构内部也应跳过
-      if (cur.tagName === 'PRE' || cur.tagName === 'CODE') {
-        return true;
-      }
-
-      cur = cur.parentElement;
     }
 
     return false;
@@ -1927,6 +1882,17 @@ if (process.argv.includes('--now')) {
       process.exit(1);
     });
 } else {
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(`\n======================================================`);
+      console.log(` [提示] Antigravity 2.0 汉化服务已经在运行中！(端口 ${PORT})`);
+      console.log(` 本地管理面板: http://localhost:${PORT}`);
+      console.log(`======================================================\n`);
+    } else {
+      console.error('服务启动异常:', err.message);
+    }
+  });
+
   server.listen(PORT, () => {
     console.log(`\n======================================================`);
     console.log(` Antigravity 2.0 汉化服务已在后台运行！`);
