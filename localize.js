@@ -248,6 +248,9 @@ const DOM_TRANSLATOR_INJECTION = `
     "Commands Outside Sandbox": "沙盒外命令",
     "Configure allowed commands outside the sandbox.": "配置允许在沙盒外执行的终端命令。",
     "MCP Tools": "MCP 工具",
+    "Tool Permissions": "工具权限",
+    "Tool permissions": "工具权限",
+    "工具 Permissions": "工具权限",
     "Configure external tools via Model Context Protocol.": "通过模型上下文协议 (MCP) 配置外部工具。",
     "Global": "全局",
     "Sandbox": "沙盒",
@@ -1299,6 +1302,8 @@ const DOM_TRANSLATOR_INJECTION = `
     "Modify permissions for files, terminal, and MCP tools": "修改针对文件系统、终端命令以及 MCP 工具的安全权限",
     "Modify 权限 持续 文件, 终端, and MCP 工具。": "修改针对文件系统、终端命令以及 MCP 工具的安全权限。",
     "Modify 权限 持续 文件, 终端, and MCP 工具": "修改针对文件系统、终端命令以及 MCP 工具的安全权限",
+    "Modify permissions for 文件, 终端, and MCP 工具。": "修改针对文件系统、终端命令以及 MCP 工具的安全权限。",
+    "Modify permissions for 文件, 终端, and MCP 工具": "修改针对文件系统、终端命令以及 MCP 工具的安全权限",
     "You can upgrade to a Google AI Ultra plan to receive higher rate limits.": "您可以升级至 Google AI Ultra 计划以获得更高额度的调用速率上限。",
     "You can upgrade to a Google AI Ultra plan to receive higher rate limits": "您可以升级至 Google AI Ultra 计划以获得更高额度的调用速率上限",
     "You can 升级 to a Google AI Ultra 计划 to receive higher rate 限额。": "您可以升级至 Google AI Ultra 计划以获得更高额度的调用速率上限。",
@@ -1473,7 +1478,7 @@ const DOM_TRANSLATOR_INJECTION = `
     "agent": "智能体", "agents": "智能体", "subagent": "子智能体", "subagents": "子智能体", "task": "任务", "tasks": "任务",
     "workspace": "工作区", "workspaces": "工作区", "directory": "目录", "folder": "文件夹", "file": "文件", "files": "文件",
     "command": "命令", "commands": "命令", "palette": "面板", "terminal": "终端", "console": "控制台", "output": "输出", "input": "输入", "remote": "远程", "control": "控制", "device": "设备", "devices": "设备", "link": "链接",
-    "log": "日志", "logs": "日志", "setting": "设置", "settings": "设置", "preference": "偏好", "preferences": "偏好",
+    "log": "日志", "logs": "日志", "setting": "设置", "settings": "设置", "preference": "偏好", "preferences": "偏好", "permission": "权限", "permissions": "权限",
     "theme": "主题", "themes": "主题", "model": "模型", "models": "模型", "capability": "能力", "capabilities": "能力",
     "running": "运行中", "completed": "已完成", "failed": "已失败", "pending": "等待中", "success": "成功", "error": "错误",
     "system": "系统", "prompt": "提示词", "instructions": "指令", "description": "描述", "name": "名称", "version": "版本",
@@ -1541,6 +1546,18 @@ const DOM_TRANSLATOR_INJECTION = `
         if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
         return text.replace(trimmed, fixed);
       }
+    }
+
+    if (/^Modify permissions for/i.test(trimmed)) {
+      const fixed = '修改针对文件系统、终端命令以及 MCP 工具的安全权限。';
+      if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
+      return text.replace(trimmed, fixed);
+    }
+
+    if (/^(?:Tool\s+Permissions|工具\s*Permissions)$/i.test(trimmed)) {
+      const fixed = '工具权限';
+      if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
+      return text.replace(trimmed, fixed);
     }
 
     // --- Dynamic Agent Logs Regex Rules (Fixed Escaping) ---
