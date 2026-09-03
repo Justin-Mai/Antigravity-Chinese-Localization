@@ -1443,21 +1443,42 @@ const DOM_TRANSLATOR_INJECTION = `
     "chat": "聊天", "message": "消息", "messages": "消息", "history": "历史", "clear history": "清除历史",
     "worked": "工作了", "changed": "已更改", "review": "审核", "reviewing": "审核中", "reviewed": "已审核", "for": "持续",
     "edited": "编辑了", "canceled": "已取消", "js": "Js",
-    "explore": "探索", "explored": "浏览了", "change": "更改", "changes": "更改",
+    "explore": "探索", "explored": "已探索", "searches": "次搜索", "search": "次搜索", "change": "更改", "changes": "更改",
     "turn": "回合", "turns": "回合"
   };
 
   const combinedDict = Object.assign({}, coreWords, dictionary);
+  const stringCache = new Map();
+  const MAX_STRING_CACHE = 5000;
 
   const escapeRegExp = (str) => {
     const specials = ['[', ']', '(', ')', '{', '}', '*', '+', '?', '.', '^', '$', '|', '\\\\'];
     return str.split('').map(c => specials.includes(c) ? '\\\\' + c : c).join('');
   };
 
+  // 极速性能核心：在启动时一次性预编译常用词汇正则，彻底消灭运行时循环动态 new RegExp 导致的数百毫秒卡死
+  const PRECOMPILED_CORE_PATTERNS = Object.keys(coreWords)
+    .sort((a, b) => b.length - a.length)
+    .filter(w => w.length > 2 || /^[a-zA-Z0-9]+$/.test(w))
+    .map(w => {
+      const escaped = escapeRegExp(w);
+      const startB = /^[a-zA-Z0-9]/.test(w) ? '\\\\b' : '';
+      const endB = /[a-zA-Z0-9]$/.test(w) ? '\\\\b' : '';
+      return {
+        regex: new RegExp(startB + escaped + endB, 'gi'),
+        target: coreWords[w]
+      };
+    });
+
   function translateString(text) {
     if (!text) return text;
     const trimmed = text.trim();
     if (!trimmed) return text;
+
+    // 0. 极速缓存查询（O(1) 命中瞬间返回）
+    if (stringCache.has(trimmed)) {
+      return text.replace(trimmed, stringCache.get(trimmed));
+    }
 
     // --- Dynamic Agent Logs Regex Rules (Fixed Escaping) ---
     let dynamicMatch = trimmed;
@@ -1480,12 +1501,20 @@ const DOM_TRANSLATOR_INJECTION = `
       dynamicMatch = dynamicMatch.replace(/^(\\d+) files? changed(.*)/, '$1 个文件已更改$2');
       isDynamic = true;
     }
-    if (/^Explored/.test(trimmed)) {
-      if (/^Explored \\d+ files?$/.test(trimmed)) {
-        dynamicMatch = dynamicMatch.replace(/^Explored (\\d+) files?(.*)/, '浏览了 $1 个文件$2');
-      } else if (/^Explored (.*)$/.test(trimmed)) {
-        dynamicMatch = dynamicMatch.replace(/^Explored (.*)/, '浏览了 $1');
+    if (/^Explored(?:\s+(.+))?$/i.test(trimmed)) {
+      if (/^Explored\s+(\d+)\s+searches?$/i.test(trimmed)) {
+        dynamicMatch = dynamicMatch.replace(/^Explored\s+(\d+)\s+searches?/i, '已探索 $1 次搜索');
+      } else if (/^Explored\s+(\d+)\s+files?$/i.test(trimmed)) {
+        dynamicMatch = dynamicMatch.replace(/^Explored\s+(\d+)\s+files?(.*)/i, '已探索 $1 个文件$2');
+      } else if (/^Explored\s+(.+)$/i.test(trimmed)) {
+        dynamicMatch = dynamicMatch.replace(/^Explored\s+(.+)$/i, '已探索 $1');
+      } else {
+        dynamicMatch = '已探索';
       }
+      isDynamic = true;
+    }
+    if (/^(\d+)\s+searches?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+searches?/i, '$1 次搜索');
       isDynamic = true;
     }
     if (/^Canceled taskkill/.test(trimmed)) {
@@ -1647,15 +1676,10 @@ const DOM_TRANSLATOR_INJECTION = `
 
     let temp = core;
     let replaced = false;
-    const sortedKeys = Object.keys(combinedDict).sort((a, b) => b.length - a.length);
-    for (const key of sortedKeys) {
-      if (key.length <= 3 && !/^[a-zA-Z0-9]+$/.test(key)) continue;
-      const escapedKey = escapeRegExp(key);
-      const startBoundary = /^[a-zA-Z0-9]/.test(key) ? '\\\\b' : '';
-      const endBoundary = /[a-zA-Z0-9]$/.test(key) ? '\\\\b' : '';
-      const regex = new RegExp(startBoundary + escapedKey + endBoundary, 'gi');
-      if (regex.test(temp)) {
-        temp = temp.replace(regex, combinedDict[key]);
+    for (let i = 0; i < PRECOMPILED_CORE_PATTERNS.length; i++) {
+      const p = PRECOMPILED_CORE_PATTERNS[i];
+      if (p.regex.test(temp)) {
+        temp = temp.replace(p.regex, p.target);
         replaced = true;
       }
     }
@@ -1677,11 +1701,16 @@ const DOM_TRANSLATOR_INJECTION = `
     if (matchPunc) {
       finalTranslated += trailPunc;
     }
+    if (stringCache.size < MAX_STRING_CACHE) {
+      stringCache.set(trimmed, finalTranslated);
+    }
     return text.replace(trimmed, finalTranslated);
   }
 
   // 用于精确匹配代码编辑器、语法高亮等容器类名（收敛范围，防止误杀带 font-mono 或 viewer 的正常 UI）
   const codeClassPattern = /(?:^|[\\s_-])(monaco-editor|editor-instance|hljs|shiki|prism|codemirror|line-content|gutter|codeblock|code-block|code-line|view-line)(?:$|[\\s_-])/i;
+
+  const skipCache = new WeakMap();
 
   function shouldSkipNode(node) {
     if (!node) return true;
@@ -1690,66 +1719,87 @@ const DOM_TRANSLATOR_INJECTION = `
     const element = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
     if (!element) return false;
 
-    // 1. 绝对不能翻译的脚本/样式/代码块标签
-    const skipTags = ['SCRIPT', 'STYLE', 'CODE', 'PRE', 'NOSCRIPT', 'KBD', 'SAMP', 'VAR'];
+    // 1. 记忆化缓存查询：O(1) 瞬间返回，消除折叠栏展开时的万次重复检查
+    if (skipCache.has(element)) {
+      return skipCache.get(element);
+    }
+
+    // 2. 绝对不能翻译的脚本/样式/按键标签
+    const skipTags = ['SCRIPT', 'STYLE', 'NOSCRIPT', 'KBD', 'SAMP', 'VAR'];
     if (skipTags.includes(element.tagName)) {
+      skipCache.set(element, true);
       return true;
     }
 
-    // 2. 如果是文本节点，并且其父元素是输入框/文本域，必须跳过文本节点翻译
+    // 3. 特殊放行：针对执行步骤的药丸标签（如 <code class="whitespace-pre-wrap">Explored</code>）
+    // 如果是多行真正的代码容器 PRE，坚决跳过；但对于极短的纯文本步骤标签 CODE，予以放行
+    if (element.tagName === 'CODE') {
+      const text = (element.innerText || element.textContent || '').trim();
+      const isActionPill = text.length <= 25 && /^(Explored|Ran|Viewed|Edited|Thought|Thinking|Worked)$/i.test(text);
+      if (!isActionPill) {
+        skipCache.set(element, true);
+        return true;
+      }
+    }
+    if (element.tagName === 'PRE') {
+      skipCache.set(element, true);
+      return true;
+    }
+
+    // 4. 输入框/文本域绝对跳过
     if (node.nodeType === Node.TEXT_NODE) {
       if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+        skipCache.set(element, true);
         return true;
       }
     }
 
-    // 3. 检查元素自身是否带有代码语言标记属性
+    // 5. 检查元素自身是否带有代码语言标记属性
     if (element.getAttribute) {
       if (element.getAttribute('data-language') || 
           element.getAttribute('data-code') ||
           element.getAttribute('data-line') ||
           element.getAttribute('data-line-number')) {
+        skipCache.set(element, true);
         return true;
       }
     }
 
-    // 4. 向上递归检查祖先节点
+    // 6. 向上递归检查祖先节点（带路径记忆化剪枝）
     let cur = element;
-    while (cur) {
-      // 4a. contenteditable 区域
+    let shouldSkip = false;
+    while (cur && cur !== document.body) {
+      if (skipCache.has(cur)) {
+        shouldSkip = skipCache.get(cur);
+        break;
+      }
+
       if (cur.getAttribute && cur.getAttribute('contenteditable') === 'true') {
-        return true;
+        shouldSkip = true;
+        break;
       }
 
-      // 4b. 检查 data 属性（代码块语言标记等）
-      if (cur.getAttribute) {
-        if (cur.getAttribute('data-language') || 
-            cur.getAttribute('data-code') ||
-            cur.getAttribute('data-line') ||
-            cur.getAttribute('data-line-number')) {
-          return true;
-        }
+      if (cur.getAttribute && (
+          cur.getAttribute('data-language') || 
+          cur.getAttribute('data-code') ||
+          cur.getAttribute('data-line') ||
+          cur.getAttribute('data-line-number') ||
+          cur.getAttribute('role') === 'code'
+      )) {
+        shouldSkip = true;
+        break;
       }
 
-      // 4c. 检查 role 属性
-      if (cur.getAttribute) {
-        const role = cur.getAttribute('role');
-        if (role === 'code') {
-          return true;
-        }
-      }
-
-      // 4d. 精确类名匹配 — 已知的编辑器/输入区域
       if (cur.classList && (
         cur.classList.contains('monaco-editor') || 
         cur.classList.contains('editor-instance') ||
         cur.classList.contains('input-area') ||
         cur.classList.contains('chat-input')
       )) {
-        return true;
+        shouldSkip = true;
+        break;
       }
 
-      // 4e. 类名匹配 — 精确代码行与编辑器检测
       if (cur.className && typeof cur.className === 'string') {
         const lowerClass = cur.className.toLowerCase();
         if (
@@ -1757,19 +1807,21 @@ const DOM_TRANSLATOR_INJECTION = `
           lowerClass.includes('view-line') ||
           codeClassPattern.test(cur.className)
         ) {
-          return true;
+          shouldSkip = true;
+          break;
         }
       }
 
-      // 4f. 检查 tagName: 如果在 PRE 或 CODE 结构内部也应跳过
-      if (cur.tagName === 'PRE' || cur.tagName === 'CODE') {
-        return true;
+      if (cur.tagName === 'PRE') {
+        shouldSkip = true;
+        break;
       }
 
       cur = cur.parentElement;
     }
 
-    return false;
+    skipCache.set(element, shouldSkip);
+    return shouldSkip;
   }
 
   function translateNode(node) {
