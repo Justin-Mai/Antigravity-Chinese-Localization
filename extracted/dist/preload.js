@@ -1554,7 +1554,7 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
       return text.replace(trimmed, fixed);
     }
 
-    if (/^(?:Tools+Permissions|工具s*Permissions)$/i.test(trimmed)) {
+    if (/^(?:Tool[\s ]+Permissions|工具[\s ]*Permissions)$/i.test(trimmed)) {
       const fixed = '工具权限';
       if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
       return text.replace(trimmed, fixed);
