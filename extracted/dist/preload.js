@@ -1662,16 +1662,16 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
       dynamicMatch = dynamicMatch.replace(/^Worked (?:for|持续) (.+)$/i, '总耗时 $1');
       isDynamic = true;
     }
-    if (/^\\d+ files? changed(.*)$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(\\d+) files? changed(.*)/i, '$1 个文件已更改$2');
+    if (/^\d+ files? changed(.*)$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+) files? changed(.*)/i, '$1 个文件已更改$2');
       isDynamic = true;
     }
-    if (/^(\\d+)\\s+searches?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(\\d+)\\s+searches?/i, '$1 次搜索');
+    if (/^(\d+)\s+searches?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+searches?/i, '$1 次搜索');
       isDynamic = true;
     }
-    if (/^Edited (.*) \\+(\\d+) -(\\d+)$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^Edited (.*) \\+(\\d+) -(\\d+)/i, '编辑 $1 (+$2 -$3)');
+    if (/^Edited (.*) \+(\d+) -(\d+)$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Edited (.*) \+(\d+) -(\d+)/i, '编辑 $1 (+$2 -$3)');
       isDynamic = true;
     }
     if (/^Canceled taskkill/.test(trimmed)) {
@@ -1686,7 +1686,7 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     }
 
     // 限额剩余标题动态匹配 (例如 "Five Hour Limit Remaining", "Weekly Limit Remaining", "5-hour limit remaining")
-    if (/^(Weekly|Five[- ]Hour|5[- ]Hour|Hourly|Daily)s+Limits+Remaining$/i.test(trimmed)) {
+    if (/^(Weekly|Five[- ]Hour|5[- ]Hour|Hourly|Daily)\s+Limit\s+Remaining$/i.test(trimmed)) {
       const lower = trimmed.toLowerCase();
       if (lower.includes('weekly')) dynamicMatch = '每周限额剩余';
       else if (lower.includes('five') || lower.includes('5')) dynamicMatch = '5 小时限额剩余';
