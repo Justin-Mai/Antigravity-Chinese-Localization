@@ -1,7 +1,24 @@
 const http = require('http');
+const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const { exec, execSync, spawn } = require('child_process');
+
+const CURRENT_VERSION = '2.12.0';
+
+function compareVersions(v1, v2) {
+  const parse = (v) => (v || '').replace(/^[vV]/, '').split('.').map(n => parseInt(n, 10) || 0);
+  const p1 = parse(v1);
+  const p2 = parse(v2);
+  const maxLen = Math.max(p1.length, p2.length);
+  for (let i = 0; i < maxLen; i++) {
+    const a = p1[i] || 0;
+    const b = p2[i] || 0;
+    if (a > b) return 1;
+    if (a < b) return -1;
+  }
+  return 0;
+}
 
 const PORT = 3388;
 const WORKSPACE_DIR = __dirname;
@@ -33,15 +50,13 @@ function getAsarCmd() {
 function isAppRunning() {
   try {
     if (process.platform === 'win32') {
-      const output = execSync('tasklist', { encoding: 'utf-8' });
-      return output.toLowerCase().includes('antigravity.exe');
+      const output = execSync('tasklist', { encoding: 'utf-8' }).toLowerCase();
+      return output.includes('antigravity.exe') || output.includes('language_server.exe');
     } else if (process.platform === 'darwin') {
-      // macOS BSD pgrep: -x 精确匹配进程名, -i 忽略大小写
-      execSync('pgrep -xi antigravity', { stdio: 'ignore' });
+      execSync('pgrep -xi "antigravity|language_server"', { stdio: 'ignore' });
       return true;
     } else {
-      // Linux: 不使用 -i（旧版 procps 不支持），Linux 二进制名为小写 antigravity
-      execSync('pgrep -x antigravity', { stdio: 'ignore' });
+      execSync('pgrep -x "antigravity|language_server"', { stdio: 'ignore' });
       return true;
     }
   } catch (e) {
@@ -49,21 +64,75 @@ function isAppRunning() {
   }
 }
 
-// Kill Antigravity processes
+// Kill Antigravity processes and its language_server background processes
 function killApp() {
-  log('正在尝试关闭运行中的 Antigravity 2.0...');
+  log('正在尝试关闭运行中的 Antigravity 2.0 及相关后台进程...');
   try {
     if (process.platform === 'win32') {
-      execSync('taskkill /F /IM Antigravity.exe', { stdio: 'ignore' });
+      try { execSync('taskkill /F /IM Antigravity.exe', { stdio: 'ignore' }); } catch (e) {}
+      try { execSync('taskkill /F /IM language_server.exe', { stdio: 'ignore' }); } catch (e) {}
     } else if (process.platform === 'darwin') {
-      execSync('pkill -xi antigravity', { stdio: 'ignore' });
+      try { execSync('pkill -xi antigravity', { stdio: 'ignore' }); } catch (e) {}
+      try { execSync('pkill -xi language_server', { stdio: 'ignore' }); } catch (e) {}
     } else {
-      execSync('pkill -x antigravity', { stdio: 'ignore' });
+      try { execSync('pkill -x antigravity', { stdio: 'ignore' }); } catch (e) {}
+      try { execSync('pkill -x language_server', { stdio: 'ignore' }); } catch (e) {}
     }
-    log('已成功强制关闭 Antigravity 进程！');
+    log('已成功强制解除 Antigravity 及其语言服务器进程占用！');
   } catch (e) {
     log('Antigravity 未在运行或关闭时无需操作。');
   }
+}
+
+// 安全清理 Antigravity 客户端的渲染与编译缓存（不删除用户配置与账号）
+function cleanAppCache(username) {
+  log('正在扫描并安全清理 Antigravity 临时渲染与编译缓存...');
+  const defaultUser = getHostUsername();
+  const user = username ? username.trim() : defaultUser;
+  let cacheRootDirs = [];
+
+  if (process.platform === 'win32') {
+    cacheRootDirs = [
+      path.join('C:\\Users', user, 'AppData', 'Roaming', 'Antigravity'),
+      path.join('C:\\Users', user, 'AppData', 'Roaming', 'antigravity'),
+      path.join('C:\\Users', user, 'AppData', 'Local', 'antigravity')
+    ];
+  } else if (process.platform === 'darwin') {
+    cacheRootDirs = [
+      path.join('/Users', user, 'Library', 'Application Support', 'Antigravity'),
+      path.join('/Users', user, 'Library', 'Caches', 'com.google.antigravity')
+    ];
+  } else {
+    cacheRootDirs = [
+      path.join('/home', user, '.config', 'Antigravity'),
+      path.join('/home', user, '.cache', 'antigravity')
+    ];
+  }
+
+  const targetSubDirs = ['Cache', 'Code Cache', 'GPUCache', 'DawnGraphiteCache', 'DawnWebGPUCache', 'blob_storage'];
+  let cleanedCount = 0;
+
+  for (const root of cacheRootDirs) {
+    if (!fs.existsSync(root)) continue;
+    for (const sub of targetSubDirs) {
+      const fullPath = path.join(root, sub);
+      if (fs.existsSync(fullPath)) {
+        try {
+          if (typeof fs.rmSync === 'function') {
+            fs.rmSync(fullPath, { recursive: true, force: true });
+          } else {
+            fs.rmdirSync(fullPath, { recursive: true });
+          }
+          cleanedCount++;
+          log(`已清理临时缓存: ${sub} (${root})`);
+        } catch (e) {
+          log(`缓存正在占用中已跳过: ${sub}`);
+        }
+      }
+    }
+  }
+  log(`缓存安全清理完成，共清理 ${cleanedCount} 处临时目录。建议重新启动软件。`);
+  return cleanedCount;
 }
 
 // Compute standard app directory based on dynamic username or custom path input
@@ -2647,9 +2716,103 @@ const server = http.createServer((req, res) => {
       }
     });
   }
+  else if (req.url === '/api/kill' && req.method === 'POST') {
+    try {
+      killApp();
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ success: true, logs }));
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ success: false, error: e.message, logs }));
+    }
+  }
+  else if (req.url === '/api/clean-cache' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const params = body ? JSON.parse(body) : {};
+        const count = cleanAppCache(params.username);
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ success: true, cleanedCount: count, logs }));
+      } catch (e) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ success: false, error: e.message, logs }));
+      }
+    });
+  }
   else if (req.url === '/api/logs' && req.method === 'GET') {
     res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
     res.end(JSON.stringify({ logs }));
+  }
+  else if (req.url === '/api/check-release' && req.method === 'GET') {
+    const options = {
+      hostname: 'api.github.com',
+      path: '/repos/liominsb/Antigravity-Chinese-Localization/releases/latest',
+      headers: {
+        'User-Agent': 'Antigravity-Chinese-Localization-Console'
+      },
+      timeout: 8000
+    };
+
+    const ghReq = https.get(options, (ghRes) => {
+      let data = '';
+      ghRes.on('data', chunk => { data += chunk; });
+      ghRes.on('end', () => {
+        try {
+          if (ghRes.statusCode >= 200 && ghRes.statusCode < 300) {
+            const release = JSON.parse(data);
+            const latestTag = release.tag_name || '';
+            const cleanLatest = latestTag.replace(/^[vV]/, '');
+            const hasUpdate = compareVersions(cleanLatest, CURRENT_VERSION) > 0;
+            res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+            res.end(JSON.stringify({
+              success: true,
+              currentVersion: CURRENT_VERSION,
+              latestVersion: cleanLatest,
+              hasUpdate,
+              releaseName: release.name || latestTag,
+              releaseUrl: release.html_url,
+              publishedAt: release.published_at,
+              body: release.body || ''
+            }));
+          } else {
+            res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+            res.end(JSON.stringify({
+              success: false,
+              currentVersion: CURRENT_VERSION,
+              error: `GitHub API 响应异常 (HTTP ${ghRes.statusCode})`
+            }));
+          }
+        } catch (err) {
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+          res.end(JSON.stringify({
+            success: false,
+            currentVersion: CURRENT_VERSION,
+            error: '解析 GitHub Release 数据失败: ' + err.message
+          }));
+        }
+      });
+    });
+
+    ghReq.on('error', (err) => {
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({
+        success: false,
+        currentVersion: CURRENT_VERSION,
+        error: '连接 GitHub 失败: ' + err.message
+      }));
+    });
+
+    ghReq.on('timeout', () => {
+      ghReq.destroy();
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({
+        success: false,
+        currentVersion: CURRENT_VERSION,
+        error: '请求 GitHub API 超时 (网络连接受限)'
+      }));
+    });
   }
   // Serve the dashboard
   else if (req.url === '/' || req.url === '/index.html') {
