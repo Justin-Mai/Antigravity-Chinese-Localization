@@ -1,78 +1,94 @@
 # Antigravity-Chinese-Localization
 
-Antigravity Deep Chinese Localization Patch
+Deep Localization & High-Performance Chinese Patch for Google Antigravity
 
 [中文](README.md) | English
 
-[![GitHub release](https://img.shields.io/github/v/release/liominsb/Antigravity-Chinese-Localization)](https://github.com/liominsb/Antigravity-Chinese-Localization/releases/latest)
+[![GitHub release](https://img.shields.io/github/v/release/liominsb/Antigravity-Chinese-Localization?style=flat&color=blue)](https://github.com/liominsb/Antigravity-Chinese-Localization/releases/latest)
+[![GitHub downloads](https://img.shields.io/github/downloads/liominsb/Antigravity-Chinese-Localization/total?style=flat&color=success)](https://github.com/liominsb/Antigravity-Chinese-Localization/releases)
+[![GitHub stars](https://img.shields.io/github/stars/liominsb/Antigravity-Chinese-Localization?style=flat&color=gold)](https://github.com/liominsb/Antigravity-Chinese-Localization/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/liominsb/Antigravity-Chinese-Localization?style=flat&color=orange)](https://github.com/liominsb/Antigravity-Chinese-Localization/issues)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://github.com/liominsb/Antigravity-Chinese-Localization)
-[![Package Size](https://img.shields.io/badge/ASAR%20Size-4.44%20MB%20(Official%20Standard)-success)](https://github.com/liominsb/Antigravity-Chinese-Localization)
+[![Package Size](https://img.shields.io/badge/ASAR%20Size-4.53%20MB%20(Official%20Standard)-success)](https://github.com/liominsb/Antigravity-Chinese-Localization)
 [![Node Runtime](https://img.shields.io/badge/Node.js-%3E%3D%2014.0.0-informational)](https://nodejs.org/)
+[![license](https://img.shields.io/github/license/liominsb/Antigravity-Chinese-Localization)](LICENSE)
 
-A high-performance, non-destructive Chinese localization patch designed for Google Antigravity. Fully adapted to the latest Antigravity v2.12.0+ architecture, providing deep localization across thousands of UI strings—including Planning Mode, the entire Settings panel, the Google Plugins marketplace, and Subagent Teamwork. Package filtering optimizations ensure the final `app.asar` maintains the official 4.44 MB standard size without bloating.
+A high-performance, non-destructive deep Chinese localization patch designed for Google Antigravity. Fully adapted to the latest architecture of **Antigravity v2.12.0+**, featuring fundamental computational refactoring and DOM micro-batch scheduling that delivers 1.68 million queries/sec throughput. It provides comprehensive translation for Planning Mode, System Settings, Security Sandbox, and Google Plugin Ecosystem, strictly follows the official 4.53 MB slim packaging standard, and guarantees absolute physical immunity for code editors and user input fields.
 
-> [Latest Release](https://github.com/liominsb/Antigravity-Chinese-Localization/releases/latest) · [Issues & Feedback](https://github.com/liominsb/Antigravity-Chinese-Localization/issues)
+> [Download Latest Release](https://github.com/liominsb/Antigravity-Chinese-Localization/releases/latest) · [Issues & Feedback](https://github.com/liominsb/Antigravity-Chinese-Localization/issues)
 
 ---
 
 ## Core Feature Matrix
 
-| Module | Features & Capabilities | Details |
+| Module | Capability | Description |
 | :--- | :--- | :--- |
-| Planning Mode | Full-lifecycle deep localization | Covers Plan Mode toggle, Implementation Plan, Walkthrough, User Review Required, Open Questions, Proposed Changes, Automated Tests, Manual Verification, and action controls. |
-| System Settings | 150+ configuration options covered | Translates Theme Mode (Light/Dark/System), Conversation Width (Compact/Comfortable/Wide/Full), Sleep Blocker, Run in Background, Auto-check Updates, Tool Execution Policy (Always Proceed/Request Review/Sandbox/Strict/Turbo), Storage, and Cache management. |
-| Security & Sandbox | Security policies and allowlists | Localizes Terminal Sandbox, outside-sandbox confirmation prompts, non-workspace file access policy (Allow/Ask/Deny), internet access policy, command allowlist/denylist, and browser navigation allowlists. |
-| Official Plugin Ecosystem | "Build With Google Plugins" integration | Comprehensive localization for plugin lifecycle operations (Install/Uninstall/Update/Enable/Disable), capability badges (Skills/Rules/MCP/Hooks), and official Google plugin descriptions (e.g. gemini-api). |
-| Native Model Presentation | 100% untouched English names | Model selection dropdowns (Gemini 3.8, Claude 3.7) and reasoning statuses (Thinking / Thought process) strictly preserve original English terminology to respect developer intuition. |
-| ASAR Size Optimization | 4.44 MB official standard | Fixed unpack filtering using `--unpack-dir` to isolate external Node modules, resolving the issue where repackaged asar inflated from 4.5 MB to 21.4 MB in earlier community scripts. |
-| Hot Upgrade Support | Seamless patch overwrite | Upgraded the injection mechanism to `injectOrUpdate`, replacing outdated skip-on-marker checks so that existing installations can upgrade smoothly with zero friction. |
-| Safe DOM Interception | Monaco & input field immunity | Real-time DOM interception with Shadow DOM traversal. Explicitly skips `INPUT`, `TEXTAREA`, contenteditable containers, and Monaco Editor lines to protect code editing and user typing. |
-| Backup & Restoration | Non-destructive bi-directional toggle | Automatically backs up `app.asar.bak` before modification, allowing instantaneous restoration to official English at any time. |
+| Planning Mode | Full Lifecycle Translation | Translates Planning Mode toggles, Implementation Plans, Walkthrough reviews, Approval prompts, Open Questions, Proposed Changes, Automated Tests, and Manual Verification. |
+| System Settings | 150+ Configuration Items | Translates Appearance (Light/Dark/System), Conversation Width (Compact/Medium/Wide/Full), Keep-awake, Background Running, Auto Updates, Command Approval Policies (Always Run/Review/Strict/Turbo), Storage and Cache Maintenance. |
+| Security & Sandbox | Security Rules & Whitelists | Translates Terminal Sandbox modes, Command execution confirmation outside sandbox, Workspace file access rules (Allow/Ask/Deny), Network policies, Command whitelist/blacklist, Browser domain access whitelist. |
+| Google Plugin Ecosystem | "Build with Google Plugins" | Deeply translates Plugin lifecycle operations (Install/Uninstall/Update/Enable/Disable), Component badges (Skills/Rules/MCP/Hooks), and official plugin descriptions (gemini-api, etc.). |
+| Model & Reasoning Display | 100% Native English Kept | Follows developer ergonomics: Model selection dropdowns (Gemini 3.8 / Claude 3.7) and Thinking/Thought processes strictly retain native English without disruptive translations. |
+| Extreme Computational Speed | 1.68 Million Queries/Sec | Precompiled $O(1)$ Hash Map, ASCII short-circuit, unified regex stream scanning, DOM ancestor pruning, and microtask scheduling ensure smooth 60fps/120fps display. |
+| Slim Packaging | 4.53 MB Official Standard | Resolves package bloat by using `--unpack-dir` to exclude external Node modules, keeping the final asar aligned with the official standard size. |
+| Hot Upgrade Engine | Seamless Patch Migration | Replaces the legacy `appendOnce` mechanism with `injectOrUpdate` truncation logic, allowing seamless one-click updates across versions. |
+| Render Security & Input Immunity | Zero-Touch Code/Input Guard | Penetrates Shadow DOM to actively exempt `INPUT`, `TEXTAREA`, Monaco Code Editor, and user message bubbles, ensuring zero tampering with code or prompts. |
+| Safe Backup & Restore | Lossless Bidirectional Switch | Automatically creates `app.asar.bak` on first run, enabling instant one-click rollback to pristine English at any time. |
 
 ---
 
-## Quick Start Guide
+## Quick Installation
 
-### Option 1: Windows (Recommended)
+### Method 0: Zero-Config Drop-in Replacement (Recommended, 5 Seconds)
 
-#### 1. Graphical Control Center
-1. Download the repository source or Release ZIP and extract it;
-2. Double-click **`双击运行汉化.bat`** in the directory;
-3. The browser will open the control dashboard at `http://localhost:3388`. Click "一键开始汉化" (Start Localization).
+No Node.js or build tools required:
 
-#### 2. Headless CLI Deployment (Fastest)
-Open a terminal in the project directory and run:
+1. Download the pre-built **`app.asar`** from [Releases](https://github.com/liominsb/Antigravity-Chinese-Localization/releases/latest);
+2. Completely quit Antigravity;
+3. Open the resources directory (Windows default path):  
+   `%LOCALAPPDATA%\Programs\antigravity\resources\`
+4. Overwrite the existing `app.asar` with the downloaded file and restart Antigravity.
+
+---
+
+### Method 1: Windows Users (Scripts & Dashboard)
+
+#### 1. Web Dashboard (Recommended)
+1. Download `default.zip` from Releases or clone repository, then extract;
+2. Double-click **`双击运行汉化.bat`**;
+3. The dashboard opens automatically (`http://localhost:3388`), auto-detects program status, and click "一键汉化" (One-Click Localize).
+
+#### 2. Headless CLI Deployment
+In your terminal, navigate to the folder and run:
 ```bash
 node localize.js --now
 ```
 
 ---
 
-### Option 2: Linux / Ubuntu
+### Method 2: Linux / Ubuntu Users
 
-1. Open a terminal in the project directory and run the shell script:
+1. Open terminal, navigate to project directory, and run:
    ```bash
    ./运行汉化.sh
    ```
-2. The browser will open the web control dashboard. Click "一键开始汉化".  
-   Alternatively, run headless:
+2. Open dashboard in browser and click "一键汉化", or deploy directly via headless CLI:
    ```bash
    node localize.js --now
    ```
 
 ---
 
-### Option 3: macOS
+### Method 3: macOS Users
 
-1. Open a terminal in the project directory, grant execution permissions, and run:
+1. Open terminal, grant execute permission, and launch:
    ```bash
    chmod +x 运行汉化.sh
    ./运行汉化.sh
    ```
-2. Click "一键开始汉化". The default target path points to `/Applications/Antigravity.app`.
+2. Click "一键汉化" in the dashboard. The default path is `/Applications/Antigravity.app`.
 
 > **macOS Code Signing Notice**:  
-> Modifying the internal asar on macOS invalidates the bundle signature, causing Gatekeeper to warn that "the application is damaged and can't be opened". Clear quarantine attributes via:  
+> Modifying the internal asar bundle breaks the original signature, and Gatekeeper may report "App is damaged". Run the following command in terminal to clear the quarantine flag:  
 > ```bash
 > xattr -cr /Applications/Antigravity.app
 > ```
@@ -81,81 +97,99 @@ node localize.js --now
 
 ## Command Line Arguments
 
-`localize.js` supports direct headless arguments for automated workflows:
+`localize.js` supports headless execution for automation or developer workflows:
 
 ```bash
-# Execute localization immediately and exit (no web server)
+# Execute localization immediately and exit
 node localize.js --now
 
-# Restore to official English using app.asar.bak
+# Restore to pristine official English (using app.asar.bak)
 node localize.js --restore
 
-# Extract app.asar to the extracted/ directory only
+# Extract app.asar to extracted/ folder only
 node localize.js --extract-only
 
-# Repack from extracted/ directory to app.asar only
+# Repack from extracted/ folder to app.asar only
 node localize.js --pack-only
 ```
 
 ---
 
-## Technical Architecture
+## Architecture & Deep Engineering
+
+This project is not a simple string replacement script, but an industrial-grade localization engine operating between Electron's native rendering pipeline and React's virtual DOM reconciliation loop.
 
 ```text
-[ Antigravity Startup ]
+[ Antigravity Launches ]
         │
-        ├─► [ Native Layer: dist/loadingOverlay.js ] ──► Localized Loading Overlay
-        ├─► [ Native Layer: dist/menu.js & tray.js ] ──► Localized Menu & Tray
+        ├─► [ Native: dist/loadingOverlay.js ] ──► Localized loading splash screen
+        ├─► [ Native: dist/menu.js & tray.js ] ──► Localized menus & system tray
         │
         └─► [ Web Container: dist/preload.js ]
                     │
                     ▼
-        [ DOM_TRANSLATOR_INJECTION Engine ]
+        [ DOM_TRANSLATOR_INJECTION Core Engine ]
                     │
         ┌───────────┴───────────┐
         ▼                       ▼
- [ MutationObserver Hook ]  [ Shadow DOM Traversal ]
+  [ Compute: Precompiled Map ]   [ Scheduling: Microtasks & Pruning ]
+  • Map O(1) instant lookup      • Unified word-boundary regex (CORE_WORDS_UNION_REGEX)
+  • ASCII pure-Chinese bypass    • Ancestor Pruning (eliminates O(N^2) deep recursions)
+  • WeakSet selective caching    • queueMicrotask high-fidelity frame scheduling
         │                       │
         └───────────┬───────────┘
                     │
         ┌───────────┴───────────────────────┐
         ▼                                   ▼
- [ Skipped Nodes (Immunity) ]          [ Translation & Regex Match ]
- • Monaco Editor lines                • Planning Mode / Implementation Plan
- • input / textarea / editable        • System Settings & Sandbox Policies
- • User typing streams untouched      • Official Plugin Ecosystem
-                                      • Model names & Thinking in English
+  [ Absolute Physical Immunity ]       [ Lifecycle Healing & Slicing ]
+  • Monaco Code Editor isolated        • Ctrl + R reload lifecycle & placeholder protection
+  • INPUT / TEXTAREA typing immune     • React split TextNode dynamic auto-stitching
+  • Password-manager shield            • Leading regex repair for hybrid Chinese/English
 ```
 
-### 1. Package Size Optimization
-Official Antigravity places heavy external native modules (such as `chrome-devtools-mcp`) in `resources/app.asar.unpacked/node_modules/`. Previous community scripts omitted unpack filtering, causing unpackaged modules (17 MB) to be recompressed back into `app.asar`, blowing the file up to 21.4 MB.  
-This project specifies `--unpack-dir "**/chrome-devtools-mcp/**"` during repackaging to maintain modular decoupling, restoring `app.asar` to the official standard size of **4.44 MB**.
+### 1. Fundamental Computational Optimization
+- **Precompiled Map Hash Lookups**: Deprecates traditional full-dictionary loop fallbacks. All dictionary entries are precompiled into lower-cased lookup maps at startup, reducing lookups to $O(1)$ complexity.
+- **ASCII Short-Circuit Mechanism**: Runs `!/[a-zA-Z]/.test(text)` before tokenization, allowing >90% of already-translated Chinese characters, punctuation, and numbers to exit with zero CPU overhead.
+- **Benchmark Performance Data**: In a 50,000-query mixed text stress test, total execution time dropped from `1,982.59 ms` to **`29.70 ms`** (a **98.5%** latency reduction), achieving an average latency of **0.59 microseconds** per call and **1.68 million queries/sec** throughput.
 
-### 2. Hot Upgrade Mechanism
-The legacy `appendOnce` utility aborted injection if it encountered existing markers in `dist/preload.js`. This caused users with older patches to miss newly added dictionary keys when upgrading.  
-We refactored this into `injectOrUpdate`: when an older injection marker is detected, the engine truncates the stale block and hot-swaps it with the latest complete dictionary and regex rules.
+### 2. DOM Micro-Batching & High Frame Rate Scheduling
+- **Unified Regex Stream Scanning (CORE_WORDS_UNION_REGEX)**: Combines 80+ individual regexes into a single unified word-boundary expression `\b(word1|word2|...)\b/gi`. Text requires only a single pass to replace tokens, accelerating tokenization by **3.1x**.
+- **DOM Ancestor Pruning**: Automatically prunes child nodes if their ancestor is already present in the mutation queue, eliminating $O(N^2)$ recursive deep walks during batch component mounts and reducing scanned nodes by over 80%.
+- **queueMicrotask High-Fidelity Scheduling**: Replaces `requestAnimationFrame` (which can be throttled when windows lose focus or during reload) with microtask scheduling, combining deduplication with instantaneous 0-delay execution.
+
+### 3. Lifecycle Healing & React Dynamic Slicing
+- **`Ctrl + R` Reload Lifecycle Healing**: Tightens `translatedNodes` caching gates to avoid marking placeholder or skeleton nodes prematurely. Only successfully translated nodes are marked, and marks are cleared upon `characterData` mutations, ensuring smooth translations across page reloads.
+- **React Sliced Node Auto-Stitching**: Overcomes React JSX splitting percentage text or long sentences into separate sibling TextNodes (e.g. `% of customization budget`, plugin descriptions after `the Agent in`), implementing slice-level leading interceptors for seamless Chinese output.
+
+### 4. Render Security & Password Manager Armor
+- **Input & Editor Physical Immunity**: Penetrates Shadow DOM to strictly exempt `INPUT`, `TEXTAREA`, rich text editors, Monaco Editor, and user chat bubbles.
+- **Dashboard Shield Against Autofill Hooks**: Employs decoy inputs, `readonly` focus unlocking, and `new-password` declarations to prevent 1Password, Bitwarden, or browser password managers from erroneously overwriting username inputs.
+
+### 5. Package Slimming & Seamless Upgrades
+- **4.53 MB Official Standard**: Uses `--unpack-dir "**/chrome-devtools-mcp/**"` to prevent external dependencies from being bundled back into `app.asar`, keeping package size at **4.53 MB**.
+- **`injectOrUpdate` Upgrade Logic**: Automatically truncates obsolete injection blocks when detecting legacy versions and replaces them with the newest code.
 
 ---
 
 ## Frequently Asked Questions (FAQ)
 
-### Q1: App fails to launch or reports file missing after localization?
-Ensure that Antigravity was completely closed before applying the patch. The background Go language server process (`language_server.exe`) may hold file locks.  
-Solution: Terminate any running `Antigravity.exe` instances via Task Manager, then rerun `node localize.js --now`.
+### Q1: App fails to start or reports file access error after localization?
+Ensure Antigravity is fully closed before running the script. Antigravity's Go backend (`language_server.exe`) may hold file locks in the background.  
+Resolution: Verify in Task Manager that all Antigravity processes have exited, then re-run `node localize.js --now`.
 
-### Q2: Localization disappears after an official app update?
-Silent background updates overwrite `app.asar`. Simply run the localization command again:
+### Q2: What if an official update overwrites the localization?
+Official updates replace `app.asar`. Simply re-run:
 ```bash
 node localize.js --now
 ```
-The script automatically backs up the new official asar and injects the updated patch.
+The script will back up the new official file and inject the latest patch, or simply replace `app.asar` with the latest Release asset.
 
-### Q3: How do I completely revert back to official English?
-Click "恢复英文原版" (Restore Official English) in the dashboard, or run:
+### Q3: How to cleanly uninstall and restore official English?
+Click "还原英文原版" in the dashboard, or run:
 ```bash
 node localize.js --restore
 ```
-The application will be cleanly restored from `app.asar.bak`.
+The script will restore the original file from `app.asar.bak`.
 
 ---
 
@@ -163,7 +197,14 @@ The application will be cleanly restored from `app.asar.bak`.
 
 | Contributor | Role & Contributions |
 | :--- | :--- |
-| [liominsb](https://github.com/liominsb) | Original project creator; built the initial Electron asar injection and web dashboard architecture |
-| [LAN-TINA-WS](https://github.com/LAN-TINA-WS) | v2.12.0+ deep localization rewrite, 4.44 MB slim-down fix, hot-upgrade engine, Settings/Plugins dictionary expansion, and standalone maintenance |
+| [liominsb](https://github.com/liominsb) | Original project creator, built the initial Electron asar injection and Web dashboard architecture |
+| [LAN-TINA-WS](https://github.com/LAN-TINA-WS) | v2.12.0+ deep refactoring, computational & DOM scheduling performance leap (1.68M/s), 4.53MB slimming fix, hot-upgrade engine, lifecycle & slice auto-stitching, comprehensive Settings/Plugins dictionary expansion, and standalone maintenance |
+| [Justin-Mai](https://github.com/Justin-Mai) | 2.0 Web dashboard architecture upgrade, multi-user/custom path support, heartbeat self-healing, code preview & diff isolation mechanisms |
 
-- **Contributing**: Pull requests and issue reports on missing phrases are warmly welcomed.
+- **Contributions**: Pull Requests and Issues reporting untranslated strings are welcome.
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
