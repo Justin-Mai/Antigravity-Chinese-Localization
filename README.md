@@ -117,9 +117,9 @@ node localize.js --pack-only
 
 ---
 
-## 开发者文档与技术实现 (Architecture & Deep Engineering)
+## 开发者文档 (Developer Documentation)
 
-本项目并非单纯的文本查找替换，而是在 Electron 原生渲染管线与 React 虚拟 DOM 调度层之间构建的一套高韧性、高吞吐的工业级本地化引擎。
+本项目并非单纯的文本查找替换脚本，而是在 Electron 原生渲染管线与 React 虚拟 DOM 调度层之间构建的一套高韧性、高吞吐的工业级本地化引擎。
 
 ```text
 [ Antigravity 启动 ]
@@ -149,27 +149,12 @@ node localize.js --pack-only
   • 控制中心防密码管理器篡改装甲       • 前置长句正则与中英混排纠偏
 ```
 
-### 1. 基础算力层架构重构
-- **预编译 Map 哈希查询**：放弃传统的遍历全字典循环回退模式，在启动阶段将所有词条预编译为小写映射表，把单次字典查表降阶为标准的 $O(1)$ 哈希直达。
-- **ASCII 极速短路机制**：在进入复杂分词前执行 `!/[a-zA-Z]/.test(text)` 短路检测，使 90% 以上已经汉化的中文文本、纯标点与数字节点在 0 运算开销下秒级退出。
-- **基准测试性能数据**：在 50,000 次混合文本吞吐压测中，整体耗时从原版的 `1,982.59 ms` 骤降至 **`29.70 ms`**（耗时降低 **98.5%**），单次调用平均延迟压至 **0.59 微秒**，瞬时吞吐量达到 **168 万次/秒**。
+完整架构设计、底层算力算法、50,000 次压测基准数据与工程工艺详见 [docs/](docs/)：
 
-### 2. DOM 调度层与高帧率满帧保障
-- **单次流式联合正则扫描 (CORE_WORDS_UNION_REGEX)**：将 80 余个独立单正则合并编译为单一联合词边界正则 `\b(word1|word2|...)\b/gi`，文本仅需一次流式扫描即可通过回调完成查表替换，短语分词加速 **3.1 倍**。
-- **DOM 树祖先包含剪枝 (Ancestor Pruning)**：当复杂组件批量挂载时，如果节点 `B` 的父级 `A` 已在待处理队列中，算法自动对 `B` 进行剪枝剔除，彻底根治嵌套组件扫描时的 $O(N^2)$ 递归放大，实际深搜节点数降低 80% 以上。
-- **微任务高保真调度 (queueMicrotask)**：替代易受浏览器失焦、后台节流或刷新初始化影响的 `requestAnimationFrame`，在当前事件循环末期以微任务形式极速冲洗突变队列，兼具去重防抖与 0 延迟响应。
-
-### 3. 生命周期自愈与动态切片拼合
-- **`Ctrl + R` 重载生命周期闭环**：收敛 `translatedNodes` 缓存门禁，在骨架屏与占位符阶段绝不盲目打标，仅在节点真正汉化成功或为纯中文时才记录标记，并在 `characterData` 突变时自动解绑旧标记，彻底解决页面重载后汉化失效的问题。
-- **React 动态切片自愈拼接**：针对 React JSX 将长句或百分比数值（如 `89.3% of the customization budget...`、插件说明在 `the Agent in` 处）物理拆分为两个独立兄弟 Text 节点的特征，建立切片级前置拦截规则，实现自然流畅的拼合输出。
-
-### 4. 渲染安全与装甲防护
-- **输入与代码编辑区物理豁免**：穿透 Shadow DOM，对 `INPUT`、`TEXTAREA`、富文本编辑区、Monaco Editor 及用户提问气泡实施多重严格豁免，绝对不篡改用户的任何输入与代码。
-- **控制中心防密码管理器篡改**：前端采用诱饵输入框、`readonly` 焦点激活与 `new-password` 声明，杜绝第三方密码管理器（如 1Password、Bitwarden 等）将路径误填为账号密码。
-
-### 5. 打包体积瘦身与热升级机制
-- **4.53 MB 官方规格瘦身**：官方在 `app.asar.unpacked/` 中外置了重型依赖模块。本项目在重打包时严格引入 `--unpack-dir "**/chrome-devtools-mcp/**"` 规则，保持外置解耦，生成的 `app.asar` 体积严格维持在 **4.53 MB**。
-- **`injectOrUpdate` 平滑升级机制**：摒弃单纯判断标记是否存在的旧逻辑，当检测到历史版本的注入标记时，自动定位并截断旧代码块，平滑覆盖为包含最新引擎与词典的完整代码。
+| 文档 | 语言 | 核心技术要点 |
+| :--- | :--- | :--- |
+| [architecture.md](docs/architecture.md) | 中文 | 基础算力层重构 ($O(1)$ Map 哈希与 ASCII 短路)、DOM 调度层优化 (联合流式正则与祖先剪枝)、`Ctrl+R` 重载生命周期自愈与 React 切片拼合、50,000 次压测基准数据、Shadow DOM 输入免疫与控制中心防篡改装甲 |
+| [architecture.en.md](docs/architecture.en.md) | English | Deep engineering breakdown: $O(1)$ precompiled Map lookups, ASCII short-circuit, unified regex stream scanning, DOM ancestor pruning, queueMicrotask frame aggregation, 1.68M qps benchmark, lifecycle healing & input physical immunity |
 
 ---
 

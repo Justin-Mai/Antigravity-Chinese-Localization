@@ -114,7 +114,7 @@ node localize.js --pack-only
 
 ---
 
-## Architecture & Deep Engineering
+## Developer Documentation
 
 This project is not a simple string replacement script, but an industrial-grade localization engine operating between Electron's native rendering pipeline and React's virtual DOM reconciliation loop.
 
@@ -146,27 +146,12 @@ This project is not a simple string replacement script, but an industrial-grade 
   • Password-manager shield            • Leading regex repair for hybrid Chinese/English
 ```
 
-### 1. Fundamental Computational Optimization
-- **Precompiled Map Hash Lookups**: Deprecates traditional full-dictionary loop fallbacks. All dictionary entries are precompiled into lower-cased lookup maps at startup, reducing lookups to $O(1)$ complexity.
-- **ASCII Short-Circuit Mechanism**: Runs `!/[a-zA-Z]/.test(text)` before tokenization, allowing >90% of already-translated Chinese characters, punctuation, and numbers to exit with zero CPU overhead.
-- **Benchmark Performance Data**: In a 50,000-query mixed text stress test, total execution time dropped from `1,982.59 ms` to **`29.70 ms`** (a **98.5%** latency reduction), achieving an average latency of **0.59 microseconds** per call and **1.68 million queries/sec** throughput.
+Detailed architectural designs, benchmarks (1.68M qps), and engineering practices are available in [docs/](docs/):
 
-### 2. DOM Micro-Batching & High Frame Rate Scheduling
-- **Unified Regex Stream Scanning (CORE_WORDS_UNION_REGEX)**: Combines 80+ individual regexes into a single unified word-boundary expression `\b(word1|word2|...)\b/gi`. Text requires only a single pass to replace tokens, accelerating tokenization by **3.1x**.
-- **DOM Ancestor Pruning**: Automatically prunes child nodes if their ancestor is already present in the mutation queue, eliminating $O(N^2)$ recursive deep walks during batch component mounts and reducing scanned nodes by over 80%.
-- **queueMicrotask High-Fidelity Scheduling**: Replaces `requestAnimationFrame` (which can be throttled when windows lose focus or during reload) with microtask scheduling, combining deduplication with instantaneous 0-delay execution.
-
-### 3. Lifecycle Healing & React Dynamic Slicing
-- **`Ctrl + R` Reload Lifecycle Healing**: Tightens `translatedNodes` caching gates to avoid marking placeholder or skeleton nodes prematurely. Only successfully translated nodes are marked, and marks are cleared upon `characterData` mutations, ensuring smooth translations across page reloads.
-- **React Sliced Node Auto-Stitching**: Overcomes React JSX splitting percentage text or long sentences into separate sibling TextNodes (e.g. `% of customization budget`, plugin descriptions after `the Agent in`), implementing slice-level leading interceptors for seamless Chinese output.
-
-### 4. Render Security & Password Manager Armor
-- **Input & Editor Physical Immunity**: Penetrates Shadow DOM to strictly exempt `INPUT`, `TEXTAREA`, rich text editors, Monaco Editor, and user chat bubbles.
-- **Dashboard Shield Against Autofill Hooks**: Employs decoy inputs, `readonly` focus unlocking, and `new-password` declarations to prevent 1Password, Bitwarden, or browser password managers from erroneously overwriting username inputs.
-
-### 5. Package Slimming & Seamless Upgrades
-- **4.53 MB Official Standard**: Uses `--unpack-dir "**/chrome-devtools-mcp/**"` to prevent external dependencies from being bundled back into `app.asar`, keeping package size at **4.53 MB**.
-- **`injectOrUpdate` Upgrade Logic**: Automatically truncates obsolete injection blocks when detecting legacy versions and replaces them with the newest code.
+| Document | Language | Core Technical Highlights |
+| :--- | :--- | :--- |
+| [architecture.md](docs/architecture.md) | 中文 | 基础算力层重构 ($O(1)$ Map 哈希与 ASCII 短路)、DOM 调度层优化 (联合流式正则与祖先剪枝)、`Ctrl+R` 重载生命周期自愈与 React 切片拼合、50,000 次压测基准数据、Shadow DOM 输入免疫与控制中心防篡改装甲 |
+| [architecture.en.md](docs/architecture.en.md) | English | Deep engineering breakdown: $O(1)$ precompiled Map lookups, ASCII short-circuit, unified regex stream scanning, DOM ancestor pruning, queueMicrotask frame aggregation, 1.68M qps benchmark, lifecycle healing & input physical immunity |
 
 ---
 
