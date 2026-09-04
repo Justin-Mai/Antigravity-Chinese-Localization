@@ -1635,7 +1635,7 @@ const DOM_TRANSLATOR_INJECTION = `
     }
 
     if (/Scan the code to/i.test(trimmed)) {
-      if (/Scan the code to.*,\s*or\s*$/i.test(trimmed)) {
+      if (/Scan the code to.*,\\s*or\\s*$/i.test(trimmed)) {
         const fixed = '扫描二维码以在远程控制中打开此设备，或';
         if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
         return text.replace(trimmed, fixed);
@@ -1645,7 +1645,7 @@ const DOM_TRANSLATOR_INJECTION = `
         if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
         return text.replace(trimmed, fixed);
       }
-      if (/Scan the code to.*(?:Remote Control|远程\s*控制)/i.test(trimmed)) {
+      if (/Scan the code to.*(?:Remote Control|远程\\s*控制)/i.test(trimmed)) {
         const fixed = '扫描二维码以在远程控制中打开此设备';
         if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
         return text.replace(trimmed, fixed);
@@ -1786,50 +1786,50 @@ const DOM_TRANSLATOR_INJECTION = `
     }
 
     // 模型配额剩余动态匹配 (例如 "100% Remaining", "85.4% remaining")
-    if (/^(\d+(?:\.\d+)?%?)\s+remaining$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(\d+(?:\.\d+)?%?)\s+remaining$/i, '$1 剩余');
+    if (/^(\\d+(?:\\.\\d+)?%?)\\s+remaining$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\\d+(?:\\.\\d+)?%?)\\s+remaining$/i, '$1 剩余');
       isDynamic = true;
     }
     // 剩余时间刷新动态匹配 (例如 "15 minutes", "1 hour 26 minutes", "2 hours", "1 day")
-    if (/^(\d+)\s+hours?\s+(\d+)\s+minutes?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+hours?\s+(\d+)\s+minutes?$/i, '$1 小时 $2 分钟');
+    if (/^(\\d+)\\s+hours?\\s+(\\d+)\\s+minutes?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\\d+)\\s+hours?\\s+(\\d+)\\s+minutes?$/i, '$1 小时 $2 分钟');
       isDynamic = true;
     }
-    if (/^(\d+)\s+minutes?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+minutes?$/i, '$1 分钟');
+    if (/^(\\d+)\\s+minutes?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\\d+)\\s+minutes?$/i, '$1 分钟');
       isDynamic = true;
     }
-    if (/^(\d+)\s+hours?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+hours?$/i, '$1 小时');
+    if (/^(\\d+)\\s+hours?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\\d+)\\s+hours?$/i, '$1 小时');
       isDynamic = true;
     }
-    if (/^(\d+)\s+days?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+days?$/i, '$1 天');
+    if (/^(\\d+)\\s+days?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\\d+)\\s+days?$/i, '$1 天');
       isDynamic = true;
     }
 
     // 项目/路径不存在的动态提示 (项目名 + " does not exist"，超3词无法走分词)
-    if (/^.+ does not exist\.?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(.+) does not exist\.?$/i, '$1 不存在');
+    if (/^.+ does not exist\\.?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(.+) does not exist\\.?$/i, '$1 不存在');
       isDynamic = true;
     }
     // "xxx was not found" 动态提示
-    if (/^.+ was not found\.?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(.+) was not found\.?$/i, '$1 未找到');
+    if (/^.+ was not found\\.?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(.+) was not found\\.?$/i, '$1 未找到');
       isDynamic = true;
     }
 
     // 步骤与回合动态提示
-    if (/^Step \d+ \([^\)]+\):?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^Step (\d+) \(([^\)]+)\):?/i, '步骤 $1 ($2)：');
+    if (/^Step \\d+ \\([^\\)]+\\):?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Step (\\d+) \\(([^\\)]+)\\):?/i, '步骤 $1 ($2)：');
       isDynamic = true;
     }
-    if (/^\d+ turns?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(\d+) turns?$/i, '$1 回合');
+    if (/^\\d+ turns?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\\d+) turns?$/i, '$1 回合');
       isDynamic = true;
     }
-    if (/^Turn \d+$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^Turn (\d+)$/i, '第 $1 回合');
+    if (/^Turn \\d+$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Turn (\\d+)$/i, '第 $1 回合');
       isDynamic = true;
     }
     if (/^Task id "[^"]+" finished with result:$/i.test(trimmed)) {
@@ -1838,6 +1838,18 @@ const DOM_TRANSLATOR_INJECTION = `
     }
     if (/^Tool is running as a background task with task id: (.+)$/i.test(trimmed)) {
       dynamicMatch = dynamicMatch.replace(/^Tool is running as a background task with task id: (.+)$/i, '工具正在后台运行 (任务ID: $1)');
+      isDynamic = true;
+    }
+    if (/^Thought (?:for|持续) (.+)$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Thought (?:for|持续) (.+)$/i, '思考了 $1');
+      isDynamic = true;
+    }
+    if (/^Thinking (?:for|持续) (.+)$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Thinking (?:for|持续) (.+)$/i, '思考了 $1');
+      isDynamic = true;
+    }
+    if (/^Thinking \\((.+)\\)$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Thinking \\((.+)\\)$/i, '正在思考 ($1)');
       isDynamic = true;
     }
 
@@ -1892,11 +1904,11 @@ const DOM_TRANSLATOR_INJECTION = `
     // 3. Fallback to word-by-word ONLY for short strings (<= 3 words)
     // 如果短语中已经包含了中文字符（即原本就是汉化内容或中英混排），则严禁进入英文分词翻译
     // 这可以完美阻止像中英文混排短语被分词规则执行二次翻译导致重叠和污染
-    if (/[\u4e00-\u9fa5]/.test(core)) {
+    if (/[\\u4e00-\\u9fa5]/.test(core)) {
       return text;
     }
     // This prevents long unmatched sentences from getting mangled into Chinglish.
-    const wordsCount = core.split(/\s+/).filter(Boolean).length;
+    const wordsCount = core.split(/\\s+/).filter(Boolean).length;
     if (wordsCount > 3) {
       return text; // Do not translate, keep original English sentence clean
     }
@@ -1913,20 +1925,20 @@ const DOM_TRANSLATOR_INJECTION = `
 
     let finalTranslated = replaced ? temp : core;
     // 消除中文字符之间可能由分词替换残留的英文空格，提升翻译句子的连贯精致度
-    finalTranslated = finalTranslated.replace(/([\u4e00-\u9fa5])\s+([\u4e00-\u9fa5])/g, '$1$2');
+    finalTranslated = finalTranslated.replace(/([\\u4e00-\\u9fa5])\\s+([\\u4e00-\\u9fa5])/g, '$1$2');
     // 特殊去重清洗：防止前置分词造成的“使用使用”与半中半英长句残留
     finalTranslated = finalTranslated.replace(/使用使用 Google 插件构建/g, '使用 Google 插件构建');
-    finalTranslated = finalTranslated.replace(/Configure 智能体 执行[,\s]+queued 消息 delivery[,\s]+and 权限[。.]?/g, '配置智能体执行策略、消息队列发送机制以及安全权限。');
+    finalTranslated = finalTranslated.replace(/Configure 智能体 执行[,\\s]+queued 消息 delivery[,\\s]+and 权限[。.]?/g, '配置智能体执行策略、消息队列发送机制以及安全权限。');
     finalTranslated = finalTranslated.replace(/Automatic 检查更新/g, '自动检查更新');
-    finalTranslated = finalTranslated.replace(/每周限额\s*Remaining/gi, '每周限额剩余');
-    finalTranslated = finalTranslated.replace(/五小时限额\s*Remaining/gi, '5 小时限额剩余');
+    finalTranslated = finalTranslated.replace(/每周限额\\s*Remaining/gi, '每周限额剩余');
+    finalTranslated = finalTranslated.replace(/五小时限额\\s*Remaining/gi, '5 小时限额剩余');
     finalTranslated = finalTranslated.replace(/Claude and GPT 模型/g, 'Claude 与 GPT 模型');
-    finalTranslated = finalTranslated.replace(/命令\s*palette/gi, '命令面板');
+    finalTranslated = finalTranslated.replace(/命令\\s*palette/gi, '命令面板');
     finalTranslated = finalTranslated.replace(/Scan the code to .*(?:copy link|复制链接)[。.]?/gi, '扫描二维码以在远程控制中打开此设备，或复制链接。');
-    finalTranslated = finalTranslated.replace(/Scan the code to (?:打开|open) this (?:设备|device) in 远程\s*(?:Control|控制)[,\s]+or (?:复制链接|copy link)[。.]?/gi, '扫描二维码以在远程控制中打开此设备，或复制链接。');
-    finalTranslated = finalTranslated.replace(/(?:工作了\s*持续|总耗时\s*持续|Worked for)\s*(.+)/gi, '总耗时 $1');
-    finalTranslated = finalTranslated.replace(/(?:Thought\s*持续|思考了\s*持续)\s*(.+)/gi, '思考了 $1');
-    finalTranslated = finalTranslated.replace(/查看\s*could not be opened/gi, '查看文件无法打开');
+    finalTranslated = finalTranslated.replace(/Scan the code to (?:打开|open) this (?:设备|device) in 远程\\s*(?:Control|控制)[,\\s]+or (?:复制链接|copy link)[。.]?/gi, '扫描二维码以在远程控制中打开此设备，或复制链接。');
+    finalTranslated = finalTranslated.replace(/(?:工作了\\s*持续|总耗时\\s*持续|Worked for)\\s*(.+)/gi, '总耗时 $1');
+    finalTranslated = finalTranslated.replace(/(?:Thought\\s*持续|思考了\\s*持续)\\s*(.+)/gi, '思考了 $1');
+    finalTranslated = finalTranslated.replace(/查看\\s*could not be opened/gi, '查看文件无法打开');
     finalTranslated = finalTranslated.replace(/could not be opened/gi, '无法打开');
     finalTranslated = finalTranslated.replace(/(\\d+)\\s+searches?/gi, '$1 次搜索');
     if (matchPunc) {
@@ -1962,21 +1974,38 @@ const DOM_TRANSLATOR_INJECTION = `
       return true;
     }
 
+    // 思考过程触发药丸按钮（如“Thought for 4s”折叠栏标题）：必须放行汉化为“思考了 4s”
+    const isThinkingTrigger = element.closest && element.closest('button[data-testid="thinking-collapsible-trigger"]');
+    if (isThinkingTrigger) {
+      skipCache.set(element, false);
+      return false;
+    }
+
     // 3. 特殊特权放行：针对执行步骤的药丸标签（如 Ran, Explored, Edited, Viewed, Thought, Thinking, Working 等）
     // 无论其父级为 SPAN、CODE 还是 BUTTON，只要是系统执行药丸且不在用户提问气泡内，一律无条件放行汉化
     const textContent = (element.innerText || element.textContent || '').trim();
     const isActionPill = textContent.length <= 25 && /^(Explored|Ran|Viewed|Edited|Thought|Thinking|Working)$/i.test(textContent);
     if (isActionPill) {
       let inUserInput = false;
+      let inThinkingContent = false;
       let checkCur = element;
       while (checkCur && checkCur !== document.body) {
-        if (checkCur.classList && checkCur.classList.contains('group/user-input-step')) {
-          inUserInput = true;
-          break;
+        if (checkCur.classList) {
+          if (checkCur.classList.contains('group/user-input-step') || checkCur.classList.contains('cursor-edit')) {
+            inUserInput = true;
+            break;
+          }
+        }
+        if (checkCur.parentElement) {
+          const trigger = checkCur.parentElement.querySelector(':scope > button[data-testid="thinking-collapsible-trigger"]');
+          if (trigger && checkCur !== trigger && !trigger.contains(checkCur)) {
+            inThinkingContent = true;
+            break;
+          }
         }
         checkCur = checkCur.parentElement;
       }
-      if (!inUserInput) {
+      if (!inUserInput && !inThinkingContent) {
         skipCache.set(element, false);
         return false;
       }
@@ -2025,6 +2054,27 @@ const DOM_TRANSLATOR_INJECTION = `
       if (skipCache.has(cur)) {
         shouldSkip = skipCache.get(cur);
         break;
+      }
+
+      // 核心防御：模型思考链正文容器绝对跳过
+      // 思考链为 AI 运行时生成的自由英文/动态推理流，切勿进行逐词或断句翻译，否则会导致中英夹杂混乱
+      if (cur.classList && (
+        cur.classList.contains('cursor-edit') ||
+        cur.classList.contains('thought-content') ||
+        cur.classList.contains('thinking-content') ||
+        cur.classList.contains('thought-box')
+      )) {
+        shouldSkip = true;
+        break;
+      }
+
+      // 思考折叠栏内容区域：位于 thinking-collapsible-trigger 旁的展开正文容器
+      if (cur.parentElement) {
+        const trigger = cur.parentElement.querySelector(':scope > button[data-testid="thinking-collapsible-trigger"]');
+        if (trigger && cur !== trigger && !trigger.contains(cur)) {
+          shouldSkip = true;
+          break;
+        }
       }
 
       // 用户输入框与富文本编辑器（输入前/输入中绝对不翻译）
