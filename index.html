@@ -866,7 +866,7 @@
     <div class="top-bar">
       <div class="repo-badge">
         <span class="pulse-indicator" id="repo-status-dot"></span>
-        <span id="version-display">本地词库 v2.12.0</span>
+        <span id="version-display">本地词库 v2.12.0.1</span>
       </div>
       <div class="top-bar-actions">
         <button class="icon-tool-btn" id="btn-check-release" onclick="checkReleaseUpdate(false)" title="在线检测 GitHub 最新汉化词库与补丁">
@@ -1523,6 +1523,20 @@
     // ==========================================
     let isCheckingRelease = false;
 
+    function compareVersions(v1, v2) {
+      const parse = (v) => (v || '').replace(/^[vV]/, '').split('.').map(n => parseInt(n, 10) || 0);
+      const p1 = parse(v1);
+      const p2 = parse(v2);
+      const maxLen = Math.max(p1.length, p2.length);
+      for (let i = 0; i < maxLen; i++) {
+        const a = p1[i] || 0;
+        const b = p2[i] || 0;
+        if (a > b) return 1;
+        if (a < b) return -1;
+      }
+      return 0;
+    }
+
     async function checkReleaseUpdate(isSilent = false) {
       if (isCheckingRelease) return;
       isCheckingRelease = true;
@@ -1556,8 +1570,8 @@
           if (ghRes.ok) {
             const raw = await ghRes.json();
             const latestTag = (raw.tag_name || '').replace(/^[vV]/, '');
-            const currentVer = '2.12.0';
-            const hasUpdate = latestTag !== currentVer && latestTag > currentVer;
+            const currentVer = '2.12.0.1';
+            const hasUpdate = compareVersions(latestTag, currentVer) > 0;
             releaseData = {
               success: true,
               currentVersion: currentVer,

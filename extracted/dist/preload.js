@@ -109,6 +109,7 @@ electron_1.contextBridge.exposeInMainWorld('electronNative', electronNativeAPI);
 electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
 
 
+
 // Antigravity 2.0 Chinese Localization Engine Enhanced
 (function() {
   const dictionary = {

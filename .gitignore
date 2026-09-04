@@ -1,0 +1,6 @@
+app.asar*
+*.temp*
+*.unpacked*
+.DS_Store
+Thumbs.db
+*.log

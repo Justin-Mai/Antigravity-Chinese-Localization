@@ -155,6 +155,24 @@ Detailed architectural designs, benchmarks (1.68M qps), and engineering practice
 
 ---
 
+## Changelog
+
+### v2.12.0.1 (2026-09-04)
+- **Thinking Process Physical Immunity**:
+  - Completely resolved the issue where streaming token generation triggered word-by-word dictionary matching, causing English text corruption (e.g. `Control` translated into Chinese inside sentences).
+  - Dual-layer containment: explicitly skips `.cursor-edit` and thinking content sibling containers.
+  - Preserves action pill localization: `Thought for 4s` localized to `思考了 4s`, `Thinking...` localized to `正在思考...`.
+- **Regex Escaping Corrections**:
+  - Fixed double backslash escaping in template injection (`\\d`, `\\s`, `\\+` matching literal backslashes) to restore correct numeric and file change matching.
+  - Fixed lost escaping in quota title matching (`\s+Limit\s+Remaining`).
+- **Dashboard Feature Enhancements**:
+  - Added light/dark theme toggle button with persistent state and system preference following.
+  - Added online GitHub Release check button and notification indicator for one-click updates.
+  - Enhanced packaging modal contrast in light mode to fix unreadable white-on-light text.
+  - Added one-click frontend cache cleaning utility.
+
+---
+
 ## Frequently Asked Questions (FAQ)
 
 ### Q1: App fails to start or reports file access error after localization?
