@@ -44,6 +44,8 @@
       --body-ambient-1: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
       --body-ambient-2: radial-gradient(circle, rgba(0, 230, 118, 0.15) 0%, transparent 70%);
       --shadow-container: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      --btn-disabled-bg: rgba(255, 255, 255, 0.08);
+      --btn-disabled-text: rgba(255, 255, 255, 0.35);
     }
 
     [data-theme="light"] {
@@ -76,6 +78,8 @@
       --body-ambient-1: radial-gradient(circle, rgba(101, 37, 229, 0.1) 0%, transparent 70%);
       --body-ambient-2: radial-gradient(circle, rgba(5, 150, 105, 0.08) 0%, transparent 70%);
       --shadow-container: 0 20px 45px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      --btn-disabled-bg: rgba(0, 0, 0, 0.06);
+      --btn-disabled-text: rgba(0, 0, 0, 0.35);
     }
 
     body {
@@ -539,11 +543,21 @@
       transform: translateY(-1px);
     }
 
-    .primary-btn:disabled {
-      background: rgba(255, 255, 255, 0.1);
-      color: rgba(255, 255, 255, 0.3);
+    .primary-btn:disabled:not(.is-loading) {
+      background: var(--btn-disabled-bg) !important;
+      color: var(--btn-disabled-text) !important;
       cursor: not-allowed;
       box-shadow: none;
+      transform: none;
+      filter: none;
+    }
+
+    .primary-btn.is-loading {
+      background: linear-gradient(135deg, var(--accent), #9b68ff) !important;
+      color: #ffffff !important;
+      cursor: wait;
+      opacity: 0.95;
+      box-shadow: 0 8px 25px var(--accent-glow);
     }
 
     .secondary-actions {
@@ -574,9 +588,26 @@
       transform: translateY(-1px);
     }
 
-    .sec-btn:disabled {
-      opacity: 0.4;
+    .sec-btn:disabled:not(.is-loading) {
+      opacity: 0.45;
       cursor: not-allowed;
+      background: var(--btn-disabled-bg);
+      color: var(--btn-disabled-text);
+      border-color: var(--card-border);
+    }
+
+    .sec-btn.is-loading {
+      cursor: wait;
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--card-hover-bg);
+    }
+
+    .sec-btn.is-loading .loader-ring {
+      border: 2px solid rgba(124, 77, 255, 0.25);
+      border-top-color: var(--accent);
+      width: 16px;
+      height: 16px;
     }
 
     /* Terminal Console */
@@ -656,12 +687,14 @@
 
     .loader-ring {
       display: inline-block;
-      width: 24px;
-      height: 24px;
-      border: 3px solid rgba(255, 255, 255, 0.3);
+      width: 22px;
+      height: 22px;
+      border: 2.5px solid rgba(255, 255, 255, 0.35);
       border-radius: 50%;
-      border-top-color: #fff;
+      border-top-color: #ffffff;
       animation: spin 1s ease-in-out infinite;
+      vertical-align: middle;
+      flex-shrink: 0;
     }
 
     /* Toast Floating Notifications */
@@ -1282,12 +1315,15 @@
 
     function setButtonLoading(btnId, isLoading, loadingText = '') {
       const btn = document.getElementById(btnId);
+      if (!btn) return;
       if (isLoading) {
         btn.disabled = true;
+        btn.classList.add('is-loading');
         btn.dataset.originalHtml = btn.innerHTML;
         btn.innerHTML = `<span class="loader-ring"></span> <span>${loadingText}</span>`;
       } else {
         btn.disabled = false;
+        btn.classList.remove('is-loading');
         if (btn.dataset.originalHtml) {
           btn.innerHTML = btn.dataset.originalHtml;
         }
@@ -1440,10 +1476,7 @@
     async function manualDetectPath() {
       saveSettings();
       appendLog('[系统] 正在检测配置的安装路径，请稍候...');
-      const btn = document.getElementById('btn-detect');
-      const originalText = btn.innerHTML;
-      btn.disabled = true;
-      btn.innerHTML = `<span class="loader-ring" style="width: 14px; height: 14px; border-width: 2px;"></span> 正在检测...`;
+      setButtonLoading('btn-detect', true, '正在检测...');
       try {
         await updateStatus();
         appendLog('[系统] 检测路径完成，已更新上方应用检测指示灯。');
@@ -1452,8 +1485,7 @@
         appendLog('[系统] 检测失败，服务未响应。');
         showToast('检测失败，服务未响应', 'error');
       } finally {
-        btn.disabled = false;
-        btn.innerHTML = originalText;
+        setButtonLoading('btn-detect', false);
       }
     }
 
