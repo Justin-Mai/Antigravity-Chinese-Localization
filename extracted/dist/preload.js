@@ -1005,6 +1005,10 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     "External tools": "外部工具",
     "Running command": "运行命令",
     "Analyzing directory": "分析目录",
+    "Analyzed directory": "分析目录",
+    "analyzed directory": "分析目录",
+    "Analyzed": "分析",
+    "analyzed": "分析",
     "Searching the web": "搜索网页",
     "Editing file": "编辑文件",
     "Viewing file": "查看文件",
@@ -1511,7 +1515,8 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     "changed": "已更改", "review": "审核", "reviewing": "审核中", "reviewed": "已审核",
     "canceled": "已取消", "js": "Js",
     "explore": "探索", "search": "搜索", "change": "更改", "changes": "更改",
-    "turn": "回合", "turns": "回合"
+    "turn": "回合", "turns": "回合",
+    "analyzed": "分析", "analyzing": "分析"
   };
 
   const combinedDict = Object.assign({}, coreWords, dictionary);
@@ -1528,8 +1533,8 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
   const MAX_STRING_CACHE = 5000;
 
   const escapeRegExp = (str) => {
-    const specials = ['[', ']', '(', ')', '{', '}', '*', '+', '?', '.', '^', '$', '|', '\\'];
-    return str.split('').map(c => specials.includes(c) ? '\\' + c : c).join('');
+    const specials = ['[', ']', '(', ')', '{', '}', '*', '+', '?', '.', '^', '$', '|', '\\\\'];
+    return str.split('').map(c => specials.includes(c) ? '\\\\' + c : c).join('');
   };
 
   // 性能优化 4：启动阶段一次性预编译单次联合分词正则，彻底消灭运行时 80 次循环迭代正则匹配
@@ -1537,7 +1542,7 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     .sort((a, b) => b.length - a.length)
     .filter(w => w.length > 2 || /^[a-zA-Z0-9]+$/.test(w));
   const escapedCoreUnion = sortedCoreKeys.map(w => escapeRegExp(w)).join('|');
-  const CORE_WORDS_UNION_REGEX = new RegExp('\\b(' + escapedCoreUnion + ')\\b', 'gi');
+  const CORE_WORDS_UNION_REGEX = new RegExp('\\\\b(' + escapedCoreUnion + ')\\\\b', 'gi');
 
   function translateString(text) {
     if (!text) return text;
@@ -1561,7 +1566,7 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     }
 
     if (/Scan the code to/i.test(trimmed)) {
-      if (/Scan the code to.*,s*ors*$/i.test(trimmed)) {
+      if (/Scan the code to.*,\s*or\s*$/i.test(trimmed)) {
         const fixed = '扫描二维码以在远程控制中打开此设备，或';
         if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
         return text.replace(trimmed, fixed);
@@ -1571,7 +1576,7 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
         if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
         return text.replace(trimmed, fixed);
       }
-      if (/Scan the code to.*(?:Remote Control|远程s*控制)/i.test(trimmed)) {
+      if (/Scan the code to.*(?:Remote Control|远程\s*控制)/i.test(trimmed)) {
         const fixed = '扫描二维码以在远程控制中打开此设备';
         if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
         return text.replace(trimmed, fixed);
@@ -1584,7 +1589,7 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
       return text.replace(trimmed, fixed);
     }
 
-    if (/^(?:Tool[\s ]+Permissions|工具[\s ]*Permissions)$/i.test(trimmed)) {
+    if (/^(?:Tool[\\s ]+Permissions|工具[\\s ]*Permissions)$/i.test(trimmed)) {
       const fixed = '工具权限';
       if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
       return text.replace(trimmed, fixed);
@@ -1592,14 +1597,14 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
 
     if (/% of the (?:customization )?budget is (?:available|used)/i.test(trimmed)) {
       let fixed = trimmed;
-      if (/^%\s*of the (?:customization )?budget is available[.。]?$/i.test(trimmed)) {
+      if (/^%\\s*of the (?:customization )?budget is available[.。]?$/i.test(trimmed)) {
         fixed = '% 的自定义额度可用。';
-      } else if (/^%\s*of the (?:customization )?budget is used[.。]?$/i.test(trimmed)) {
+      } else if (/^%\\s*of the (?:customization )?budget is used[.。]?$/i.test(trimmed)) {
         fixed = '% 的自定义额度已使用。';
       } else if (/available/i.test(trimmed)) {
-        fixed = trimmed.replace(/(\d+(?:\.\d+)?)% of the (?:customization )?budget is available[.。]?/i, '自定义额度尚有 $1% 可用。');
+        fixed = trimmed.replace(/(\\d+(?:\\.\\d+)?)% of the (?:customization )?budget is available[.。]?/i, '自定义额度尚有 $1% 可用。');
       } else if (/used/i.test(trimmed)) {
-        fixed = trimmed.replace(/(\d+(?:\.\d+)?)% of the (?:customization )?budget is used[.。]?/i, '已使用 $1% 的自定义额度。');
+        fixed = trimmed.replace(/(\\d+(?:\\.\\d+)?)% of the (?:customization )?budget is used[.。]?/i, '已使用 $1% 的自定义额度。');
       }
       if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
       return text.replace(trimmed, fixed);
@@ -1657,31 +1662,31 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
       dynamicMatch = dynamicMatch.replace(/^Worked (?:for|持续) (.+)$/i, '总耗时 $1');
       isDynamic = true;
     }
-    if (/^\\d+ files? changed(.*)$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(\\d+) files? changed(.*)/i, '$1 个文件已更改$2');
+    if (/^\\\\d+ files? changed(.*)$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\\\\d+) files? changed(.*)/i, '$1 个文件已更改$2');
       isDynamic = true;
     }
-    if (/^(\\d+)\\s+searches?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(\\d+)\\s+searches?/i, '$1 次搜索');
+    if (/^(\\\\d+)\\\\s+searches?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\\\\d+)\\\\s+searches?/i, '$1 次搜索');
       isDynamic = true;
     }
-    if (/^Edited (.*) \\+(\\d+) -(\\d+)$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^Edited (.*) \\+(\\d+) -(\\d+)/i, '编辑 $1 (+$2 -$3)');
+    if (/^Edited (.*) \\\\+(\\\\d+) -(\\\\d+)$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Edited (.*) \\\\+(\\\\d+) -(\\\\d+)/i, '编辑 $1 (+$2 -$3)');
       isDynamic = true;
     }
     if (/^Canceled taskkill/.test(trimmed)) {
       dynamicMatch = dynamicMatch.replace(/^Canceled (.*)/, '已取消 $1');
       isDynamic = true;
     }
-    if (/^\d+(?:\.\d+)?% of the (?:customization )?budget is (?:available|used)[.。]?$/i.test(trimmed)) {
+    if (/^\\d+(?:\\.\\d+)?% of the (?:customization )?budget is (?:available|used)[.。]?$/i.test(trimmed)) {
       dynamicMatch = dynamicMatch
-        .replace(/(\d+(?:\.\d+)?)% of the (?:customization )?budget is available[.。]?/i, '自定义额度尚有 $1% 可用。')
-        .replace(/(\d+(?:\.\d+)?)% of the (?:customization )?budget is used[.。]?/i, '已使用 $1% 的自定义额度。');
+        .replace(/(\\d+(?:\\.\\d+)?)% of the (?:customization )?budget is available[.。]?/i, '自定义额度尚有 $1% 可用。')
+        .replace(/(\\d+(?:\\.\\d+)?)% of the (?:customization )?budget is used[.。]?/i, '已使用 $1% 的自定义额度。');
       isDynamic = true;
     }
 
     // 限额剩余标题动态匹配 (例如 "Five Hour Limit Remaining", "Weekly Limit Remaining", "5-hour limit remaining")
-    if (/^(Weekly|Five[- ]Hour|5[- ]Hour|Hourly|Daily)s+Limits+Remaining$/i.test(trimmed)) {
+    if (/^(Weekly|Five[- ]Hour|5[- ]Hour|Hourly|Daily)\s+Limit\s+Remaining$/i.test(trimmed)) {
       const lower = trimmed.toLowerCase();
       if (lower.includes('weekly')) dynamicMatch = '每周限额剩余';
       else if (lower.includes('five') || lower.includes('5')) dynamicMatch = '5 小时限额剩余';
@@ -1693,15 +1698,15 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     // 配额提示句 (含动态天数/小时/分钟，支持全英或半中文状态下自愈清洗)
     if (/(?:You have used some of your|您已使用了部分).*(?:limit|限额)/i.test(trimmed)) {
       dynamicMatch = dynamicMatch
-        .replace(/^(?:You have used some of your|您已使用了部分)\s*(?:weekly|每周)\s*(?:limit|限额)?/i, '您已使用了部分每周限额')
-        .replace(/^(?:You have used some of your|您已使用了部分)\s*(?:5[- ]hour|five[- ]hour|5 小时|五小时)\s*(?:limit|限额)?/i, '您已使用了部分 5 小时限额')
-        .replace(/^(?:You have used some of your|您已使用了部分)\s*(?:hourly|每小时)\s*(?:limit|限额)?/i, '您已使用了部分每小时限额')
-        .replace(/^(?:You have used some of your|您已使用了部分)\s*(?:daily|每日)\s*(?:limit|限额)?/i, '您已使用了部分每日限额')
-        .replace(/(?:it will fully refresh in|它将在以下时间后完全刷新[：:]?)\s*/i, ' 它将在以下时间后完全刷新：')
-        .replace(/(\d+)\s*days?/gi, ' $1 天')
-        .replace(/(\d+)\s*hours?/gi, ' $1 小时')
-        .replace(/(\d+)\s*minutes?\.?$/gi, ' $1 分钟')
-        .replace(/\s+/g, ' ')
+        .replace(/^(?:You have used some of your|您已使用了部分)\\s*(?:weekly|每周)\\s*(?:limit|限额)?/i, '您已使用了部分每周限额')
+        .replace(/^(?:You have used some of your|您已使用了部分)\\s*(?:5[- ]hour|five[- ]hour|5 小时|五小时)\\s*(?:limit|限额)?/i, '您已使用了部分 5 小时限额')
+        .replace(/^(?:You have used some of your|您已使用了部分)\\s*(?:hourly|每小时)\\s*(?:limit|限额)?/i, '您已使用了部分每小时限额')
+        .replace(/^(?:You have used some of your|您已使用了部分)\\s*(?:daily|每日)\\s*(?:limit|限额)?/i, '您已使用了部分每日限额')
+        .replace(/(?:it will fully refresh in|它将在以下时间后完全刷新[：:]?)\\s*/i, ' 它将在以下时间后完全刷新：')
+        .replace(/(\\d+)\\s*days?/gi, ' $1 天')
+        .replace(/(\\d+)\\s*hours?/gi, ' $1 小时')
+        .replace(/(\\d+)\\s*minutes?\\.?$/gi, ' $1 分钟')
+        .replace(/\\s+/g, ' ')
         .trim();
       isDynamic = true;
     }
@@ -1712,50 +1717,50 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     }
 
     // 模型配额剩余动态匹配 (例如 "100% Remaining", "85.4% remaining")
-    if (/^(d+(?:.d+)?%?)s+remaining$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(d+(?:.d+)?%?)s+remaining$/i, '$1 剩余');
+    if (/^(\d+(?:\.\d+)?%?)\s+remaining$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+(?:\.\d+)?%?)\s+remaining$/i, '$1 剩余');
       isDynamic = true;
     }
     // 剩余时间刷新动态匹配 (例如 "15 minutes", "1 hour 26 minutes", "2 hours", "1 day")
-    if (/^(d+)s+hours?s+(d+)s+minutes?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(d+)s+hours?s+(d+)s+minutes?$/i, '$1 小时 $2 分钟');
+    if (/^(\d+)\s+hours?\s+(\d+)\s+minutes?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+hours?\s+(\d+)\s+minutes?$/i, '$1 小时 $2 分钟');
       isDynamic = true;
     }
-    if (/^(d+)s+minutes?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(d+)s+minutes?$/i, '$1 分钟');
+    if (/^(\d+)\s+minutes?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+minutes?$/i, '$1 分钟');
       isDynamic = true;
     }
-    if (/^(d+)s+hours?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(d+)s+hours?$/i, '$1 小时');
+    if (/^(\d+)\s+hours?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+hours?$/i, '$1 小时');
       isDynamic = true;
     }
-    if (/^(d+)s+days?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(d+)s+days?$/i, '$1 天');
+    if (/^(\d+)\s+days?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+days?$/i, '$1 天');
       isDynamic = true;
     }
 
     // 项目/路径不存在的动态提示 (项目名 + " does not exist"，超3词无法走分词)
-    if (/^.+ does not exist.?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(.+) does not exist.?$/i, '$1 不存在');
+    if (/^.+ does not exist\.?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(.+) does not exist\.?$/i, '$1 不存在');
       isDynamic = true;
     }
     // "xxx was not found" 动态提示
-    if (/^.+ was not found.?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(.+) was not found.?$/i, '$1 未找到');
+    if (/^.+ was not found\.?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(.+) was not found\.?$/i, '$1 未找到');
       isDynamic = true;
     }
 
     // 步骤与回合动态提示
-    if (/^Step d+ ([^)]+):?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^Step (d+) (([^)]+)):?/i, '步骤 $1 ($2)：');
+    if (/^Step \d+ \([^\)]+\):?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Step (\d+) \(([^\)]+)\):?/i, '步骤 $1 ($2)：');
       isDynamic = true;
     }
-    if (/^d+ turns?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(d+) turns?$/i, '$1 回合');
+    if (/^\d+ turns?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+) turns?$/i, '$1 回合');
       isDynamic = true;
     }
-    if (/^Turn d+$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^Turn (d+)$/i, '第 $1 回合');
+    if (/^Turn \d+$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Turn (\d+)$/i, '第 $1 回合');
       isDynamic = true;
     }
     if (/^Task id "[^"]+" finished with result:$/i.test(trimmed)) {
@@ -1790,7 +1795,7 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     let matchPunc = '';
 
     // Strip trailing common punctuation
-    const puncRegex = /(\.\.\.|…|\.|\?|!|:|：|？|！|。)$/;
+    const puncRegex = /(\\.\\.\\.|…|\\.|\\?|!|:|：|？|！|。)$/;
     const match = core.match(puncRegex);
     if (match) {
       matchPunc = match[0];
@@ -1818,11 +1823,11 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
     // 3. Fallback to word-by-word ONLY for short strings (<= 3 words)
     // 如果短语中已经包含了中文字符（即原本就是汉化内容或中英混排），则严禁进入英文分词翻译
     // 这可以完美阻止像中英文混排短语被分词规则执行二次翻译导致重叠和污染
-    if (/[一-龥]/.test(core)) {
+    if (/[\u4e00-\u9fa5]/.test(core)) {
       return text;
     }
     // This prevents long unmatched sentences from getting mangled into Chinglish.
-    const wordsCount = core.split(/s+/).filter(Boolean).length;
+    const wordsCount = core.split(/\s+/).filter(Boolean).length;
     if (wordsCount > 3) {
       return text; // Do not translate, keep original English sentence clean
     }
@@ -1839,22 +1844,22 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
 
     let finalTranslated = replaced ? temp : core;
     // 消除中文字符之间可能由分词替换残留的英文空格，提升翻译句子的连贯精致度
-    finalTranslated = finalTranslated.replace(/([一-龥])s+([一-龥])/g, '$1$2');
+    finalTranslated = finalTranslated.replace(/([\u4e00-\u9fa5])\s+([\u4e00-\u9fa5])/g, '$1$2');
     // 特殊去重清洗：防止前置分词造成的“使用使用”与半中半英长句残留
     finalTranslated = finalTranslated.replace(/使用使用 Google 插件构建/g, '使用 Google 插件构建');
-    finalTranslated = finalTranslated.replace(/Configure 智能体 执行[,s]+queued 消息 delivery[,s]+and 权限[。.]?/g, '配置智能体执行策略、消息队列发送机制以及安全权限。');
+    finalTranslated = finalTranslated.replace(/Configure 智能体 执行[,\s]+queued 消息 delivery[,\s]+and 权限[。.]?/g, '配置智能体执行策略、消息队列发送机制以及安全权限。');
     finalTranslated = finalTranslated.replace(/Automatic 检查更新/g, '自动检查更新');
-    finalTranslated = finalTranslated.replace(/每周限额s*Remaining/gi, '每周限额剩余');
-    finalTranslated = finalTranslated.replace(/五小时限额s*Remaining/gi, '5 小时限额剩余');
+    finalTranslated = finalTranslated.replace(/每周限额\s*Remaining/gi, '每周限额剩余');
+    finalTranslated = finalTranslated.replace(/五小时限额\s*Remaining/gi, '5 小时限额剩余');
     finalTranslated = finalTranslated.replace(/Claude and GPT 模型/g, 'Claude 与 GPT 模型');
-    finalTranslated = finalTranslated.replace(/命令s*palette/gi, '命令面板');
+    finalTranslated = finalTranslated.replace(/命令\s*palette/gi, '命令面板');
     finalTranslated = finalTranslated.replace(/Scan the code to .*(?:copy link|复制链接)[。.]?/gi, '扫描二维码以在远程控制中打开此设备，或复制链接。');
-    finalTranslated = finalTranslated.replace(/Scan the code to (?:打开|open) this (?:设备|device) in 远程s*(?:Control|控制)[,s]+or (?:复制链接|copy link)[。.]?/gi, '扫描二维码以在远程控制中打开此设备，或复制链接。');
-    finalTranslated = finalTranslated.replace(/(?:工作了s*持续|总耗时s*持续|Worked for)s*(.+)/gi, '总耗时 $1');
-    finalTranslated = finalTranslated.replace(/(?:Thoughts*持续|思考了s*持续)s*(.+)/gi, '思考了 $1');
-    finalTranslated = finalTranslated.replace(/查看s*could not be opened/gi, '查看文件无法打开');
+    finalTranslated = finalTranslated.replace(/Scan the code to (?:打开|open) this (?:设备|device) in 远程\s*(?:Control|控制)[,\s]+or (?:复制链接|copy link)[。.]?/gi, '扫描二维码以在远程控制中打开此设备，或复制链接。');
+    finalTranslated = finalTranslated.replace(/(?:工作了\s*持续|总耗时\s*持续|Worked for)\s*(.+)/gi, '总耗时 $1');
+    finalTranslated = finalTranslated.replace(/(?:Thought\s*持续|思考了\s*持续)\s*(.+)/gi, '思考了 $1');
+    finalTranslated = finalTranslated.replace(/查看\s*could not be opened/gi, '查看文件无法打开');
     finalTranslated = finalTranslated.replace(/could not be opened/gi, '无法打开');
-    finalTranslated = finalTranslated.replace(/(\d+)\s+searches?/gi, '$1 次搜索');
+    finalTranslated = finalTranslated.replace(/(\\d+)\\s+searches?/gi, '$1 次搜索');
     if (matchPunc) {
       finalTranslated += trailPunc;
     }
@@ -1865,7 +1870,7 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
   }
 
   // 用于精确匹配代码编辑器、语法高亮等容器类名（收敛范围，防止误杀带 font-mono 或 viewer 的正常 UI）
-  const codeClassPattern = /(?:^|[\s_-])(monaco-editor|editor-instance|hljs|shiki|prism|codemirror|line-content|gutter|codeblock|code-block|code-line|view-line)(?:$|[\s_-])/i;
+  const codeClassPattern = /(?:^|[\\s_-])(monaco-editor|editor-instance|hljs|shiki|prism|codemirror|line-content|gutter|codeblock|code-block|code-line|view-line)(?:$|[\\s_-])/i;
 
   const skipCache = new WeakMap();
 
@@ -2278,4 +2283,3 @@ electron_1.contextBridge.exposeInMainWorld('ide', ideAPI);
 
 
 })();
-

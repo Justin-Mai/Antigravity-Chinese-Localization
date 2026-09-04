@@ -1005,6 +1005,10 @@ const DOM_TRANSLATOR_INJECTION = `
     "External tools": "外部工具",
     "Running command": "运行命令",
     "Analyzing directory": "分析目录",
+    "Analyzed directory": "分析目录",
+    "analyzed directory": "分析目录",
+    "Analyzed": "分析",
+    "analyzed": "分析",
     "Searching the web": "搜索网页",
     "Editing file": "编辑文件",
     "Viewing file": "查看文件",
@@ -1511,7 +1515,8 @@ const DOM_TRANSLATOR_INJECTION = `
     "changed": "已更改", "review": "审核", "reviewing": "审核中", "reviewed": "已审核",
     "canceled": "已取消", "js": "Js",
     "explore": "探索", "search": "搜索", "change": "更改", "changes": "更改",
-    "turn": "回合", "turns": "回合"
+    "turn": "回合", "turns": "回合",
+    "analyzed": "分析", "analyzing": "分析"
   };
 
   const combinedDict = Object.assign({}, coreWords, dictionary);

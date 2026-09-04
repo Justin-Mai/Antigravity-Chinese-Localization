@@ -162,6 +162,9 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     "Commands Outside Sandbox": "沙盒外命令",
     "Configure allowed commands outside the sandbox.": "配置允许在沙盒外执行的终端命令。",
     "MCP Tools": "MCP 工具",
+    "Tool Permissions": "工具权限",
+    "Tool permissions": "工具权限",
+    "工具 Permissions": "工具权限",
     "Configure external tools via Model Context Protocol.": "通过模型上下文协议 (MCP) 配置外部工具。",
     "Global": "全局",
     "Sandbox": "沙盒",
@@ -197,6 +200,13 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     "Token Usage": "Token 使用详情",
     "The breakdown below shows token usage from customizations like skills, rules, and MCP. If the budget is exceeded, large customizations will be truncated automatically.": "以下详情展示了来自技能、规则和 MCP 等自定义项的 Token 使用情况。如果额度超限，大型自定义内容将被自动截断。",
     "of the customization budget is available.": "的自定义额度可用。",
+    "% of the customization budget is available.": "% 的自定义额度可用。",
+    "% of the customization budget is available。": "% 的自定义额度可用。",
+    "% of the customization budget is available": "% 的自定义额度可用。",
+    "% of the budget is available.": "% 的自定义额度可用。",
+    "% of the budget is available。": "% 的自定义额度可用。",
+    "% of the customization budget is used.": "% 的自定义额度已使用。",
+    "% of the customization budget is used。": "% 的自定义额度已使用。",
     "100.0% of the customization budget is available.": "100.0% 的自定义额度可用。",
     "No customizations found for this workspace.": "未找到此工作区的自定义项。",
     "Installed MCP Servers": "已安装的 MCP 服务器",
@@ -211,6 +221,22 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     "Google plugins": "Google 插件",
     "Official Google plugins": "Google 官方插件",
     "Official Google plugins designed for Antigravity.": "专为 Antigravity 设计的 Google 官方扩展插件。",
+    "Plugins are packaged collections of skills and MCPs to help the Agent in Antigravity work with Google developer products. You can always change your choices in Settings.": "插件是技能和 MCP 的打包集合，用于协助 Antigravity 中的智能体使用 Google 开发者产品。你可以随时在设置中更改你的选择。",
+    "Plugins are packaged collections of skills and MCPs to help the Agent in Antigravity work with Google developer products. You can always change your choices in Settings": "插件是技能和 MCP 的打包集合，用于协助 Antigravity 中的智能体使用 Google 开发者产品。你可以随时在设置中更改你的选择",
+    "Plugins are packaged collections of skills and MCPs to help the Agent in Antigravity work with Google developer products.": "插件是技能和 MCP 的打包集合，用于协助 Antigravity 中的智能体使用 Google 开发者产品。",
+    "Plugins are packaged collections of skills and MCPs to help the Agent in Antigravity work with Google developer products": "插件是技能和 MCP 的打包集合，用于协助 Antigravity 中的智能体使用 Google 开发者产品",
+    "You can always change your choices in Settings.": "你可以随时在设置中更改你的选择。",
+    "You can always change your choices in Settings": "你可以随时在设置中更改你的选择",
+    "Plugins are packaged collections of skills and MCPs to help the Agent in": "插件是技能和 MCP 的打包集合，用于协助智能体在",
+    "Plugins are packaged collections of skills and MCPs to help the Agent in ": "插件是技能和 MCP 的打包集合，用于协助智能体在 ",
+    "Antigravity work with Google developer products. You can always change your choices in Settings.": "Antigravity 中协同 Google 开发者产品工作。你可以随时在设置中更改你的选择。",
+    "Antigravity work with Google developer products. You can always change your choices in Settings": "Antigravity 中协同 Google 开发者产品工作。你可以随时在设置中更改你的选择",
+    "Antigravity work with Google developer products.": "Antigravity 中协同 Google 开发者产品工作。",
+    "Antigravity work with Google developer products": "Antigravity 中协同 Google 开发者产品工作",
+    "work with Google developer products. You can always change your choices in Settings.": "协同 Google 开发者产品工作。你可以随时在设置中更改你的选择。",
+    "work with Google developer products. You can always change your choices in Settings": "协同 Google 开发者产品工作。你可以随时在设置中更改你的选择",
+    "work with Google developer products.": "协同 Google 开发者产品工作。",
+    "work with Google developer products": "协同 Google 开发者产品工作",
     "Plugins built and maintained by Google to extend Antigravity capabilities.": "由 Google 官方构建并维护，用于全面扩展 Antigravity 各项能力的插件。",
     "Explore, install, and manage plugins to enhance your agent with specialized skills, MCP servers, and rules.": "浏览、安装并管理插件，为智能体扩展专属技能、MCP 服务器与执行规则。",
     "Discover plugins to integrate with Google APIs, Cloud services, and developer tools.": "发现并集成适用于 Google API、云服务及开发者工具的官方插件。",
@@ -893,6 +919,10 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     "External tools": "外部工具",
     "Running command": "运行命令",
     "Analyzing directory": "分析目录",
+    "Analyzed directory": "分析目录",
+    "analyzed directory": "分析目录",
+    "Analyzed": "分析",
+    "analyzed": "分析",
     "Searching the web": "搜索网页",
     "Editing file": "编辑文件",
     "Viewing file": "查看文件",
@@ -1213,6 +1243,8 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     "Modify permissions for files, terminal, and MCP tools": "修改针对文件系统、终端命令以及 MCP 工具的安全权限",
     "Modify 权限 持续 文件, 终端, and MCP 工具。": "修改针对文件系统、终端命令以及 MCP 工具的安全权限。",
     "Modify 权限 持续 文件, 终端, and MCP 工具": "修改针对文件系统、终端命令以及 MCP 工具的安全权限",
+    "Modify permissions for 文件, 终端, and MCP 工具。": "修改针对文件系统、终端命令以及 MCP 工具的安全权限。",
+    "Modify permissions for 文件, 终端, and MCP 工具": "修改针对文件系统、终端命令以及 MCP 工具的安全权限",
     "You can upgrade to a Google AI Ultra plan to receive higher rate limits.": "您可以升级至 Google AI Ultra 计划以获得更高额度的调用速率上限。",
     "You can upgrade to a Google AI Ultra plan to receive higher rate limits": "您可以升级至 Google AI Ultra 计划以获得更高额度的调用速率上限",
     "You can 升级 to a Google AI Ultra 计划 to receive higher rate 限额。": "您可以升级至 Google AI Ultra 计划以获得更高额度的调用速率上限。",
@@ -1387,7 +1419,7 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     "agent": "智能体", "agents": "智能体", "subagent": "子智能体", "subagents": "子智能体", "task": "任务", "tasks": "任务",
     "workspace": "工作区", "workspaces": "工作区", "directory": "目录", "folder": "文件夹", "file": "文件", "files": "文件",
     "command": "命令", "commands": "命令", "palette": "面板", "terminal": "终端", "console": "控制台", "output": "输出", "input": "输入", "remote": "远程", "control": "控制", "device": "设备", "devices": "设备", "link": "链接",
-    "log": "日志", "logs": "日志", "setting": "设置", "settings": "设置", "preference": "偏好", "preferences": "偏好",
+    "log": "日志", "logs": "日志", "setting": "设置", "settings": "设置", "preference": "偏好", "preferences": "偏好", "permission": "权限", "permissions": "权限",
     "theme": "主题", "themes": "主题", "model": "模型", "models": "模型", "capability": "能力", "capabilities": "能力",
     "running": "运行中", "completed": "已完成", "failed": "已失败", "pending": "等待中", "success": "成功", "error": "错误",
     "system": "系统", "prompt": "提示词", "instructions": "指令", "description": "描述", "name": "名称", "version": "版本",
@@ -1397,36 +1429,44 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     "changed": "已更改", "review": "审核", "reviewing": "审核中", "reviewed": "已审核",
     "canceled": "已取消", "js": "Js",
     "explore": "探索", "search": "搜索", "change": "更改", "changes": "更改",
-    "turn": "回合", "turns": "回合"
+    "turn": "回合", "turns": "回合",
+    "analyzed": "分析", "analyzing": "分析"
   };
 
   const combinedDict = Object.assign({}, coreWords, dictionary);
+  // 性能优化 1：预先构建全小写字典 Map，将未命中小写查找由 O(N) 降低为 O(1)
+  const lowerDictionary = new Map();
+  for (const k in dictionary) {
+    const lk = k.toLowerCase();
+    if (!lowerDictionary.has(lk)) {
+      lowerDictionary.set(lk, dictionary[k]);
+    }
+  }
+
   const stringCache = new Map();
   const MAX_STRING_CACHE = 5000;
 
   const escapeRegExp = (str) => {
-    const specials = ['[', ']', '(', ')', '{', '}', '*', '+', '?', '.', '^', '$', '|', '\\'];
-    return str.split('').map(c => specials.includes(c) ? '\\' + c : c).join('');
+    const specials = ['[', ']', '(', ')', '{', '}', '*', '+', '?', '.', '^', '$', '|', '\\\\'];
+    return str.split('').map(c => specials.includes(c) ? '\\\\' + c : c).join('');
   };
 
-  // 极速性能核心：在启动时一次性预编译常用词汇正则，彻底消灭运行时循环动态 new RegExp 导致的数百毫秒卡死
-  const PRECOMPILED_CORE_PATTERNS = Object.keys(coreWords)
+  // 性能优化 4：启动阶段一次性预编译单次联合分词正则，彻底消灭运行时 80 次循环迭代正则匹配
+  const sortedCoreKeys = Object.keys(coreWords)
     .sort((a, b) => b.length - a.length)
-    .filter(w => w.length > 2 || /^[a-zA-Z0-9]+$/.test(w))
-    .map(w => {
-      const escaped = escapeRegExp(w);
-      const startB = /^[a-zA-Z0-9]/.test(w) ? '\\b' : '';
-      const endB = /[a-zA-Z0-9]$/.test(w) ? '\\b' : '';
-      return {
-        regex: new RegExp(startB + escaped + endB, 'gi'),
-        target: coreWords[w]
-      };
-    });
+    .filter(w => w.length > 2 || /^[a-zA-Z0-9]+$/.test(w));
+  const escapedCoreUnion = sortedCoreKeys.map(w => escapeRegExp(w)).join('|');
+  const CORE_WORDS_UNION_REGEX = new RegExp('\\\\b(' + escapedCoreUnion + ')\\\\b', 'gi');
 
   function translateString(text) {
     if (!text) return text;
     const trimmed = text.trim();
     if (!trimmed) return text;
+
+    // 性能优化 2：极速短路。若文本完全不包含任何英文字母（纯中文/纯数字/纯标点），绝对无需查英文词典或跑正则，瞬间原样返回
+    if (!/[a-zA-Z]/.test(trimmed)) {
+      return text;
+    }
 
     // 0. 极速缓存查询（O(1) 命中瞬间返回）
     if (stringCache.has(trimmed)) {
@@ -1440,7 +1480,7 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     }
 
     if (/Scan the code to/i.test(trimmed)) {
-      if (/Scan the code to.*,s*ors*$/i.test(trimmed)) {
+      if (/Scan the code to.*,\s*or\s*$/i.test(trimmed)) {
         const fixed = '扫描二维码以在远程控制中打开此设备，或';
         if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
         return text.replace(trimmed, fixed);
@@ -1450,11 +1490,77 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
         if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
         return text.replace(trimmed, fixed);
       }
-      if (/Scan the code to.*(?:Remote Control|远程s*控制)/i.test(trimmed)) {
+      if (/Scan the code to.*(?:Remote Control|远程\s*控制)/i.test(trimmed)) {
         const fixed = '扫描二维码以在远程控制中打开此设备';
         if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
         return text.replace(trimmed, fixed);
       }
+    }
+
+    if (/^Modify permissions for/i.test(trimmed)) {
+      const fixed = '修改针对文件系统、终端命令以及 MCP 工具的安全权限。';
+      if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
+      return text.replace(trimmed, fixed);
+    }
+
+    if (/^(?:Tool[\\s ]+Permissions|工具[\\s ]*Permissions)$/i.test(trimmed)) {
+      const fixed = '工具权限';
+      if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
+      return text.replace(trimmed, fixed);
+    }
+
+    if (/% of the (?:customization )?budget is (?:available|used)/i.test(trimmed)) {
+      let fixed = trimmed;
+      if (/^%\\s*of the (?:customization )?budget is available[.。]?$/i.test(trimmed)) {
+        fixed = '% 的自定义额度可用。';
+      } else if (/^%\\s*of the (?:customization )?budget is used[.。]?$/i.test(trimmed)) {
+        fixed = '% 的自定义额度已使用。';
+      } else if (/available/i.test(trimmed)) {
+        fixed = trimmed.replace(/(\\d+(?:\\.\\d+)?)% of the (?:customization )?budget is available[.。]?/i, '自定义额度尚有 $1% 可用。');
+      } else if (/used/i.test(trimmed)) {
+        fixed = trimmed.replace(/(\\d+(?:\\.\\d+)?)% of the (?:customization )?budget is used[.。]?/i, '已使用 $1% 的自定义额度。');
+      }
+      if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
+      return text.replace(trimmed, fixed);
+    }
+
+    if (/^Plugins are packaged collections of/i.test(trimmed)) {
+      let fixed = '';
+      if (/Google developer products/i.test(trimmed)) {
+        if (/change your choices in Settings/i.test(trimmed)) {
+          fixed = '插件是技能和 MCP 的打包集合，用于协助 Antigravity 中的智能体使用 Google 开发者产品。你可以随时在设置中更改你的选择。';
+        } else {
+          fixed = '插件是技能和 MCP 的打包集合，用于协助 Antigravity 中的智能体使用 Google 开发者产品。';
+        }
+      } else {
+        fixed = '插件是技能和 MCP 的打包集合，用于协助智能体在';
+      }
+      if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
+      return text.replace(trimmed, fixed);
+    }
+
+    if (/^You can always change your choices in Settings[.。]?$/i.test(trimmed)) {
+      const fixed = '你可以随时在设置中更改你的选择。';
+      if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
+      return text.replace(trimmed, fixed);
+    }
+
+    if (/^Antigravity work with Google developer products/i.test(trimmed)) {
+      let fixed = 'Antigravity 中协同 Google 开发者产品工作。';
+      if (/change your choices in Settings/i.test(trimmed)) {
+        fixed = 'Antigravity 中协同 Google 开发者产品工作。你可以随时在设置中更改你的选择。';
+      }
+      if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
+      return text.replace(trimmed, fixed);
+    }
+
+    if (/^work with Google developer products/i.test(trimmed)) {
+      let fixed = '协同 Google 开发者产品工作。';
+      if (/change your choices in Settings/i.test(trimmed)) {
+        fixed = '协同 Google 开发者产品工作。你可以随时在设置中更改你的选择。';
+      }
+      if (stringCache.size < MAX_STRING_CACHE) stringCache.set(trimmed, fixed);
+      return text.replace(trimmed, fixed);
     }
 
     // --- Dynamic Agent Logs Regex Rules (Fixed Escaping) ---
@@ -1470,30 +1576,31 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
       dynamicMatch = dynamicMatch.replace(/^Worked (?:for|持续) (.+)$/i, '总耗时 $1');
       isDynamic = true;
     }
-    if (/^\\d+ files? changed(.*)$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(\\d+) files? changed(.*)/i, '$1 个文件已更改$2');
+    if (/^\\\\d+ files? changed(.*)$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\\\\d+) files? changed(.*)/i, '$1 个文件已更改$2');
       isDynamic = true;
     }
-    if (/^(\\d+)\\s+searches?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(\\d+)\\s+searches?/i, '$1 次搜索');
+    if (/^(\\\\d+)\\\\s+searches?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\\\\d+)\\\\s+searches?/i, '$1 次搜索');
       isDynamic = true;
     }
-    if (/^Edited (.*) \\+(\\d+) -(\\d+)$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^Edited (.*) \\+(\\d+) -(\\d+)/i, '编辑 $1 (+$2 -$3)');
+    if (/^Edited (.*) \\\\+(\\\\d+) -(\\\\d+)$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Edited (.*) \\\\+(\\\\d+) -(\\\\d+)/i, '编辑 $1 (+$2 -$3)');
       isDynamic = true;
     }
     if (/^Canceled taskkill/.test(trimmed)) {
       dynamicMatch = dynamicMatch.replace(/^Canceled (.*)/, '已取消 $1');
       isDynamic = true;
     }
-    if (/^\d+(\.\d+)?% of the (customization budget|budget) is (available|used)\.?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/(\d+(?:\.\d+)?)% of the (?:customization )?budget is available\.?/i, '自定义额度尚有 $1% 可用。');
-      dynamicMatch = dynamicMatch.replace(/(\d+(?:\.\d+)?)% of the (?:customization )?budget is used\.?/i, '已使用 $1% 的自定义额度。');
+    if (/^\\d+(?:\\.\\d+)?% of the (?:customization )?budget is (?:available|used)[.。]?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch
+        .replace(/(\\d+(?:\\.\\d+)?)% of the (?:customization )?budget is available[.。]?/i, '自定义额度尚有 $1% 可用。')
+        .replace(/(\\d+(?:\\.\\d+)?)% of the (?:customization )?budget is used[.。]?/i, '已使用 $1% 的自定义额度。');
       isDynamic = true;
     }
 
     // 限额剩余标题动态匹配 (例如 "Five Hour Limit Remaining", "Weekly Limit Remaining", "5-hour limit remaining")
-    if (/^(Weekly|Five[- ]Hour|5[- ]Hour|Hourly|Daily)s+Limits+Remaining$/i.test(trimmed)) {
+    if (/^(Weekly|Five[- ]Hour|5[- ]Hour|Hourly|Daily)\s+Limit\s+Remaining$/i.test(trimmed)) {
       const lower = trimmed.toLowerCase();
       if (lower.includes('weekly')) dynamicMatch = '每周限额剩余';
       else if (lower.includes('five') || lower.includes('5')) dynamicMatch = '5 小时限额剩余';
@@ -1505,15 +1612,15 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     // 配额提示句 (含动态天数/小时/分钟，支持全英或半中文状态下自愈清洗)
     if (/(?:You have used some of your|您已使用了部分).*(?:limit|限额)/i.test(trimmed)) {
       dynamicMatch = dynamicMatch
-        .replace(/^(?:You have used some of your|您已使用了部分)\s*(?:weekly|每周)\s*(?:limit|限额)?/i, '您已使用了部分每周限额')
-        .replace(/^(?:You have used some of your|您已使用了部分)\s*(?:5[- ]hour|five[- ]hour|5 小时|五小时)\s*(?:limit|限额)?/i, '您已使用了部分 5 小时限额')
-        .replace(/^(?:You have used some of your|您已使用了部分)\s*(?:hourly|每小时)\s*(?:limit|限额)?/i, '您已使用了部分每小时限额')
-        .replace(/^(?:You have used some of your|您已使用了部分)\s*(?:daily|每日)\s*(?:limit|限额)?/i, '您已使用了部分每日限额')
-        .replace(/(?:it will fully refresh in|它将在以下时间后完全刷新[：:]?)\s*/i, ' 它将在以下时间后完全刷新：')
-        .replace(/(\d+)\s*days?/gi, ' $1 天')
-        .replace(/(\d+)\s*hours?/gi, ' $1 小时')
-        .replace(/(\d+)\s*minutes?\.?$/gi, ' $1 分钟')
-        .replace(/\s+/g, ' ')
+        .replace(/^(?:You have used some of your|您已使用了部分)\\s*(?:weekly|每周)\\s*(?:limit|限额)?/i, '您已使用了部分每周限额')
+        .replace(/^(?:You have used some of your|您已使用了部分)\\s*(?:5[- ]hour|five[- ]hour|5 小时|五小时)\\s*(?:limit|限额)?/i, '您已使用了部分 5 小时限额')
+        .replace(/^(?:You have used some of your|您已使用了部分)\\s*(?:hourly|每小时)\\s*(?:limit|限额)?/i, '您已使用了部分每小时限额')
+        .replace(/^(?:You have used some of your|您已使用了部分)\\s*(?:daily|每日)\\s*(?:limit|限额)?/i, '您已使用了部分每日限额')
+        .replace(/(?:it will fully refresh in|它将在以下时间后完全刷新[：:]?)\\s*/i, ' 它将在以下时间后完全刷新：')
+        .replace(/(\\d+)\\s*days?/gi, ' $1 天')
+        .replace(/(\\d+)\\s*hours?/gi, ' $1 小时')
+        .replace(/(\\d+)\\s*minutes?\\.?$/gi, ' $1 分钟')
+        .replace(/\\s+/g, ' ')
         .trim();
       isDynamic = true;
     }
@@ -1524,50 +1631,50 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     }
 
     // 模型配额剩余动态匹配 (例如 "100% Remaining", "85.4% remaining")
-    if (/^(d+(?:.d+)?%?)s+remaining$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(d+(?:.d+)?%?)s+remaining$/i, '$1 剩余');
+    if (/^(\d+(?:\.\d+)?%?)\s+remaining$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+(?:\.\d+)?%?)\s+remaining$/i, '$1 剩余');
       isDynamic = true;
     }
     // 剩余时间刷新动态匹配 (例如 "15 minutes", "1 hour 26 minutes", "2 hours", "1 day")
-    if (/^(d+)s+hours?s+(d+)s+minutes?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(d+)s+hours?s+(d+)s+minutes?$/i, '$1 小时 $2 分钟');
+    if (/^(\d+)\s+hours?\s+(\d+)\s+minutes?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+hours?\s+(\d+)\s+minutes?$/i, '$1 小时 $2 分钟');
       isDynamic = true;
     }
-    if (/^(d+)s+minutes?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(d+)s+minutes?$/i, '$1 分钟');
+    if (/^(\d+)\s+minutes?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+minutes?$/i, '$1 分钟');
       isDynamic = true;
     }
-    if (/^(d+)s+hours?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(d+)s+hours?$/i, '$1 小时');
+    if (/^(\d+)\s+hours?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+hours?$/i, '$1 小时');
       isDynamic = true;
     }
-    if (/^(d+)s+days?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(d+)s+days?$/i, '$1 天');
+    if (/^(\d+)\s+days?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+)\s+days?$/i, '$1 天');
       isDynamic = true;
     }
 
     // 项目/路径不存在的动态提示 (项目名 + " does not exist"，超3词无法走分词)
-    if (/^.+ does not exist.?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(.+) does not exist.?$/i, '$1 不存在');
+    if (/^.+ does not exist\.?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(.+) does not exist\.?$/i, '$1 不存在');
       isDynamic = true;
     }
     // "xxx was not found" 动态提示
-    if (/^.+ was not found.?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(.+) was not found.?$/i, '$1 未找到');
+    if (/^.+ was not found\.?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(.+) was not found\.?$/i, '$1 未找到');
       isDynamic = true;
     }
 
     // 步骤与回合动态提示
-    if (/^Step d+ ([^)]+):?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^Step (d+) (([^)]+)):?/i, '步骤 $1 ($2)：');
+    if (/^Step \d+ \([^\)]+\):?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Step (\d+) \(([^\)]+)\):?/i, '步骤 $1 ($2)：');
       isDynamic = true;
     }
-    if (/^d+ turns?$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^(d+) turns?$/i, '$1 回合');
+    if (/^\d+ turns?$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^(\d+) turns?$/i, '$1 回合');
       isDynamic = true;
     }
-    if (/^Turn d+$/i.test(trimmed)) {
-      dynamicMatch = dynamicMatch.replace(/^Turn (d+)$/i, '第 $1 回合');
+    if (/^Turn \d+$/i.test(trimmed)) {
+      dynamicMatch = dynamicMatch.replace(/^Turn (\d+)$/i, '第 $1 回合');
       isDynamic = true;
     }
     if (/^Task id "[^"]+" finished with result:$/i.test(trimmed)) {
@@ -1602,7 +1709,7 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     let matchPunc = '';
 
     // Strip trailing common punctuation
-    const puncRegex = /(\.\.\.|…|\.|\?|!|:|：|？|！|。)$/;
+    const puncRegex = /(\\.\\.\\.|…|\\.|\\?|!|:|：|？|！|。)$/;
     const match = core.match(puncRegex);
     if (match) {
       matchPunc = match[0];
@@ -1620,19 +1727,8 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
       else trailPunc = matchPunc; // keep ..., …
     }
 
-    // Check stripped core in dictionary
-    let coreTranslated = '';
-    if (dictionary[core]) {
-      coreTranslated = dictionary[core];
-    } else {
-      const coreLower = core.toLowerCase();
-      for (const key in dictionary) {
-        if (key.toLowerCase() === coreLower) {
-          coreTranslated = dictionary[key];
-          break;
-        }
-      }
-    }
+    // Check stripped core in dictionary (O(1) exact or O(1) case-insensitive)
+    const coreTranslated = dictionary[core] || lowerDictionary.get(core.toLowerCase()) || '';
 
     if (coreTranslated) {
       return text.replace(trimmed, coreTranslated + trailPunc);
@@ -1641,43 +1737,43 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     // 3. Fallback to word-by-word ONLY for short strings (<= 3 words)
     // 如果短语中已经包含了中文字符（即原本就是汉化内容或中英混排），则严禁进入英文分词翻译
     // 这可以完美阻止像中英文混排短语被分词规则执行二次翻译导致重叠和污染
-    if (/[一-龥]/.test(core)) {
+    if (/[\u4e00-\u9fa5]/.test(core)) {
       return text;
     }
     // This prevents long unmatched sentences from getting mangled into Chinglish.
-    const wordsCount = core.split(/s+/).filter(Boolean).length;
+    const wordsCount = core.split(/\s+/).filter(Boolean).length;
     if (wordsCount > 3) {
       return text; // Do not translate, keep original English sentence clean
     }
 
-    let temp = core;
     let replaced = false;
-    for (let i = 0; i < PRECOMPILED_CORE_PATTERNS.length; i++) {
-      const p = PRECOMPILED_CORE_PATTERNS[i];
-      if (p.regex.test(temp)) {
-        temp = temp.replace(p.regex, p.target);
+    let temp = core.replace(CORE_WORDS_UNION_REGEX, (matched) => {
+      const lower = matched.toLowerCase();
+      if (coreWords[lower]) {
         replaced = true;
+        return coreWords[lower];
       }
-    }
+      return matched;
+    });
 
     let finalTranslated = replaced ? temp : core;
     // 消除中文字符之间可能由分词替换残留的英文空格，提升翻译句子的连贯精致度
-    finalTranslated = finalTranslated.replace(/([一-龥])s+([一-龥])/g, '$1$2');
+    finalTranslated = finalTranslated.replace(/([\u4e00-\u9fa5])\s+([\u4e00-\u9fa5])/g, '$1$2');
     // 特殊去重清洗：防止前置分词造成的“使用使用”与半中半英长句残留
     finalTranslated = finalTranslated.replace(/使用使用 Google 插件构建/g, '使用 Google 插件构建');
-    finalTranslated = finalTranslated.replace(/Configure 智能体 执行[,s]+queued 消息 delivery[,s]+and 权限[。.]?/g, '配置智能体执行策略、消息队列发送机制以及安全权限。');
+    finalTranslated = finalTranslated.replace(/Configure 智能体 执行[,\s]+queued 消息 delivery[,\s]+and 权限[。.]?/g, '配置智能体执行策略、消息队列发送机制以及安全权限。');
     finalTranslated = finalTranslated.replace(/Automatic 检查更新/g, '自动检查更新');
-    finalTranslated = finalTranslated.replace(/每周限额s*Remaining/gi, '每周限额剩余');
-    finalTranslated = finalTranslated.replace(/五小时限额s*Remaining/gi, '5 小时限额剩余');
+    finalTranslated = finalTranslated.replace(/每周限额\s*Remaining/gi, '每周限额剩余');
+    finalTranslated = finalTranslated.replace(/五小时限额\s*Remaining/gi, '5 小时限额剩余');
     finalTranslated = finalTranslated.replace(/Claude and GPT 模型/g, 'Claude 与 GPT 模型');
-    finalTranslated = finalTranslated.replace(/命令s*palette/gi, '命令面板');
+    finalTranslated = finalTranslated.replace(/命令\s*palette/gi, '命令面板');
     finalTranslated = finalTranslated.replace(/Scan the code to .*(?:copy link|复制链接)[。.]?/gi, '扫描二维码以在远程控制中打开此设备，或复制链接。');
-    finalTranslated = finalTranslated.replace(/Scan the code to (?:打开|open) this (?:设备|device) in 远程s*(?:Control|控制)[,s]+or (?:复制链接|copy link)[。.]?/gi, '扫描二维码以在远程控制中打开此设备，或复制链接。');
-    finalTranslated = finalTranslated.replace(/(?:工作了s*持续|总耗时s*持续|Worked for)s*(.+)/gi, '总耗时 $1');
-    finalTranslated = finalTranslated.replace(/(?:Thoughts*持续|思考了s*持续)s*(.+)/gi, '思考了 $1');
-    finalTranslated = finalTranslated.replace(/查看s*could not be opened/gi, '查看文件无法打开');
+    finalTranslated = finalTranslated.replace(/Scan the code to (?:打开|open) this (?:设备|device) in 远程\s*(?:Control|控制)[,\s]+or (?:复制链接|copy link)[。.]?/gi, '扫描二维码以在远程控制中打开此设备，或复制链接。');
+    finalTranslated = finalTranslated.replace(/(?:工作了\s*持续|总耗时\s*持续|Worked for)\s*(.+)/gi, '总耗时 $1');
+    finalTranslated = finalTranslated.replace(/(?:Thought\s*持续|思考了\s*持续)\s*(.+)/gi, '思考了 $1');
+    finalTranslated = finalTranslated.replace(/查看\s*could not be opened/gi, '查看文件无法打开');
     finalTranslated = finalTranslated.replace(/could not be opened/gi, '无法打开');
-    finalTranslated = finalTranslated.replace(/(\d+)\s+searches?/gi, '$1 次搜索');
+    finalTranslated = finalTranslated.replace(/(\\d+)\\s+searches?/gi, '$1 次搜索');
     if (matchPunc) {
       finalTranslated += trailPunc;
     }
@@ -1688,7 +1784,7 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
   }
 
   // 用于精确匹配代码编辑器、语法高亮等容器类名（收敛范围，防止误杀带 font-mono 或 viewer 的正常 UI）
-  const codeClassPattern = /(?:^|[\s_-])(monaco-editor|editor-instance|hljs|shiki|prism|codemirror|line-content|gutter|codeblock|code-block|code-line|view-line)(?:$|[\s_-])/i;
+  const codeClassPattern = /(?:^|[\\s_-])(monaco-editor|editor-instance|hljs|shiki|prism|codemirror|line-content|gutter|codeblock|code-block|code-line|view-line)(?:$|[\\s_-])/i;
 
   const skipCache = new WeakMap();
 
@@ -1711,11 +1807,27 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
       return true;
     }
 
-    // 3. 特殊放行：针对执行步骤的独立药丸标签（如 <code class="whitespace-pre-wrap">Explored</code>）
-    // 如果是多行真正的代码容器 PRE，坚决跳过；但对于极短的纯文本步骤标签 CODE，予以精准放行
+    // 3. 特殊特权放行：针对执行步骤的药丸标签（如 Ran, Explored, Edited, Viewed, Thought, Thinking, Working 等）
+    // 无论其父级为 SPAN、CODE 还是 BUTTON，只要是系统执行药丸且不在用户提问气泡内，一律无条件放行汉化
+    const textContent = (element.innerText || element.textContent || '').trim();
+    const isActionPill = textContent.length <= 25 && /^(Explored|Ran|Viewed|Edited|Thought|Thinking|Working)$/i.test(textContent);
+    if (isActionPill) {
+      let inUserInput = false;
+      let checkCur = element;
+      while (checkCur && checkCur !== document.body) {
+        if (checkCur.classList && checkCur.classList.contains('group/user-input-step')) {
+          inUserInput = true;
+          break;
+        }
+        checkCur = checkCur.parentElement;
+      }
+      if (!inUserInput) {
+        skipCache.set(element, false);
+        return false;
+      }
+    }
+
     if (element.tagName === 'CODE') {
-      const text = (element.innerText || element.textContent || '').trim();
-      const isActionPill = text.length <= 25 && /^(Explored|Ran|Viewed|Edited|Thought|Thinking|Working)$/i.test(text);
       if (!isActionPill) {
         skipCache.set(element, true);
         return true;
@@ -1726,14 +1838,13 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
       return true;
     }
 
-    // 4. 输入框/文本域/富文本编辑器/用户消息气泡绝对跳过（输入前、输入中、发送后 100% 原样保留）
+    // 4. 输入框/文本域/富文本编辑器/用户提问气泡绝对跳过（输入前、输入中、发送后 100% 原样保留）
     if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
       skipCache.set(element, true);
       return true;
     }
     if (element.getAttribute && (
         element.getAttribute('contenteditable') === 'true' ||
-        element.getAttribute('data-quotable') === 'true' ||
         element.getAttribute('role') === 'textbox' ||
         element.getAttribute('data-lexical-editor') === 'true'
     )) {
@@ -1764,7 +1875,6 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
       // 用户输入框与富文本编辑器（输入前/输入中绝对不翻译）
       if (cur.getAttribute && (
           cur.getAttribute('contenteditable') === 'true' ||
-          cur.getAttribute('data-quotable') === 'true' ||
           cur.getAttribute('role') === 'textbox' ||
           cur.getAttribute('data-lexical-editor') === 'true'
       )) {
@@ -1820,15 +1930,23 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
     return shouldSkip;
   }
 
+  // 性能优化 3：已处理文本节点记忆化 WeakSet，消除父容器重绘时的重复遍历
+  const translatedNodes = new WeakSet();
+
   function translateNode(node) {
     if (!node) return;
     if (shouldSkipNode(node)) return;
 
     if (node.nodeType === Node.TEXT_NODE) {
+      if (translatedNodes.has(node)) return;
       const original = node.nodeValue;
+      if (!original || !original.trim()) return;
       const translated = translateString(original);
       if (original !== translated) {
         node.nodeValue = translated;
+        translatedNodes.add(node);
+      } else if (!/[a-zA-Z]/.test(original)) {
+        translatedNodes.add(node);
       }
     } else if (node.nodeType === Node.ELEMENT_NODE) {
       ['placeholder', 'title', 'aria-label', 'value'].forEach(attr => {
@@ -1870,40 +1988,38 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
 
   const observedRoots = new WeakSet();
   let isTranslating = false;
+  let batchRafHandle = null;
+  const pendingAddedNodes = new Set();
+  const pendingTextNodes = new Set();
+  const pendingAttrNodes = new Map();
 
-  function observeRoot(root) {
-    if (!root || observedRoots.has(root)) return;
-    observedRoots.add(root);
+  const scheduleBatchFrame = (fn) => {
+    if (typeof queueMicrotask === 'function') {
+      queueMicrotask(fn);
+    } else if (typeof requestAnimationFrame === 'function') {
+      requestAnimationFrame(fn);
+    } else {
+      setTimeout(fn, 0);
+    }
+  };
 
-    const observer = new MutationObserver((mutations) => {
-      if (isTranslating) return;
-      isTranslating = true;
-      try {
-        for (const mutation of mutations) {
-          if (mutation.type === 'childList') {
-            const added = mutation.addedNodes;
-            for (let i = 0; i < added.length; i++) {
-              const node = added[i];
-              if (node.shadowRoot) {
-                observeRoot(node.shadowRoot);
-              }
-              if (!shouldSkipNode(node)) {
-                translateNode(node);
-              }
-            }
-          } else if (mutation.type === 'characterData') {
-            const node = mutation.target;
-            if (!shouldSkipNode(node)) {
-              const original = node.nodeValue;
-              const translated = translateString(original);
-              if (original !== translated) {
-                node.nodeValue = translated;
-              }
-            }
-          } else if (mutation.type === 'attributes') {
-            const target = mutation.target;
-            if (!shouldSkipNode(target)) {
-              const attrName = mutation.attributeName;
+  function scheduleBatchTranslation() {
+    if (batchRafHandle !== null) return;
+    batchRafHandle = true;
+    scheduleBatchFrame(processBatchTranslation);
+  }
+
+  function processBatchTranslation() {
+    batchRafHandle = null;
+    if (isTranslating) return;
+    isTranslating = true;
+
+    try {
+      // 1. 批量处理属性变更
+      if (pendingAttrNodes.size > 0) {
+        for (const [target, attrs] of pendingAttrNodes) {
+          if (!shouldSkipNode(target)) {
+            for (const attrName of attrs) {
               if (attrName === 'value' && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
                 continue;
               }
@@ -1917,10 +2033,100 @@ electron_1.contextBridge.exposeInMainWorld('wizardAPI', wizardAPI);
             }
           }
         }
-      } catch (e) {
-        console.error('Observer translation error:', e);
-      } finally {
-        isTranslating = false;
+        pendingAttrNodes.clear();
+      }
+
+      // 2. 批量处理文本变更 (characterData)
+      if (pendingTextNodes.size > 0) {
+        for (const node of pendingTextNodes) {
+          if (!shouldSkipNode(node)) {
+            const original = node.nodeValue;
+            if (original && original.trim()) {
+              const translated = translateString(original);
+              if (original !== translated) {
+                node.nodeValue = translated;
+                translatedNodes.add(node);
+              } else if (!/[a-zA-Z]/.test(original)) {
+                translatedNodes.add(node);
+              }
+            }
+          }
+        }
+        pendingTextNodes.clear();
+      }
+
+      // 3. 批量处理新增节点（性能优化 6：祖先包含剪枝，彻底消灭 O(N^2) 嵌套递归）
+      if (pendingAddedNodes.size > 0) {
+        const rootNodes = [];
+        for (const node of pendingAddedNodes) {
+          let hasAncestor = false;
+          let p = node.parentElement;
+          while (p) {
+            if (pendingAddedNodes.has(p)) {
+              hasAncestor = true;
+              break;
+            }
+            p = p.parentElement;
+          }
+          if (!hasAncestor) {
+            rootNodes.push(node);
+          }
+        }
+        pendingAddedNodes.clear();
+
+        for (let i = 0; i < rootNodes.length; i++) {
+          const node = rootNodes[i];
+          if (node.shadowRoot) {
+            observeRoot(node.shadowRoot);
+          }
+          if (!shouldSkipNode(node)) {
+            translateNode(node);
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Batch translation error:', e);
+    } finally {
+      isTranslating = false;
+    }
+  }
+
+  function observeRoot(root) {
+    if (!root || observedRoots.has(root)) return;
+    observedRoots.add(root);
+
+    const observer = new MutationObserver((mutations) => {
+      let needsSchedule = false;
+      for (let i = 0; i < mutations.length; i++) {
+        const mutation = mutations[i];
+        if (mutation.type === 'childList') {
+          const added = mutation.addedNodes;
+          for (let j = 0; j < added.length; j++) {
+            const node = added[j];
+            if (node.shadowRoot) {
+              observeRoot(node.shadowRoot);
+            }
+            pendingAddedNodes.add(node);
+            needsSchedule = true;
+          }
+        } else if (mutation.type === 'characterData') {
+          translatedNodes.delete(mutation.target);
+          pendingTextNodes.add(mutation.target);
+          needsSchedule = true;
+        } else if (mutation.type === 'attributes') {
+          const target = mutation.target;
+          let attrSet = pendingAttrNodes.get(target);
+          if (!attrSet) {
+            attrSet = new Set();
+            pendingAttrNodes.set(target, attrSet);
+          }
+          attrSet.add(mutation.attributeName);
+          needsSchedule = true;
+        }
+      }
+
+      if (needsSchedule) {
+        scheduleBatchTranslation();
       }
     });
 
